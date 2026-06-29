@@ -1,0 +1,2066 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NARWC 2025 Annual Report Card | North Atlantic Right Whale</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ocean-deep: #050d1a;
+  --ocean-mid: #071628;
+  --ocean-surface: #0a2240;
+  --teal-bright: #00c9a7;
+  --teal-dim: #00897b;
+  --amber: #f59e0b;
+  --coral: #ef4444;
+  --sky: #38bdf8;
+  --cream: #f0ece3;
+  --muted: #8ba8c4;
+  --border: rgba(0,201,167,0.15);
+  --card-bg: rgba(7,22,40,0.85);
+  --glass: rgba(10,34,64,0.6);
+}
+
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--ocean-deep);
+  color: var(--cream);
+  font-family: 'DM Sans', sans-serif;
+  font-weight: 300;
+  overflow-x: hidden;
+  cursor: default;
+}
+
+/* ── ANIMATED OCEAN BACKGROUND ── */
+.ocean-bg {
+  position: fixed;
+  inset: 0;
+  z-index: 0;
+  background: 
+    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0,80,120,0.25) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%, rgba(0,201,167,0.08) 0%, transparent 50%),
+    radial-gradient(ellipse 100% 80% at 50% 50%, rgba(5,20,50,1) 0%, var(--ocean-deep) 100%);
+  pointer-events: none;
+}
+
+.wave-layer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  height: 300px;
+  opacity: 0.04;
+  background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1440 120'%3E%3Cpath fill='%2300c9a7' d='M0,60 C240,120 480,0 720,60 C960,120 1200,0 1440,60 L1440,120 L0,120 Z'/%3E%3C/svg%3E") repeat-x bottom;
+  background-size: 720px 120px;
+  animation: wave 8s linear infinite;
+  pointer-events: none;
+  z-index: 0;
+}
+.wave-layer:nth-child(2) { opacity:0.06; animation-duration:12s; animation-direction:reverse; bottom:10px; }
+
+@keyframes wave { 0%{transform:translateX(0)} 100%{transform:translateX(-50%)} }
+
+/* ── PARTICLES ── */
+.particles { position:fixed; inset:0; pointer-events:none; z-index:0; overflow:hidden; }
+.particle {
+  position:absolute;
+  border-radius:50%;
+  background: var(--teal-bright);
+  animation: float linear infinite;
+  opacity: 0;
+}
+@keyframes float {
+  0% { transform: translateY(100vh) scale(0); opacity:0; }
+  10% { opacity:0.6; }
+  90% { opacity:0.2; }
+  100% { transform: translateY(-10vh) scale(1); opacity:0; }
+}
+
+/* ── LAYOUT ── */
+#app { position:relative; z-index:1; }
+
+/* ── NAV ── */
+nav {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  z-index: 100;
+  backdrop-filter: blur(20px);
+  background: rgba(5,13,26,0.85);
+  border-bottom: 1px solid var(--border);
+  padding: 0 40px;
+  display: flex;
+  align-items: center;
+  height: 64px;
+  gap: 8px;
+}
+.nav-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  color: var(--teal-bright);
+  margin-right: auto;
+  letter-spacing: 0.02em;
+}
+.nav-logo span { color: var(--cream); opacity:0.6; font-style:italic; font-size:0.85rem; }
+.nav-btn {
+  background: none;
+  border: none;
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  cursor: pointer;
+  border-radius: 3px;
+  transition: all 0.2s;
+}
+.nav-btn:hover, .nav-btn.active { color: var(--teal-bright); background: rgba(0,201,167,0.08); }
+
+/* ── HERO ── */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding: 80px 40px 60px;
+  position: relative;
+}
+.hero-eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--teal-bright);
+  margin-bottom: 24px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.2s;
+}
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 6vw, 5.5rem);
+  line-height: 1.1;
+  font-weight: 900;
+  color: #fff;
+  margin-bottom: 20px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.4s;
+}
+.hero-title em { color: var(--teal-bright); font-style: italic; }
+.hero-sub {
+  font-size: 1.1rem;
+  color: var(--muted);
+  max-width: 600px;
+  line-height: 1.7;
+  margin-bottom: 50px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.6s;
+}
+
+.stat-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin-bottom: 60px;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 0.8s;
+}
+.hero-stat {
+  background: var(--glass);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px 28px;
+  text-align: center;
+  backdrop-filter: blur(10px);
+  transition: transform 0.2s, border-color 0.2s;
+  cursor: default;
+}
+.hero-stat:hover { transform: translateY(-4px); border-color: rgba(0,201,167,0.4); }
+.hero-stat .num {
+  font-family: 'Playfair Display', serif;
+  font-size: 2.4rem;
+  font-weight: 900;
+  color: var(--teal-bright);
+  line-height: 1;
+}
+.hero-stat .num.danger { color: var(--coral); }
+.hero-stat .num.warn { color: var(--amber); }
+.hero-stat .label { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 6px; }
+
+.scroll-hint {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+  color: var(--muted);
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  opacity: 0;
+  animation: fadeUp 0.8s ease forwards 1.2s;
+}
+.scroll-dot {
+  width: 4px; height: 4px;
+  background: var(--teal-bright);
+  border-radius: 50%;
+  animation: scrollBounce 1.5s ease-in-out infinite;
+}
+@keyframes scrollBounce { 0%,100%{transform:translateY(0)} 50%{transform:translateY(8px)} }
+
+@keyframes fadeUp {
+  from { opacity:0; transform:translateY(20px); }
+  to { opacity:1; transform:translateY(0); }
+}
+
+/* ── SECTIONS ── */
+section {
+  padding: 80px 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.section-header {
+  display: flex;
+  align-items: baseline;
+  gap: 20px;
+  margin-bottom: 50px;
+}
+.section-tag {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--teal-bright);
+  background: rgba(0,201,167,0.08);
+  border: 1px solid rgba(0,201,167,0.2);
+  padding: 4px 10px;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+.section-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 3vw, 2.8rem);
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.2;
+}
+
+/* ── DIVIDER ── */
+.divider {
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--border), transparent);
+  margin: 0 auto;
+}
+
+/* ── POPULATION CHART ── */
+#pop-chart-wrap {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 32px;
+  margin-bottom: 40px;
+  backdrop-filter: blur(10px);
+}
+.chart-controls {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+}
+.chart-btn {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  color: var(--muted);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 6px 14px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+.chart-btn:hover, .chart-btn.active { background: rgba(0,201,167,0.12); border-color: var(--teal-bright); color: var(--teal-bright); }
+
+#pop-chart-container { position:relative; width:100%; height:280px; }
+#pop-chart { width:100% !important; height:100% !important; display:block; }
+
+/* ── MONITORING TABLE ── */
+.data-table-wrap {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+}
+.table-header {
+  padding: 20px 28px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.table-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #fff; }
+.table-sub { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+.search-input {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--cream);
+  font-family: 'DM Mono', monospace;
+  font-size: 0.75rem;
+  padding: 7px 14px;
+  width: 180px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.search-input:focus { border-color: var(--teal-bright); }
+.search-input::placeholder { color: var(--muted); }
+
+table { width:100%; border-collapse:collapse; }
+thead tr { border-bottom: 1px solid var(--border); }
+th {
+  padding: 12px 16px;
+  text-align: left;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--teal-bright);
+  background: rgba(0,201,167,0.03);
+  cursor: pointer;
+  user-select: none;
+  white-space: nowrap;
+}
+th:hover { color: #fff; }
+tbody tr {
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  transition: background 0.15s;
+}
+tbody tr:hover { background: rgba(0,201,167,0.05); }
+td {
+  padding: 11px 16px;
+  font-size: 0.82rem;
+  color: var(--cream);
+}
+td.year { font-family: 'DM Mono', monospace; color: var(--muted); font-size: 0.78rem; }
+td.num { font-family: 'DM Mono', monospace; }
+td.pct { font-family: 'DM Mono', monospace; }
+.pct-bar {
+  height: 3px;
+  background: rgba(0,201,167,0.15);
+  border-radius: 2px;
+  margin-top: 4px;
+  overflow: hidden;
+}
+.pct-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--teal-dim), var(--teal-bright));
+  border-radius: 2px;
+  transition: width 0.6s ease;
+}
+
+/* ── REPRODUCTION CHART ── */
+#repro-section { padding-top: 0; }
+.repro-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-bottom: 30px;
+}
+@media(max-width:700px) { .repro-grid { grid-template-columns:1fr; } }
+
+.repro-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+}
+.repro-chart-wrap { height: 220px; width: 100%; }
+
+/* ── THREATS ── */
+.threat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+  margin-bottom: 40px;
+}
+.threat-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  padding: 28px;
+  backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: all 0.25s;
+  position: relative;
+  overflow: hidden;
+}
+.threat-card::before {
+  content:'';
+  position:absolute;
+  top:0; left:0; right:0;
+  height: 3px;
+}
+.threat-card.entangle::before { background: var(--amber); }
+.threat-card.vessel::before { background: var(--coral); }
+.threat-card.mortality::before { background: var(--sky); }
+.threat-card:hover { transform:translateY(-4px); border-color: rgba(0,201,167,0.3); }
+.threat-icon { font-size: 2rem; margin-bottom: 14px; }
+.threat-num { font-family:'Playfair Display',serif; font-size:2.2rem; font-weight:900; margin-bottom:6px; }
+.threat-num.amber { color:var(--amber); }
+.threat-num.coral { color:var(--coral); }
+.threat-num.sky { color:var(--sky); }
+.threat-label { font-size:0.75rem; color:var(--muted); text-transform:uppercase; letter-spacing:0.08em; margin-bottom:12px; }
+.threat-desc { font-size:0.84rem; color:var(--cream); opacity:0.75; line-height:1.6; }
+.threat-expand { font-size:0.72rem; color:var(--teal-bright); margin-top:14px; letter-spacing:0.06em; display:flex; align-items:center; gap:6px; }
+
+/* Entanglement cases */
+.case-table-wrap {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  margin-top: 30px;
+  backdrop-filter: blur(10px);
+}
+
+/* ── SIGHTINGS MAP ── */
+.region-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 16px;
+  margin-bottom: 40px;
+}
+.region-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+  transition: all 0.2s;
+  cursor: default;
+}
+.region-card:hover { border-color: rgba(0,201,167,0.3); transform: translateY(-2px); }
+.region-name { font-size: 0.78rem; color: var(--teal-bright); font-weight:500; margin-bottom: 8px; text-transform:uppercase; letter-spacing:0.06em; }
+.region-count { font-family:'Playfair Display',serif; font-size:2rem; font-weight:700; color:#fff; }
+.region-bar { height:3px; background:rgba(0,201,167,0.12); border-radius:2px; margin-top:10px; overflow:hidden; }
+.region-fill { height:100%; background:linear-gradient(90deg,var(--teal-dim),var(--teal-bright)); border-radius:2px; transition:width 0.8s ease; }
+.region-months { font-size:0.7rem; color:var(--muted); margin-top:6px; }
+
+/* ── MANAGEMENT ── */
+.mgmt-tabs {
+  display: flex;
+  gap: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  margin-bottom: 28px;
+}
+.mgmt-tab {
+  flex: 1;
+  background: rgba(255,255,255,0.03);
+  border: none;
+  color: var(--muted);
+  padding: 13px 20px;
+  font-family: 'DM Mono',monospace;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.2s;
+  border-right: 1px solid var(--border);
+  text-align: center;
+}
+.mgmt-tab:last-child { border-right: none; }
+.mgmt-tab.active, .mgmt-tab:hover { background: rgba(0,201,167,0.1); color: var(--teal-bright); }
+.mgmt-panel { display: none; }
+.mgmt-panel.active { display: block; }
+.mgmt-item {
+  display: flex;
+  gap: 16px;
+  padding: 18px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.05);
+  align-items: flex-start;
+}
+.mgmt-item:last-child { border-bottom: none; }
+.mgmt-bullet {
+  width: 6px; height: 6px;
+  background: var(--teal-bright);
+  border-radius: 50%;
+  flex-shrink: 0;
+  margin-top: 7px;
+}
+.mgmt-text { font-size:0.86rem; line-height:1.65; color: rgba(240,236,227,0.8); }
+
+/* ── MODAL ── */
+.modal-overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  background: rgba(0,0,0,0.75);
+  backdrop-filter: blur(8px);
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeOverlay 0.2s ease;
+}
+.modal-overlay.open { display:flex; }
+@keyframes fadeOverlay { from{opacity:0} to{opacity:1} }
+
+.modal {
+  background: var(--ocean-mid);
+  border: 1px solid rgba(0,201,167,0.25);
+  border-radius: 20px;
+  max-width: 700px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  padding: 40px;
+  position: relative;
+  animation: slideModal 0.3s ease;
+}
+@keyframes slideModal { from{transform:translateY(20px);opacity:0} to{transform:translateY(0);opacity:1} }
+
+.modal::-webkit-scrollbar { width:4px; }
+.modal::-webkit-scrollbar-track { background:transparent; }
+.modal::-webkit-scrollbar-thumb { background:var(--teal-dim); border-radius:2px; }
+
+.modal-close {
+  position: absolute;
+  top: 20px; right: 20px;
+  background: rgba(255,255,255,0.08);
+  border: none;
+  color: var(--cream);
+  width: 32px; height: 32px;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 1rem;
+  display: flex; align-items:center; justify-content:center;
+  transition: background 0.2s;
+}
+.modal-close:hover { background: rgba(255,255,255,0.15); }
+.modal-tag { font-family:'DM Mono',monospace; font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--teal-bright); margin-bottom:12px; }
+.modal-title { font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:700; color:#fff; margin-bottom:16px; line-height:1.3; }
+.modal-body { font-size:0.88rem; line-height:1.75; color:rgba(240,236,227,0.85); }
+.modal-body p { margin-bottom:14px; }
+.modal-body strong { color:var(--teal-bright); font-weight:500; }
+.modal-body ul { padding-left:20px; margin-bottom:14px; }
+.modal-body li { margin-bottom:8px; }
+
+/* ── PUBLICATIONS ── */
+.pub-list { display:flex; flex-direction:column; gap:12px; }
+.pub-item {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 16px 20px;
+  backdrop-filter: blur(10px);
+  transition: border-color 0.2s;
+}
+.pub-item:hover { border-color:rgba(0,201,167,0.3); }
+.pub-authors { font-family:'DM Mono',monospace; font-size:0.7rem; color:var(--teal-bright); margin-bottom:5px; }
+.pub-title { font-size:0.85rem; color:var(--cream); line-height:1.5; }
+.pub-title-link { color:var(--cream); text-decoration:none; border-bottom:1px solid rgba(240,236,227,0.25); transition:color 0.2s, border-color 0.2s; }
+.pub-title-link:hover { color:var(--teal-bright); border-color:var(--teal-bright); }
+.pub-journal { font-size:0.75rem; color:var(--muted); margin-top:4px; font-style:italic; }
+.pub-access-btn { font-style:normal; font-family:'DM Mono',monospace; font-size:0.65rem; letter-spacing:0.06em; color:var(--teal-bright); text-decoration:none; background:rgba(0,201,167,0.08); border:1px solid rgba(0,201,167,0.25); border-radius:3px; padding:2px 7px; white-space:nowrap; transition:background 0.2s; margin-left:8px; vertical-align:middle; }
+.pub-access-btn:hover { background:rgba(0,201,167,0.2); }
+
+/* ── MORTALITY CHARTS ── */
+.mort-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 20px;
+  margin-bottom: 16px;
+}
+.mort-card {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 24px;
+  backdrop-filter: blur(10px);
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.mort-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+.mort-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.95rem;
+  color: #fff;
+}
+.mort-card-sub {
+  font-size: 0.68rem;
+  color: var(--muted);
+  margin-top: 3px;
+}
+.mort-legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  font-family: 'DM Mono', monospace;
+  font-size: 0.65rem;
+  letter-spacing: 0.05em;
+  color: var(--muted);
+  align-items: center;
+}
+.mort-legend-item {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.mort-swatch {
+  width: 11px;
+  height: 11px;
+  border-radius: 2px;
+  display: inline-block;
+  flex-shrink: 0;
+}
+.mort-chart-container {
+  position: relative;
+  width: 100%;
+  height: 260px;
+}
+.mort-notice {
+  padding: 8px 12px;
+  background: rgba(245,158,11,0.07);
+  border: 1px solid rgba(245,158,11,0.2);
+  border-radius: 6px;
+  font-size: 0.68rem;
+  color: rgba(245,158,11,0.8);
+  line-height: 1.5;
+}
+.mort-notice code {
+  font-family: 'DM Mono', monospace;
+  background: rgba(245,158,11,0.12);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+/* ── FOOTER ── */
+footer {
+  background: rgba(5,13,26,0.9);
+  border-top: 1px solid var(--border);
+  padding: 40px;
+  text-align: center;
+}
+.footer-logo { font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--teal-bright); margin-bottom:8px; }
+.footer-cite { font-size:0.78rem; color:var(--muted); line-height:1.6; max-width:700px; margin:0 auto 16px; }
+.footer-link { color:var(--teal-bright); text-decoration:none; }
+.footer-link:hover { text-decoration:underline; }
+
+/* Responsive */
+@media(max-width:768px) {
+  nav { padding: 0 20px; }
+  .nav-btn { display:none; }
+  section { padding: 60px 20px; }
+  #hero { padding: 80px 20px 60px; }
+  .repro-grid { grid-template-columns:1fr; }
+  .modal { padding:24px; }
+}
+
+/* ── ABOUT CALLOUT BOX ── */
+.about-callout {
+  max-width: 760px;
+  width: 100%;
+  margin: 0 auto 40px;
+  background: rgba(0,201,167,0.06);
+  border: 1px solid rgba(0,201,167,0.3);
+  border-radius: 14px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.25s, background 0.25s;
+}
+.about-callout:hover { border-color: rgba(0,201,167,0.55); background: rgba(0,201,167,0.09); }
+.about-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  gap: 12px;
+}
+.about-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.72rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--teal-bright);
+}
+.about-chevron {
+  color: var(--teal-bright);
+  font-size: 0.7rem;
+  transition: transform 0.3s;
+  flex-shrink: 0;
+}
+.about-chevron.open { transform: rotate(180deg); }
+.about-body {
+  display: none;
+  padding: 0 24px 20px;
+  font-size: 0.85rem;
+  line-height: 1.75;
+  color: rgba(240,236,227,0.82);
+  text-align: left;
+  border-top: 1px solid rgba(0,201,167,0.15);
+  padding-top: 16px;
+}
+.about-body p { margin: 0; }
+
+/* ── HERO VIDEO OVERLAY ── */
+#hero-video-wrap {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+#hero-video-wrap.hidden {
+  opacity: 0;
+}
+#hero-video-wrap.gone {
+  display: none;
+}
+#hero-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.38;
+}
+#hero-video-vignette {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 30%, rgba(5,13,26,0.85) 100%);
+  pointer-events: none;
+}
+
+/* Scroll reveal */
+.reveal { opacity:0; transform:translateY(24px); transition:opacity 0.6s ease, transform 0.6s ease; }
+.reveal.visible { opacity:1; transform:none; }
+</style>
+</head>
+<body>
+
+<div class="ocean-bg"></div>
+<div class="wave-layer"></div>
+<div class="wave-layer"></div>
+<div class="particles" id="particles"></div>
+
+<!-- HERO VIDEO OVERLAY — ensure Calvin_roll_GSL_July2025_-_Trim.mp4 is in the same folder as this HTML file on your web server -->
+<div id="hero-video-wrap">
+  <video id="hero-video"
+    src="Calvin_roll_GSL_July2025_-_Trim.mp4"
+    autoplay
+    muted
+    loop
+    playsinline
+    preload="auto">
+  </video>
+  <div id="hero-video-vignette"></div>
+</div>
+
+<!-- MODAL -->
+<div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modal-content">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div id="modal-inner"></div>
+  </div>
+</div>
+
+<div id="app">
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">NARWC <span>Report Card 2025</span></div>
+  <button class="nav-btn active" onclick="scrollToSection('hero')">Overview</button>
+  <button class="nav-btn" onclick="scrollToSection('population')">Population</button>
+  <button class="nav-btn" onclick="scrollToSection('reproduction')">Reproduction</button>
+  <button class="nav-btn" onclick="scrollToSection('threats')">Threats</button>
+  <button class="nav-btn" onclick="scrollToSection('mortalities')">Mortalities</button>
+  <button class="nav-btn" onclick="scrollToSection('sightings')">Sightings</button>
+  <button class="nav-btn" onclick="scrollToSection('management')">Management</button>
+  <button class="nav-btn" onclick="scrollToSection('publications')">Publications & Reports</button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-eyebrow">North Atlantic Right Whale Consortium · <a href="https://www.narwc.org/uploads/1/1/6/6/116623219/2025reportcardfinal.pdf" target="_blank" rel="noopener" style="color:var(--teal-bright);text-decoration:none;border-bottom:1px solid rgba(0,201,167,0.4);padding-bottom:1px;transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--teal-bright)'" onmouseout="this.style.borderColor='rgba(0,201,167,0.4)'">2025 NARWC Annual Report Card</a></div>
+  <h1 class="hero-title">
+    384 Whales<br><em>and counting.</em>
+  </h1>
+  <p class="hero-sub">
+    The critically endangered North Atlantic right whale faces persistent threats from entanglement and vessel strikes. This interactive report synthesizes data from the <a href="https://www.narwc.org/uploads/1/1/6/6/116623219/2025reportcardfinal.pdf" target="_blank" rel="noopener" style="color:var(--teal-bright);text-decoration:none;border-bottom:1px solid rgba(0,201,167,0.4);">2025 NARWC Annual Report Card</a>, authored by Pettis &amp; Hamilton.
+  </p>
+
+  <!-- ABOUT CALLOUT BOX -->
+  <div class="about-callout reveal" onclick="toggleAbout(this)">
+    <div class="about-header">
+      <span class="about-label">About the North Atlantic Right Whale Consortium</span>
+      <span class="about-chevron" id="about-chevron">▼</span>
+    </div>
+    <div class="about-body" id="about-body">
+      <p>Started in 1986 as a collaborative data sharing group, the North Atlantic Right Whale Consortium (NARWC) has grown to include more than 200 organizations and individuals representing research and conservation organizations, shipping and fishing industries, technical experts, U.S. and Canadian government agencies, and state and provincial authorities, all of whom are dedicated to the conservation and recovery of the North Atlantic right whale. North Atlantic Right Whale Consortium members agreed in 2004 that an annual "report card" on the status of right whales would be useful. This report card includes updates on the status of the cataloged population, mortalities and injury events, and a summary of management and research efforts that have occurred over the previous 12 months.</p>
+    </div>
+  </div>
+  <div class="stat-row">
+    <div class="hero-stat" onclick="openModal('population')">
+      <div class="num">384</div>
+      <div class="label">2024 Population Estimate</div>
+    </div>
+    <div class="hero-stat" onclick="openModal('calves')">
+      <div class="num warn">11</div>
+      <div class="label">2025 Mother/Calf Pairs</div>
+    </div>
+    <div class="hero-stat" onclick="openModal('mortality')">
+      <div class="num" style="color:var(--sky)">0</div>
+      <div class="label">2025 Detected Mortalities</div>
+    </div>
+    <div class="hero-stat" onclick="openModal('entangle')">
+      <div class="num danger">5+</div>
+      <div class="label">2025 Entanglement Events</div>
+    </div>
+    <div class="hero-stat" onclick="openModal('monitoring')">
+      <div class="num">91%</div>
+      <div class="label">Population Monitored 2024</div>
+    </div>
+  </div>
+  <div class="scroll-hint">
+    <div class="scroll-dot"></div>
+    Scroll to explore
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- POPULATION -->
+<section id="population">
+  <div class="section-header reveal">
+    <span class="section-tag">01 · Population</span>
+    <h2 class="section-title">Population Estimates 1990–2024</h2>
+  </div>
+
+  <div id="pop-chart-wrap" class="reveal">
+    <div class="chart-controls">
+      <button class="chart-btn active" onclick="setChartRange('all',this)">All Years</button>
+      <button class="chart-btn" onclick="setChartRange('2000',this)">2000+</button>
+      <button class="chart-btn" onclick="setChartRange('2010',this)">2010+</button>
+      <button class="chart-btn" onclick="setChartRange('2015',this)">2015+</button>
+    </div>
+    <div id="pop-chart-container"><canvas id="pop-chart"></canvas></div>
+  </div>
+
+  <div class="data-table-wrap reveal">
+    <div class="table-header">
+      <div>
+        <div class="table-title">Population Estimates Table</div>
+        <div class="table-sub">Pace model estimates with 95% credible intervals — Table 1 from the Report Card</div>
+      </div>
+      <input type="text" class="search-input" placeholder="Filter year..." id="pop-search" oninput="filterPopTable(this.value)">
+    </div>
+    <div style="overflow-x:auto;">
+      <table id="pop-table">
+        <thead><tr>
+          <th onclick="sortTable('pop',0)">Year ↕</th>
+          <th onclick="sortTable('pop',1)">Lower ↕</th>
+          <th onclick="sortTable('pop',2)">Median ↕</th>
+          <th onclick="sortTable('pop',3)">Upper ↕</th>
+          <th>Trend</th>
+        </tr></thead>
+        <tbody id="pop-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- REPRODUCTION -->
+<section id="reproduction">
+  <div class="section-header reveal">
+    <span class="section-tag">02 · Reproduction</span>
+    <h2 class="section-title">Calving & Reproductive Success</h2>
+  </div>
+  <div class="repro-grid reveal">
+    <div class="repro-card">
+      <div style="font-family:'Playfair Display',serif;font-size:1rem;color:#fff;margin-bottom:16px;">Annual Calf Counts</div>
+      <div class="repro-chart-wrap"><canvas id="calf-chart"></canvas></div>
+    </div>
+    <div class="repro-card">
+      <div style="font-family:'Playfair Display',serif;font-size:1rem;color:#fff;margin-bottom:16px;">Inter-Birth Interval (median, yrs)</div>
+      <div class="repro-chart-wrap"><canvas id="interval-chart"></canvas></div>
+    </div>
+  </div>
+  <div class="data-table-wrap reveal">
+    <div class="table-header">
+      <div>
+        <div class="table-title">Mother/Calf Summary</div>
+        <div class="table-sub">Reproductive statistics 2009–2025 — Table 3</div>
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table id="repro-table">
+        <thead><tr>
+          <th onclick="sortTable('repro',0)">Year ↕</th>
+          <th onclick="sortTable('repro',1)">Calf Count ↕</th>
+          <th onclick="sortTable('repro',2)">Available Cows ↕</th>
+          <th onclick="sortTable('repro',3)">% Calved ↕</th>
+          <th onclick="sortTable('repro',4)">Avg Interval ↕</th>
+          <th onclick="sortTable('repro',5)">Median Interval ↕</th>
+          <th onclick="sortTable('repro',6)">First-time Moms ↕</th>
+        </tr></thead>
+        <tbody id="repro-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- THREATS -->
+<section id="threats">
+  <div class="section-header reveal">
+    <span class="section-tag">03 · Threats</span>
+    <h2 class="section-title">Anthropogenic Threats</h2>
+  </div>
+  <div class="threat-grid reveal">
+    <div class="threat-card entangle" onclick="openModal('entangle-detail')">
+      <div class="threat-icon">🪢</div>
+      <div class="threat-num amber">5+</div>
+      <div class="threat-label">Entanglement Events 2025</div>
+      <div class="threat-desc">At least 5 new events detected: 1 weir entrapment, 1 with attached gear, 3 with new scarring — numbers will increase as data processing continues.</div>
+      <div class="threat-expand">Read full details →</div>
+    </div>
+    <div class="threat-card vessel" onclick="openModal('vessel-detail')">
+      <div class="threat-icon">🚢</div>
+      <div class="threat-num coral">1</div>
+      <div class="threat-label">Suspected Vessel Strike 2025</div>
+      <div class="threat-desc">Whale #3504, a 20-year-old male, sighted 1/12/2025 at Jeffreys Ledge with a wound on the right flank. Additional documentation needed to confirm.</div>
+      <div class="threat-expand">Read full details →</div>
+    </div>
+    <div class="threat-card mortality" onclick="openModal('mortality-detail')">
+      <div class="threat-icon">📊</div>
+      <div class="threat-num sky">0</div>
+      <div class="threat-label">Detected Mortalities 2025</div>
+      <div class="threat-desc">No detected right whale mortalities in 2025 — a positive sign. However, PBR (0.7) was still exceeded due to at least one serious injury, and detected mortalities are known underestimates.</div>
+      <div class="threat-expand">Read full details →</div>
+    </div>
+  </div>
+
+  <div class="case-table-wrap reveal">
+    <div class="table-header">
+      <div>
+        <div class="table-title">Active Entanglement Cases 2025</div>
+        <div class="table-sub">Table 6 — Newly reported and updated cases</div>
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table>
+        <thead><tr>
+          <th>Whale #</th>
+          <th>First Sighting</th>
+          <th>Location</th>
+          <th>Sex</th>
+          <th>Age</th>
+          <th>Status / Details</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><strong style="color:var(--amber)">#5110</strong></td>
+            <td class="num">12/09/2024</td>
+            <td>S. New England</td>
+            <td>M</td>
+            <td>4</td>
+            <td><span style="font-size:0.78rem;color:rgba(240,236,227,0.75)">Green rope around rostrum & body. Life-threatening. Partial disentanglement 4/10/25 — lethal portion remains. Last seen entangled 4/24/2025, Cape Cod Bay.</span></td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--amber)">#5132</strong></td>
+            <td class="num">12/16/2024</td>
+            <td>North Carolina</td>
+            <td>M</td>
+            <td>4</td>
+            <td><span style="font-size:0.78rem;color:rgba(240,236,227,0.75)">Complex entanglement with numerous passes over head. Gear from LFA 38 (Bay of Fundy). Last sighted 6/17/2025 off PEI, still entangled.</span></td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--amber)">#4146</strong></td>
+            <td class="num">8/13/2025</td>
+            <td>Grand Manan, NB</td>
+            <td>F</td>
+            <td>14</td>
+            <td><span style="font-size:0.78rem;color:rgba(240,236,227,0.75)">Free-swimming entrapment in herring weir. Campobello Whale Rescue Team successfully freed the whale. Not re-sighted in area.</span></td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--amber)">#5217 "Division"</strong></td>
+            <td class="num">12/03/2025</td>
+            <td>North Carolina</td>
+            <td>M</td>
+            <td>4</td>
+            <td><span style="font-size:0.78rem;color:rgba(240,236,227,0.75)">Line embedded in rostrum & blowhole. Partial disentanglement; telemetry buoy attached. Found dead 1/27/2026 off NC — mortality to appear in 2026 Report Card.</span></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="case-table-wrap reveal" style="margin-top:20px;">
+    <div class="table-header">
+      <div>
+        <div class="table-title">New Entanglement Events — Scars Only</div>
+        <div class="table-sub">Table 7 — Minimum detected events evidenced by wounds/scars in 2025</div>
+      </div>
+    </div>
+    <div style="overflow-x:auto;">
+      <table>
+        <thead><tr>
+          <th>Whale #</th>
+          <th>Pre-Injury Date</th>
+          <th>Pre-Injury Location</th>
+          <th>Injury Detection</th>
+          <th>Detection Location</th>
+          <th>Sex</th>
+          <th>Age</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><strong style="color:var(--amber)">#3391</strong></td>
+            <td class="num">05/25/2024</td><td>VA</td><td class="num">03/11/2025</td><td>Cape Cod Bay</td><td>M</td><td>>22</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--amber)">#3714</strong></td>
+            <td class="num">05/01/2025</td><td>CCB</td><td class="num">11/18/2025</td><td>NC</td><td>M</td><td>18</td>
+          </tr>
+          <tr>
+            <td><strong style="color:var(--amber)">2025 Calf of #3540</strong></td>
+            <td class="num">05/01/2025</td><td>CCB</td><td class="num">12/24/2025</td><td>FL</td><td>—</td><td>Calf</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MORTALITIES -->
+<section id="mortalities">
+  <div class="section-header reveal">
+    <span class="section-tag">03b · Mortalities</span>
+    <h2 class="section-title">Detected Mortalities by Year</h2>
+  </div>
+
+  <!-- Responsive two-chart grid: side-by-side on wide screens, stacked on narrow -->
+  <div class="mort-grid reveal">
+
+    <!-- Chart 1: By Country -->
+    <div class="mort-card">
+      <div class="mort-card-header">
+        <div>
+          <div class="mort-card-title">By Country of Detection</div>
+          <div class="mort-card-sub">Source: Figure 2, 2025 NARWC Report Card</div>
+        </div>
+        <div class="mort-legend">
+          <span class="mort-legend-item"><span class="mort-swatch" style="background:#00c9a7;"></span>Canada</span>
+          <span class="mort-legend-item"><span class="mort-swatch" style="background:#38bdf8;"></span>US</span>
+        </div>
+      </div>
+      <div class="mort-chart-container">
+        <canvas id="mort-chart"></canvas>
+      </div>
+      <div class="mort-notice">
+        ⚠&nbsp; Values estimated from Figure 2. Update <code>mortData</code> array — each entry: <code>{y, ca, us}</code>
+      </div>
+    </div>
+
+    <!-- Chart 2: By Cause of Death -->
+    <div class="mort-card">
+      <div class="mort-card-header">
+        <div>
+          <div class="mort-card-title">By Cause of Death</div>
+          <div class="mort-card-sub">Source: Figure 3, 2025 NARWC Report Card</div>
+        </div>
+        <div class="mort-legend">
+          <span class="mort-legend-item"><span class="mort-swatch" style="background:#ef4444;"></span>Vessel Strike</span>
+          <span class="mort-legend-item"><span class="mort-swatch" style="background:#f59e0b;"></span>Entanglement</span>
+          <span class="mort-legend-item"><span class="mort-swatch" style="background:#a78bfa;"></span>Neonate</span>
+          <span class="mort-legend-item"><span class="mort-swatch" style="background:#64748b;"></span>Unknown</span>
+          <span class="mort-legend-item"><span class="mort-swatch" style="background:#2dd4bf;"></span>Other</span>
+        </div>
+      </div>
+      <div class="mort-chart-container">
+        <canvas id="cause-chart"></canvas>
+      </div>
+      <div class="mort-notice">
+        ⚠&nbsp; Values estimated from Figure 3. Update <code>causeData</code> array — each entry: <code>{y, vs, ent, neo, unk, oth}</code>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- SIGHTINGS -->
+<section id="sightings">
+  <div class="section-header reveal">
+    <span class="section-tag">04 · Distribution</span>
+    <h2 class="section-title">2024 Sightings by Region</h2>
+  </div>
+  <div class="region-grid reveal" id="region-grid"></div>
+
+  <div class="data-table-wrap reveal">
+    <div class="table-header">
+      <div>
+        <div class="table-title">Annual Monitoring Summary</div>
+        <div class="table-sub">Photo-ID sightings, individuals, effort & population coverage — Table 2</div>
+      </div>
+      <input type="text" class="search-input" placeholder="Filter year..." id="mon-search" oninput="filterMonTable(this.value)">
+    </div>
+    <div style="overflow-x:auto;">
+      <table id="mon-table">
+        <thead><tr>
+          <th onclick="sortTable('mon',0)">Year ↕</th>
+          <th onclick="sortTable('mon',1)">Sightings ↕</th>
+          <th onclick="sortTable('mon',2)">Unique IDs ↕</th>
+          <th onclick="sortTable('mon',3)">Pop. Est. ↕</th>
+          <th onclick="sortTable('mon',4)">Effort (1k km) ↕</th>
+          <th onclick="sortTable('mon',5)">% Pop. Seen ↕</th>
+        </tr></thead>
+        <tbody id="mon-tbody"></tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- MANAGEMENT -->
+<section id="management">
+  <div class="section-header reveal">
+    <span class="section-tag">05 · Management</span>
+    <h2 class="section-title">Conservation & Management Actions</h2>
+  </div>
+  <div class="mgmt-tabs reveal">
+    <button class="mgmt-tab active" onclick="switchTab('noaa',this)">NOAA Fisheries (US)</button>
+    <button class="mgmt-tab" onclick="switchTab('dfo',this)">DFO Canada</button>
+    <button class="mgmt-tab" onclick="switchTab('tc',this)">Transport Canada</button>
+  </div>
+
+  <div class="mgmt-panel active" id="tab-noaa" style="background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:28px;backdrop-filter:blur(10px);">
+    <div class="mgmt-item"><div class="mgmt-bullet"></div><div class="mgmt-text">NOAA Fisheries is <strong>cautiously optimistic</strong>: species abundance is increasing and the sharp rise in mortalities over the last decade appears to have slowed, though human-caused mortalities and serious injuries continue.</div></div>
+    <div class="mgmt-item"><div class="mgmt-bullet"></div><div class="mgmt-text">The <strong>North Atlantic Right Whale Road to Recovery</strong> framework describes ongoing NOAA efforts across the agency, built on the Endangered Species Act and Marine Mammal Protection Act, complementing the 2021–2025 Priority Action Plan.</div></div>
+    <div class="mgmt-item"><div class="mgmt-bullet"></div><div class="mgmt-text">NOAA continues to focus on <strong>technological solutions</strong> to reduce vessel strikes and entanglements, promoting sustainable coexistence between marine industries and right whales.</div></div>
+  </div>
+
+  <div class="mgmt-panel" id="tab-dfo" style="background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:28px;backdrop-filter:blur(10px);">
+    <div class="mgmt-item"><div class="mgmt-bullet"></div><div class="mgmt-text">Canada's <strong>Budget 2023 provided $151.9 million</strong> over three years across DFO, Transport Canada, Environment and Climate Change Canada, and Parks Canada to continue protecting endangered whales.</div></div>
+    <div class="mgmt-item"><div class="mgmt-bullet"></div><div class="mgmt-text">Since 2018, DFO has enacted <strong>dynamic fishing closures</strong> in the Gulf of St. Lawrence, Bay of Fundy, and Roseway Basin — covering over 60,256 km² of temporary and season-long closures in 2025.</div></div>
+    <div class="mgmt-item"><div class="mgmt-bullet"></div><div class="mgmt-text">New for 2025: updated <strong>Shallow Water Protocol</strong> with revised and additional depth management lines (5, 10, 15, 20 fathoms) for more targeted closures reflecting actual bathymetry.</div></div>
+    <div class="mgmt-item"><div class="mgmt-bullet"></div><div class="mgmt-text"><strong>Whalesafe Gear Pilots</strong> launched in LFAs 36, 38 and shallow water areas: required harvesters to reduce vertical buoy lines by >50% and use low breaking-strength (LBS) gear modifications.</div></div>
+    <div class="mgmt-item"><div class="mgmt-bullet"></div><div class="mgmt-text">DFO Science aerial surveillance accumulated <strong>602 hours 37 minutes</strong> of flight time; Conservation & Protection branch conducted <strong>334 flights</strong> totaling 758 hours 45 minutes in 2025 season.</div></div>
+    <div class="mgmt-item"><div class="mgmt-bullet"></div><div class="mgmt-text"><strong>Ghost Gear Program</strong>: since 2020 has retrieved more than 43,300 units of gear, over 2,540 tonnes of marine debris, and 970 km of rope from Atlantic, Arctic, and Pacific coasts.</div></div>
+    <div class="mgmt-item"><div class="mgmt-bullet"></div><div class="mgmt-text">In February 2025, DFO hosted the <strong>2nd International Fishing Gear Innovation Summit</strong> in Moncton, bringing together global experts including Indigenous and non-Indigenous harvesters.</div></div>
+    <div class="mgmt-item"><div class="mgmt-bullet"></div><div class="mgmt-text">On November 27, 2025, DFO published an updated <strong>Recovery Potential Assessment</strong> for the North Atlantic Right Whale to support development of an amended recovery strategy.</div></div>
+  </div>
+
+  <div class="mgmt-panel" id="tab-tc" style="background:var(--card-bg);border:1px solid var(--border);border-radius:14px;padding:28px;backdrop-filter:blur(10px);">
+    <div class="mgmt-item"><div class="mgmt-bullet"></div><div class="mgmt-text">Transport Canada implemented a <strong>mandatory static speed restriction zone</strong> covering much of the Gulf of St. Lawrence (65,000+ km²), plus dynamic speed restriction zones — applying to all vessels longer than 13 m from April 16 to November 15, 2025.</div></div>
+    <div class="mgmt-item"><div class="mgmt-bullet"></div><div class="mgmt-text">A <strong>mandatory restricted area of 4,000 km²</strong> around the Shediac Valley was in effect June 16–September 26, 2025, closed to all vessels >13 m with speeds limited to 8 knots.</div></div>
+    <div class="mgmt-item"><div class="mgmt-bullet"></div><div class="mgmt-text"><strong>Seasonal Management Areas</strong> temporarily expanded the static speed restriction zone April 16–June 24, 2025, during peak whale transit period into the Gulf of St. Lawrence.</div></div>
+    <div class="mgmt-item"><div class="mgmt-bullet"></div><div class="mgmt-text">In 2025, <strong>radio communications were significantly expanded</strong> to include shipping lanes for direct Canadian Coast Guard vessel slowdown requests when whales are detected.</div></div>
+    <div class="mgmt-item"><div class="mgmt-bullet"></div><div class="mgmt-text"><strong>Three acoustic underwater gliders</strong> were deployed in dynamic shipping zones to detect right whales, complementing aerial surveillance from the National Aerial Surveillance Program (NASP).</div></div>
+    <div class="mgmt-item"><div class="mgmt-bullet"></div><div class="mgmt-text">Voluntary seasonal slowdown in <strong>Cabot Strait</strong> continued; Fall 2025 period was extended by three weeks (September 3 to November 15).</div></div>
+  </div>
+
+</section>
+
+<div class="divider"></div>
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <div class="section-header">
+    <span class="section-tag">06 · Research</span>
+    <h2 class="section-title">2025 Selected Publications and Reports</h2>
+  </div>
+  <div class="pub-list">
+
+    <div class="pub-item">
+      <div class="pub-authors">Blondin et al., 2025</div>
+      <div class="pub-title"><a class="pub-title-link" href="https://doi.org/10.1038/s41598-024-84886-z" target="_blank" rel="noopener">Vessel strike encounter risk model informs mortality risk for endangered North Atlantic right whales along the United States east coast</a></div>
+      <div class="pub-journal">Scientific Reports, 15, 736 &nbsp;<a class="pub-access-btn" href="https://doi.org/10.1038/s41598-024-84886-z" target="_blank" rel="noopener">ACCESS</a></div>
+    </div>
+
+    <div class="pub-item">
+      <div class="pub-authors">Cole &amp; Brillant, 2025</div>
+      <div class="pub-title"><a class="pub-title-link" href="https://doi.org/10.3354/esr01411" target="_blank" rel="noopener">Quantifying entanglement risk reduction to North Atlantic right whales from time-area closures in the southern Gulf of St. Lawrence snow crab fisheries</a></div>
+      <div class="pub-journal">Endangered Species Research, 57, 143-159 &nbsp;<a class="pub-access-btn" href="https://doi.org/10.3354/esr01411" target="_blank" rel="noopener">ACCESS</a></div>
+    </div>
+
+    <div class="pub-item">
+      <div class="pub-authors">Crum et al., 2025</div>
+      <div class="pub-title"><a class="pub-title-link" href="https://doi.org/10.1111/acv.13016" target="_blank" rel="noopener">Unobserved individual and population level impacts of fishing gear entanglements on North Atlantic right whales</a></div>
+      <div class="pub-journal">Animal Conservation &nbsp;<a class="pub-access-btn" href="https://doi.org/10.1111/acv.13016" target="_blank" rel="noopener">ACCESS</a></div>
+    </div>
+
+    <div class="pub-item">
+      <div class="pub-authors">Evans et al., 2025</div>
+      <div class="pub-title"><a class="pub-title-link" href="https://doi.org/10.3354/esr01376" target="_blank" rel="noopener">Beyond Calanus: changes to the copepod community in the northeast USA and implications for North Atlantic right whale foraging energetics</a></div>
+      <div class="pub-journal">Endangered Species Research, 56, 1-17 &nbsp;<a class="pub-access-btn" href="https://doi.org/10.3354/esr01376" target="_blank" rel="noopener">ACCESS</a></div>
+    </div>
+
+    <div class="pub-item">
+      <div class="pub-authors">Indeck et al., 2025</div>
+      <div class="pub-title"><a class="pub-title-link" href="https://doi.org/10.5670/oceanog.2025e111" target="_blank" rel="noopener">Glider surveillance for near-real-time detection and spatial management of North Atlantic right whales</a></div>
+      <div class="pub-journal">Oceanography, 38(Supplement 1), 13-21 &nbsp;<a class="pub-access-btn" href="https://doi.org/10.5670/oceanog.2025e111" target="_blank" rel="noopener">ACCESS</a></div>
+    </div>
+
+    <div class="pub-item">
+      <div class="pub-authors">Johnson et al., 2025</div>
+      <div class="pub-title"><a class="pub-title-link" href="https://doi.org/10.3354/esr01456" target="_blank" rel="noopener">North Atlantic right whale Eubalaena glacialis summer habitat in the southern Gulf of St. Lawrence, Canada: 2017-2019</a></div>
+      <div class="pub-journal">Endangered Species Research, 58, 359-379 &nbsp;<a class="pub-access-btn" href="https://doi.org/10.3354/esr01456" target="_blank" rel="noopener">ACCESS</a></div>
+    </div>
+
+    <div class="pub-item">
+      <div class="pub-authors">Linden, 2025</div>
+      <div class="pub-title"><a class="pub-title-link" href="https://doi.org/10.1002/ece3.71035" target="_blank" rel="noopener">Using known births to account for delayed marking in population estimation of North Atlantic right whales</a></div>
+      <div class="pub-journal">Ecology and Evolution, 15, e71035 &nbsp;<a class="pub-access-btn" href="https://doi.org/10.1002/ece3.71035" target="_blank" rel="noopener">ACCESS</a></div>
+    </div>
+
+    <div class="pub-item">
+      <div class="pub-authors">Linden et al., 2025</div>
+      <div class="pub-title"><a class="pub-title-link" href="https://doi.org/10.3354/esr01406" target="_blank" rel="noopener">A multistate capture-recapture model to estimate reproduction of North Atlantic right whales</a></div>
+      <div class="pub-journal">Endangered Species Research, 57, 91-102 &nbsp;<a class="pub-access-btn" href="https://doi.org/10.3354/esr01406" target="_blank" rel="noopener">ACCESS</a></div>
+    </div>
+
+    <div class="pub-item">
+      <div class="pub-authors">Miller et al., 2025</div>
+      <div class="pub-title"><a class="pub-title-link" href="https://doi.org/10.1093/ismejo/wraf231" target="_blank" rel="noopener">Respiratory microbiomes reflect whale health</a></div>
+      <div class="pub-journal">The ISME Journal, 19(1), wraf231 &nbsp;<a class="pub-access-btn" href="https://doi.org/10.1093/ismejo/wraf231" target="_blank" rel="noopener">ACCESS</a></div>
+    </div>
+
+    <div class="pub-item">
+      <div class="pub-authors">Themudo et al., 2025</div>
+      <div class="pub-title"><a class="pub-title-link" href="https://doi.org/10.1101/2025.11.24.690181" target="_blank" rel="noopener">Historic overexploitation, genetic erosion and local extinction: palaeogenomic insights into the decline of Eubalaena glacialis in the Northeast Atlantic</a></div>
+      <div class="pub-journal">bioRxiv (preprint) &nbsp;<a class="pub-access-btn" href="https://doi.org/10.1101/2025.11.24.690181" target="_blank" rel="noopener">ACCESS</a></div>
+    </div>
+
+    <div class="pub-item">
+      <div class="pub-authors">Vanderlaan et al., 2025</div>
+      <div class="pub-title"><a class="pub-title-link" href="https://open-science.canada.ca/server/api/core/bitstreams/e2689b0a-aad2-4fec-a196-2c09abfd1ed8/content" target="_blank" rel="noopener">Threat assessment for the critically endangered North Atlantic Right Whale (Eubalaena glacialis)</a></div>
+      <div class="pub-journal">DFO Can. Sci. Advis. Sec. Res. Doc. 2025/077 &nbsp;<a class="pub-access-btn" href="https://open-science.canada.ca/server/api/core/bitstreams/e2689b0a-aad2-4fec-a196-2c09abfd1ed8/content" target="_blank" rel="noopener">ACCESS</a></div>
+    </div>
+
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">North Atlantic Right Whale Consortium</div>
+  <div class="footer-cite">
+    Pettis, H.M. and Hamilton, P.K. 2026. North Atlantic Right Whale Consortium 2025 Annual Report Card. Report to the North Atlantic Right Whale Consortium. <a href="https://www.narwc.org" class="footer-link" target="_blank">www.narwc.org</a>
+  </div>
+  <div style="font-size:0.72rem;color:var(--muted);">
+    Interactive version created for educational purposes. All data sourced directly from the 2025 NARWC Annual Report Card.
+  </div>
+</footer>
+
+</div><!-- #app -->
+
+<!-- Chart.js CDN -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.min.js"></script>
+<script>
+
+// ── DATA ──
+const popData = [
+  {y:1990,lo:283,med:289,hi:295},{y:1991,lo:291,med:298,hi:304},{y:1992,lo:299,med:305,hi:312},
+  {y:1993,lo:293,med:299,hi:305},{y:1994,lo:298,med:303,hi:308},{y:1995,lo:300,med:305,hi:310},
+  {y:1996,lo:315,med:320,hi:325},{y:1997,lo:324,med:329,hi:335},{y:1998,lo:324,med:329,hi:334},
+  {y:1999,lo:324,med:328,hi:332},{y:2000,lo:316,med:319,hi:323},{y:2001,lo:343,med:346,hi:350},
+  {y:2002,lo:353,med:355,hi:358},{y:2003,lo:362,med:365,hi:368},{y:2004,lo:370,med:372,hi:376},
+  {y:2005,lo:394,med:396,hi:399},{y:2006,lo:399,med:401,hi:404},{y:2007,lo:412,med:413,hi:416},
+  {y:2008,lo:428,med:430,hi:432},{y:2009,lo:464,med:466,hi:468},{y:2010,lo:473,med:476,hi:480},
+  {y:2011,lo:479,med:483,hi:487},{y:2012,lo:469,med:473,hi:478},{y:2013,lo:476,med:481,hi:488},
+  {y:2014,lo:471,med:477,hi:483},{y:2015,lo:465,med:473,hi:482},{y:2016,lo:451,med:457,hi:465},
+  {y:2017,lo:430,med:434,hi:439},{y:2018,lo:388,med:390,hi:394},{y:2019,lo:379,med:381,hi:384},
+  {y:2020,lo:357,med:359,hi:362},{y:2021,lo:370,med:371,hi:374},{y:2022,lo:371,med:374,hi:377},
+  {y:2023,lo:373,med:376,hi:380},{y:2024,lo:375,med:384,hi:394}
+];
+
+const monData = [
+  {y:2000,s:3261,u:237,p:319,e:130,pct:74},{y:2001,s:4021,u:283,p:346,e:117,pct:82},
+  {y:2002,s:2629,u:303,p:355,e:228,pct:85},{y:2003,s:2467,u:315,p:365,e:178,pct:86},
+  {y:2004,s:1807,u:286,p:372,e:265,pct:77},{y:2005,s:3381,u:353,p:396,e:359,pct:89},
+  {y:2006,s:2827,u:347,p:401,e:317,pct:87},{y:2007,s:3640,u:379,p:413,e:260,pct:92},
+  {y:2008,s:4111,u:391,p:430,e:258,pct:91},{y:2009,s:4819,u:425,p:466,e:259,pct:91},
+  {y:2010,s:3202,u:422,p:476,e:256,pct:89},{y:2011,s:3588,u:439,p:483,e:233,pct:91},
+  {y:2012,s:2076,u:377,p:473,e:271,pct:80},{y:2013,s:2012,u:303,p:481,e:226,pct:63},
+  {y:2014,s:2372,u:373,p:477,e:198,pct:78},{y:2015,s:1874,u:278,p:473,e:178,pct:59},
+  {y:2016,s:2257,u:330,p:457,e:171,pct:72},{y:2017,s:3120,u:382,p:434,e:180,pct:88},
+  {y:2018,s:3520,u:351,p:390,e:183,pct:90},{y:2019,s:5225,u:365,p:381,e:224,pct:96},
+  {y:2020,s:2213,u:308,p:359,e:172,pct:86},{y:2021,s:4217,u:348,p:371,e:260,pct:94},
+  {y:2022,s:3904,u:345,p:374,e:370,pct:92},{y:2023,s:3882,u:351,p:376,e:403,pct:93},
+  {y:2024,s:3963,u:350,p:384,e:191,pct:91}
+];
+
+const reproData = [
+  {y:2009,calves:39,cows:59,pctCalved:66.1,avgI:4.0,medI:4,minI:2,maxI:6,firstMoms:8},
+  {y:2010,calves:19,cows:46,pctCalved:41.3,avgI:3.3,medI:3,minI:2,maxI:5,firstMoms:4},
+  {y:2011,calves:22,cows:49,pctCalved:44.9,avgI:3.7,medI:3,minI:2,maxI:6,firstMoms:3},
+  {y:2012,calves:7,cows:65,pctCalved:10.8,avgI:5.4,medI:4,minI:4,maxI:10,firstMoms:2},
+  {y:2013,calves:20,cows:84,pctCalved:23.8,avgI:4.6,medI:4,minI:2,maxI:8,firstMoms:7},
+  {y:2014,calves:11,cows:86,pctCalved:12.8,avgI:4.4,medI:4.5,minI:2,maxI:7,firstMoms:1},
+  {y:2015,calves:17,cows:82,pctCalved:20.7,avgI:5.5,medI:6,minI:4,maxI:7,firstMoms:4},
+  {y:2016,calves:14,cows:84,pctCalved:16.7,avgI:6.6,medI:7,minI:4,maxI:9,firstMoms:4},
+  {y:2017,calves:5,cows:74,pctCalved:6.8,avgI:10.2,medI:8,minI:7,maxI:20,firstMoms:0},
+  {y:2018,calves:0,cows:78,pctCalved:0,avgI:null,medI:null,minI:null,maxI:null,firstMoms:0},
+  {y:2019,calves:7,cows:89,pctCalved:7.9,avgI:7,medI:7,minI:3,maxI:10,firstMoms:1},
+  {y:2020,calves:10,cows:80,pctCalved:12.5,avgI:7.6,medI:7,minI:4,maxI:11,firstMoms:1},
+  {y:2021,calves:18,cows:72,pctCalved:25.0,avgI:9.2,medI:10,minI:5,maxI:11,firstMoms:6},
+  {y:2022,calves:15,cows:56,pctCalved:26.8,avgI:7.7,medI:8,minI:2,maxI:13,firstMoms:0},
+  {y:2023,calves:12,cows:46,pctCalved:26.1,avgI:7.8,medI:7.5,minI:4,maxI:12,firstMoms:2},
+  {y:2024,calves:20,cows:55,pctCalved:36.4,avgI:7.3,medI:6.5,minI:2,maxI:14,firstMoms:4},
+  {y:2025,calves:11,cows:47,pctCalved:23.4,avgI:6.9,medI:4,minI:4,maxI:12,firstMoms:4}
+];
+
+const regionData = [
+  {name:"New England (MA Bay/CCB)",sightings:1261,months:"Jan–May, Dec"},
+  {name:"Gulf of St. Lawrence / North",sightings:1014,months:"May–Oct"},
+  {name:"Mid-Atlantic",sightings:752,months:"Jan–Aug, Nov–Dec"},
+  {name:"Southeast US",sightings:457,months:"Jan–Mar, Nov–Dec"},
+  {name:"Great South Channel",sightings:205,months:"Jan–Apr"},
+  {name:"Bay of Fundy",sightings:182,months:"Jul–Nov"},
+  {name:"Gulf of Maine",sightings:89,months:"Jan–Feb, Apr, Jun–Sep, Dec"},
+  {name:"Roseway Basin",sightings:34,months:"May, Oct"},
+  {name:"East (Azores, Scotian Shelf, etc.)",sightings:1,months:"Jun"}
+];
+
+
+// ── MODAL DATA ──
+const modalContent = {
+  population: {
+    tag:"Population Estimate", title:"2024 Population: 384 Whales",
+    body:`<p>The <strong>Pace model</strong> estimate for 2024 (December 2023–November 2024) is <strong>384 whales</strong> (95% credible interval +10/−9), using data as of September 8, 2025.</p>
+    <p>The 2023 estimate was recalculated with updated data, resulting in a revised estimate of <strong>376 (+4/−3)</strong>.</p>
+    <p>While the sharp population decline from 2015–2020 appears to have slowed, annual mortalities and/or serious injuries continue to exceed population recovery thresholds.</p>
+    <p>The North Atlantic right whale remains <strong>red listed as Critically Endangered</strong> by the IUCN — one of only two large whale species on that list. This designation is made when a species is considered at high risk for global extinction.</p>
+    <p>The Pace model "adapted a state-space formulation with Jolly-Seber assumptions about population entry to individual resighting histories and fit it using empirical Bayes methodology" — accounting for whales that have not been photographed.</p>`
+  },
+  calves: {
+    tag:"Reproduction", title:"2025 Calving Season: 11 Pairs",
+    body:`<p><strong>Eleven mother/calf pairs</strong> were sighted in the 2025 calving season, down from 20 in 2024.</p>
+    <p>There were <strong>no detected calf mortalities</strong> on the southeast calving grounds in 2025, and all 11 pairs were seen on northern feeding grounds (one was only detected on the feeding grounds).</p>
+    <p>There were <strong>four first-time mothers</strong> in 2025, matching 2024. The average age of these four first-time mothers was at least 16 years — underscoring findings that declining and delayed recruitment of reproductive females is contributing to the lack of/slowed recovery.</p>
+    <p>The average inter-birth interval remains elevated, though the <strong>median interval for 2025 calving females was the lowest since 2013</strong> — a potentially positive indicator.</p>`
+  },
+  mortality: {
+    tag:"Mortalities", title:"Zero Detected Mortalities in 2025",
+    body:`<p>There were <strong>zero detected right whale mortalities</strong> in 2025 — the first time in several years, suggesting some management measures may be working.</p>
+    <p>A previously unidentified carcass detected on 5/12/2024 SE of Nova Scotia was matched to <strong>right whale #4633</strong>, an 18-year-old female.</p>
+    <p>However, the Consortium Board notes that <strong>detected mortalities represent only a fraction of true mortalities</strong> (Pace et al., 2021) — annual detected values are known underestimates.</p>
+    <p>With at least one serious injury detected in 2025, <strong>PBR (Potential Biological Removal = 0.7)</strong> was once again exceeded. The sublethal impacts of injuries on reproduction and health are becoming increasingly clear but are not yet adequately addressed in management plans.</p>
+    <p>The Board reiterates that <strong>necropsies are significant data collection events</strong> and views consistent necropsy response and support as critical to monitor right whale recovery.</p>`
+  },
+  entangle: {
+    tag:"Entanglement", title:"5+ Entanglement Events in 2025",
+    body:`<p>Initial analyses detected <strong>at least 5 new entanglement/entrapment events</strong> in 2025:</p>
+    <ul>
+      <li>One free-swimming entrapment in a herring weir (#4146) — successfully resolved</li>
+      <li>One whale sighted with attached gear (#5217/Division) — died 1/27/2026</li>
+      <li>Three whales with new scarring from entanglement (without gear present)</li>
+    </ul>
+    <p>The Board emphasizes this number will <strong>likely increase</strong> when all data are processed and full scar analysis is completed.</p>
+    <p>Ongoing near real-time monitoring of anthropogenic injuries provides a minimum count — the precise locations cannot always be determined, but pre-injury and injury detection sightings provide regional context.</p>`
+  },
+  monitoring: {
+    tag:"Monitoring Coverage", title:"91% of Population Monitored in 2024",
+    body:`<p>Surveys and opportunistic sightings in 2024 captured approximately <strong>91% of the living population</strong> — consistent with recent years and reflecting strong monitoring capacity.</p>
+    <p>The North Atlantic Right Whale Identification Database contains data from more than <strong>800 contributors</strong> and as of September 8, 2025 consisted of over <strong>two million slides, prints, videos, and digital images</strong> from 102,887 sightings of 833 individual right whales since 1935.</p>
+    <p>Each year, approximately 2,000–5,000 sightings consisting of 50–250,000 images are added to the identification database.</p>
+    <p>The Board notes that climate-driven distribution shifts require <strong>nimble and flexible survey strategies</strong> to identify and respond to new important habitats throughout the species range.</p>`
+  },
+  'entangle-detail': {
+    tag:"Entanglement Threat", title:"Entanglement: The Primary Threat",
+    body:`<p>Entanglement in fishing gear remains the <strong>primary anthropogenic threat</strong> to North Atlantic right whale survival and recovery. Research increasingly demonstrates that even non-lethal entanglements cause significant harm:</p>
+    <ul>
+      <li>Sublethal impacts on <strong>reproduction and health</strong> are becoming clearer (Stewart et al., 2021; Knowlton et al., 2022; Moore, 2023; Pirotta et al., 2023, 2024)</li>
+      <li>Entanglement causes <strong>decreased body size</strong> which is associated with reduced calving probability</li>
+      <li>These impacts are not yet adequately addressed in current management and recovery plans</li>
+    </ul>
+    <p>In 2025, active entanglement cases include #5110 (life-threatening, partial disentanglement only), #5132 (complex multi-rope entanglement, gear traced to LFA 38), and #5217/Division (died in January 2026). A weir entrapment (#4146) was successfully resolved.</p>
+    <p>The <strong>delay in broad-scale implementation of lower breaking strength rope in Canada</strong> and the retraction of proposed modifications to U.S. vessel speed reductions are identified as specific management shortcomings that threaten the species.</p>`
+  },
+  'vessel-detail': {
+    tag:"Vessel Strike", title:"Vessel Strikes: Ongoing Risk",
+    body:`<p>There was <strong>one suspected vessel strike injury</strong> documented in 2025 — whale #3504, a 20-year-old male, sighted on January 12, 2025, at Jeffreys Ledge with a wound on the right flank.</p>
+    <p>This case requires additional photo documentation to confirm the injury origin and severity.</p>
+    <p>Vessel strike management measures remain in effect in both U.S. and Canadian waters. Transport Canada's mandatory speed restriction zones cover over <strong>65,000 km²</strong> of the Gulf of St. Lawrence, applying to all vessels longer than 13 m.</p>
+    <p>NOAA's proposed modifications to U.S. vessel speed reductions were retracted in 2025, which the Consortium Board identified as a threat to species health and survival.</p>`
+  },
+  'mortality-detail': {
+    tag:"Mortality Context", title:"Mortality: Why Zero Detections Isn't Zero Deaths",
+    body:`<p>While <strong>zero detected mortalities</strong> in 2025 is encouraging, the Consortium Board emphasizes that detected mortalities are known to represent only a fraction of true mortalities.</p>
+    <p>Research by Pace et al. (2021) on cryptic mortality shows that <strong>many deaths go undetected</strong> — whales that die at sea without their carcasses being found and identified.</p>
+    <p>Historically, cause of death categories include: vessel strike, entanglement, neonate mortality, and unknown cause. The unknown category includes cases either not assessed or assessed without definitive findings.</p>
+    <p>Even with zero detected mortalities, <strong>PBR (Potential Biological Removal = 0.7) was exceeded</strong> in 2025 due to at least one documented serious injury. PBR represents the maximum number of animals that can be removed annually (by human causes) while allowing a population to reach or maintain its optimum sustainable population level.</p>`
+  }
+};
+
+// ── ABOUT CALLOUT ──
+function toggleAbout(el) {
+  const body = document.getElementById('about-body');
+  const chevron = document.getElementById('about-chevron');
+  const isOpen = body.style.display === 'block';
+  body.style.display = isOpen ? 'none' : 'block';
+  chevron.classList.toggle('open', !isOpen);
+}
+
+// ── PARTICLES ──
+function initParticles() {
+  const container = document.getElementById('particles');
+  for(let i=0;i<25;i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random()*3+1;
+    p.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%;
+      animation-duration:${Math.random()*20+15}s;
+      animation-delay:${Math.random()*20}s;
+    `;
+    container.appendChild(p);
+  }
+}
+
+// ── CHART: POPULATION ──
+let popChart;
+let currentRange = 'all';
+
+function buildPopChart(rangeStart) {
+  const filtered = rangeStart === 'all' ? popData : popData.filter(d=>d.y>=parseInt(rangeStart));
+  const labels = filtered.map(d=>d.y);
+  const meds = filtered.map(d=>d.med);
+  const los = filtered.map(d=>d.lo);
+  const his = filtered.map(d=>d.hi);
+  
+  const ctx = document.getElementById('pop-chart').getContext('2d');
+  if(popChart) popChart.destroy();
+  
+  popChart = new Chart(ctx, {
+    type:'line',
+    data: {
+      labels,
+      datasets:[
+        {
+          label:'Upper Bound',
+          data:his,
+          borderColor:'rgba(0,201,167,0)',
+          backgroundColor:'rgba(0,201,167,0.12)',
+          fill:'+1',
+          pointRadius:0,
+          tension:0.4,
+        },
+        {
+          label:'Median Population',
+          data:meds,
+          borderColor:'#00c9a7',
+          borderWidth:2.5,
+          backgroundColor:'rgba(0,201,167,0.06)',
+          fill:false,
+          pointRadius:3,
+          pointHoverRadius:6,
+          pointBackgroundColor:'#00c9a7',
+          tension:0.4,
+        },
+        {
+          label:'Lower Bound',
+          data:los,
+          borderColor:'rgba(0,201,167,0)',
+          backgroundColor:'rgba(0,201,167,0.12)',
+          fill:'-1',
+          pointRadius:0,
+          tension:0.4,
+        }
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      interaction:{ mode:'index', intersect:false },
+      plugins:{
+        legend:{ display:false },
+        tooltip:{
+          backgroundColor:'rgba(7,22,40,0.95)',
+          titleColor:'#00c9a7',
+          bodyColor:'#f0ece3',
+          borderColor:'rgba(0,201,167,0.3)',
+          borderWidth:1,
+          padding:12,
+          callbacks:{
+            title: ctx => `Year ${ctx[0].label}`,
+            label: ctx => {
+              if(ctx.datasetIndex===1) return `  Median: ${ctx.raw}`;
+              if(ctx.datasetIndex===0) return `  Upper: ${ctx.raw}`;
+              if(ctx.datasetIndex===2) return `  Lower: ${ctx.raw}`;
+            }
+          }
+        }
+      },
+      scales:{
+        x:{
+          grid:{ color:'rgba(255,255,255,0.04)' },
+          ticks:{ color:'#8ba8c4', font:{family:'DM Mono',size:11} }
+        },
+        y:{
+          grid:{ color:'rgba(255,255,255,0.04)' },
+          ticks:{ color:'#8ba8c4', font:{family:'DM Mono',size:11}, stepSize:10 },
+          min: rangeStart==='all' ? 250 : undefined
+        }
+      }
+    }
+  });
+}
+
+function setChartRange(range, btn) {
+  currentRange = range;
+  document.querySelectorAll('.chart-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  buildPopChart(range);
+}
+
+// ── CHART: CALVES ──
+let calfChart, intervalChart;
+function buildReproCharts() {
+  const years = reproData.map(d=>d.y);
+  const calves = reproData.map(d=>d.calves);
+  const intervals = reproData.map(d=>d.medI);
+  
+  const calfCtx = document.getElementById('calf-chart').getContext('2d');
+  calfChart = new Chart(calfCtx, {
+    type:'bar',
+    data:{
+      labels:years,
+      datasets:[{
+        label:'Calves',
+        data:calves,
+        backgroundColor: calves.map((v,i) => {
+          if(v===0) return 'rgba(239,68,68,0.6)';
+          if(v>=20) return 'rgba(0,201,167,0.8)';
+          return 'rgba(0,201,167,0.4)';
+        }),
+        borderColor:'rgba(0,201,167,0.3)',
+        borderWidth:1,
+        borderRadius:3,
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          backgroundColor:'rgba(7,22,40,0.95)',
+          titleColor:'#00c9a7', bodyColor:'#f0ece3',
+          borderColor:'rgba(0,201,167,0.3)', borderWidth:1, padding:10
+        }
+      },
+      scales:{
+        x:{ grid:{color:'rgba(255,255,255,0.03)'}, ticks:{color:'#8ba8c4',font:{size:9}} },
+        y:{ grid:{color:'rgba(255,255,255,0.03)'}, ticks:{color:'#8ba8c4',font:{size:9}} }
+      }
+    }
+  });
+  
+  const intCtx = document.getElementById('interval-chart').getContext('2d');
+  intervalChart = new Chart(intCtx, {
+    type:'line',
+    data:{
+      labels:years,
+      datasets:[{
+        label:'Median Interval',
+        data:intervals,
+        borderColor:'#f59e0b',
+        backgroundColor:'rgba(245,158,11,0.08)',
+        borderWidth:2,
+        fill:true,
+        tension:0.4,
+        pointRadius:4,
+        pointBackgroundColor:'#f59e0b',
+        pointHoverRadius:7,
+        spanGaps:true,
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          backgroundColor:'rgba(7,22,40,0.95)',
+          titleColor:'#f59e0b', bodyColor:'#f0ece3',
+          borderColor:'rgba(245,158,11,0.3)', borderWidth:1, padding:10
+        }
+      },
+      scales:{
+        x:{ grid:{color:'rgba(255,255,255,0.03)'}, ticks:{color:'#8ba8c4',font:{size:9}} },
+        y:{
+          grid:{color:'rgba(255,255,255,0.03)'}, ticks:{color:'#8ba8c4',font:{size:9}},
+          title:{display:true, text:'Years', color:'#8ba8c4',font:{size:10}}
+        }
+      }
+    }
+  });
+}
+
+// ── TABLES ──
+function buildPopTable(data, showTrend) {
+  // Show trend only when in chronological year order (default on first load)
+  if (showTrend === undefined) {
+    showTrend = data.length < 2 || data[0].y < data[data.length - 1].y;
+  }
+  const tbody = document.getElementById('pop-tbody');
+  tbody.innerHTML = '';
+  let prevMed = null;
+  data.forEach(d => {
+    let trend = '—';
+    let tColor = '#8ba8c4';
+    if (showTrend && prevMed !== null) {
+      trend = d.med > prevMed ? '▲' : d.med < prevMed ? '▼' : '→';
+      tColor = trend === '▲' ? '#00c9a7' : trend === '▼' ? '#ef4444' : '#8ba8c4';
+    }
+    tbody.innerHTML += `<tr>
+      <td class="year">${d.y}</td>
+      <td class="num" style="color:#8ba8c4">${d.lo}</td>
+      <td class="num" style="color:#f0ece3;font-weight:500">${d.med}</td>
+      <td class="num" style="color:#8ba8c4">${d.hi}</td>
+      <td style="color:${tColor};font-family:'DM Mono',monospace;font-size:0.9rem">${trend}</td>
+    </tr>`;
+    prevMed = d.med;
+  });
+}
+
+function filterPopTable(val) {
+  const filtered = val ? popData.filter(d=>d.y.toString().includes(val)) : popData;
+  buildPopTable(filtered);
+}
+
+function buildReproTable(data) {
+  if(!data) data = reproData;
+  const tbody = document.getElementById('repro-tbody');
+  tbody.innerHTML = '';
+  data.forEach(d => {
+    const pctColor = d.pctCalved>30 ? '#00c9a7' : d.pctCalved>20 ? '#f0ece3' : '#f59e0b';
+    tbody.innerHTML += `<tr>
+      <td class="year">${d.y}</td>
+      <td class="num">${d.calves}</td>
+      <td class="num">${d.cows}</td>
+      <td class="pct" style="color:${pctColor}">${d.pctCalved.toFixed(1)}%</td>
+      <td class="num">${d.avgI ?? '—'}</td>
+      <td class="num">${d.medI ?? '—'}</td>
+      <td class="num">${d.firstMoms}</td>
+    </tr>`;
+  });
+}
+
+function buildMonTable(data) {
+  const tbody = document.getElementById('mon-tbody');
+  tbody.innerHTML = '';
+  data.forEach(d => {
+    const pctColor = d.pct>=90 ? '#00c9a7' : d.pct>=80 ? '#f0ece3' : d.pct>=70 ? '#f59e0b' : '#ef4444';
+    tbody.innerHTML += `<tr>
+      <td class="year">${d.y}</td>
+      <td class="num">${d.s.toLocaleString()}</td>
+      <td class="num">${d.u}</td>
+      <td class="num">${d.p}</td>
+      <td class="num">${d.e}</td>
+      <td>
+        <span class="pct" style="color:${pctColor};font-family:'DM Mono',monospace;font-size:0.8rem">${d.pct}%</span>
+        <div class="pct-bar"><div class="pct-fill" style="width:${d.pct}%"></div></div>
+      </td>
+    </tr>`;
+  });
+}
+
+function filterMonTable(val) {
+  const filtered = val ? monData.filter(d=>d.y.toString().includes(val)) : monData;
+  buildMonTable(filtered);
+}
+
+// ── SORT ──
+let sortDir = {};
+function sortTable(table, col) {
+  const key = table + '-' + col;
+  sortDir[key] = !sortDir[key];
+  const asc = sortDir[key];
+
+  // Update header arrows for the clicked table
+  const tableEl = document.getElementById(table === 'repro' ? 'repro-table' : table === 'pop' ? 'pop-table' : 'mon-table');
+  if(tableEl) {
+    tableEl.querySelectorAll('th').forEach(function(th, i) {
+      const base = th.textContent.replace(/ [↑↓↕]$/, '');
+      if(i === col) th.textContent = base + (asc ? ' ↑' : ' ↓');
+      else th.textContent = base + ' ↕';
+    });
+  }
+
+  if(table==='pop') {
+    const cols = ['y','lo','med','hi'];
+    const sorted = [...popData].sort((a,b)=>asc?a[cols[col]]-b[cols[col]]:b[cols[col]]-a[cols[col]]);
+    // Trend arrows only meaningful when sorted chronologically by year ascending
+    const showTrend = (col === 0 && asc);
+    buildPopTable(sorted, showTrend);
+  } else if(table==='mon') {
+    const cols = ['y','s','u','p','e','pct'];
+    const sorted = [...monData].sort((a,b)=>asc?a[cols[col]]-b[cols[col]]:b[cols[col]]-a[cols[col]]);
+    buildMonTable(sorted);
+  } else if(table==='repro') {
+    const cols = ['y','calves','cows','pctCalved','avgI','medI','firstMoms'];
+    const sorted = [...reproData].sort(function(a,b) {
+      const av = a[cols[col]] ?? -Infinity;
+      const bv = b[cols[col]] ?? -Infinity;
+      return asc ? av - bv : bv - av;
+    });
+    buildReproTable(sorted);
+  }
+}
+
+// ── REGIONS ──
+function buildRegions() {
+  const maxS = Math.max(...regionData.map(r=>r.sightings));
+  const grid = document.getElementById('region-grid');
+  regionData.forEach(r => {
+    const pct = Math.round(r.sightings/maxS*100);
+    grid.innerHTML += `
+      <div class="region-card">
+        <div class="region-name">${r.name}</div>
+        <div class="region-count">${r.sightings.toLocaleString()}</div>
+        <div class="region-bar"><div class="region-fill" style="width:${pct}%"></div></div>
+        <div class="region-months">${r.months}</div>
+      </div>`;
+  });
+}
+
+
+// ── MORTALITY DATA ──
+// US and Canada detected mortalities per year.
+// Values estimated from Figure 2 of the 2025 NARWC Report Card.
+// *** Replace with exact values from the report card when available. ***
+// Each row: {y: year, ca: Canada count, us: US count}
+const mortData = [
+  {y:2000, ca:0, us:1},
+  {y:2001, ca:0, us:2},
+  {y:2002, ca:0, us:3},
+  {y:2003, ca:0, us:1},
+  {y:2004, ca:0, us:2},
+  {y:2005, ca:0, us:1},
+  {y:2006, ca:0, us:2},
+  {y:2007, ca:0, us:3},
+  {y:2008, ca:0, us:3},
+  {y:2009, ca:0, us:4},
+  {y:2010, ca:0, us:2},
+  {y:2011, ca:0, us:1},
+  {y:2012, ca:0, us:4},
+  {y:2013, ca:0, us:3},
+  {y:2014, ca:0, us:5},
+  {y:2015, ca:1, us:3},
+  {y:2016, ca:0, us:3},
+  {y:2017, ca:7, us:3},
+  {y:2018, ca:5, us:7},
+  {y:2019, ca:1, us:7},
+  {y:2020, ca:2, us:3},
+  {y:2021, ca:3, us:2},
+  {y:2022, ca:3, us:4},
+  {y:2023, ca:2, us:2},
+  {y:2024, ca:2, us:3},
+  {y:2025, ca:0, us:0},
+];
+
+let mortChart;
+function buildMortChart() {
+  var ctx = document.getElementById('mort-chart').getContext('2d');
+  if (mortChart) mortChart.destroy();
+  mortChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: mortData.map(function(d) { return d.y; }),
+      datasets: [
+        {
+          label: 'Canada',
+          data: mortData.map(function(d) { return d.ca; }),
+          backgroundColor: 'rgba(0,201,167,0.75)',
+          borderColor: 'rgba(0,201,167,1)',
+          borderWidth: 1,
+          borderRadius: 3,
+        },
+        {
+          label: 'US',
+          data: mortData.map(function(d) { return d.us; }),
+          backgroundColor: 'rgba(56,189,248,0.65)',
+          borderColor: 'rgba(56,189,248,1)',
+          borderWidth: 1,
+          borderRadius: 3,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(7,22,40,0.95)',
+          titleColor: '#00c9a7',
+          bodyColor: '#f0ece3',
+          borderColor: 'rgba(0,201,167,0.3)',
+          borderWidth: 1,
+          padding: 12,
+          callbacks: {
+            title: function(ctx) { return 'Year ' + ctx[0].label; },
+            afterBody: function(ctx) {
+              var ca = ctx[0] ? (ctx[0].raw || 0) : 0;
+              var us = ctx[1] ? (ctx[1].raw || 0) : 0;
+              return ['─────────────', 'Total: ' + (ca + us)];
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(255,255,255,0.04)' },
+          ticks: { color: '#8ba8c4', font: { family: 'DM Mono', size: 10 } }
+        },
+        y: {
+          grid: { color: 'rgba(255,255,255,0.04)' },
+          ticks: { color: '#8ba8c4', font: { family: 'DM Mono', size: 11 }, stepSize: 1 },
+          title: { display: true, text: 'Number of Whales', color: '#8ba8c4', font: { size: 11 } },
+          min: 0
+        }
+      }
+    }
+  });
+}
+
+// ── CAUSE OF DEATH DATA ──
+// Detected mortalities by cause per year, estimated from Figure 3 of the 2025 NARWC Report Card.
+// *** Replace with exact values from the report card when available. ***
+// Each row: {y:year, vs:vessel_strike, ent:entanglement, neo:neonate, unk:unknown, oth:other}
+const causeData = [
+  {y:2000, vs:0, ent:0, neo:0, unk:1, oth:0},
+  {y:2001, vs:1, ent:0, neo:0, unk:1, oth:0},
+  {y:2002, vs:1, ent:1, neo:0, unk:1, oth:0},
+  {y:2003, vs:0, ent:0, neo:0, unk:1, oth:0},
+  {y:2004, vs:0, ent:0, neo:1, unk:1, oth:0},
+  {y:2005, vs:0, ent:0, neo:0, unk:1, oth:0},
+  {y:2006, vs:1, ent:0, neo:0, unk:1, oth:0},
+  {y:2007, vs:1, ent:0, neo:0, unk:2, oth:0},
+  {y:2008, vs:1, ent:1, neo:0, unk:1, oth:0},
+  {y:2009, vs:1, ent:1, neo:1, unk:1, oth:0},
+  {y:2010, vs:0, ent:1, neo:0, unk:1, oth:0},
+  {y:2011, vs:0, ent:0, neo:0, unk:1, oth:0},
+  {y:2012, vs:1, ent:1, neo:0, unk:2, oth:0},
+  {y:2013, vs:1, ent:1, neo:0, unk:1, oth:0},
+  {y:2014, vs:1, ent:1, neo:1, unk:2, oth:0},
+  {y:2015, vs:1, ent:1, neo:0, unk:2, oth:0},
+  {y:2016, vs:0, ent:1, neo:0, unk:2, oth:0},
+  {y:2017, vs:1, ent:4, neo:1, unk:4, oth:0},
+  {y:2018, vs:3, ent:5, neo:2, unk:2, oth:0},
+  {y:2019, vs:3, ent:3, neo:0, unk:2, oth:0},
+  {y:2020, vs:1, ent:2, neo:0, unk:2, oth:0},
+  {y:2021, vs:1, ent:2, neo:0, unk:2, oth:0},
+  {y:2022, vs:2, ent:2, neo:0, unk:3, oth:0},
+  {y:2023, vs:1, ent:1, neo:0, unk:2, oth:0},
+  {y:2024, vs:3, ent:1, neo:1, unk:0, oth:0},
+  {y:2025, vs:0, ent:0, neo:0, unk:0, oth:0},
+];
+
+let causeChart;
+function buildCauseChart() {
+  var ctx = document.getElementById('cause-chart').getContext('2d');
+  if (causeChart) causeChart.destroy();
+  causeChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: causeData.map(function(d) { return d.y; }),
+      datasets: [
+        {
+          label: 'Vessel Strike',
+          data: causeData.map(function(d) { return d.vs; }),
+          backgroundColor: 'rgba(239,68,68,0.8)',
+          borderColor: 'rgba(239,68,68,1)',
+          borderWidth: 1,
+          borderRadius: 3,
+        },
+        {
+          label: 'Entanglement',
+          data: causeData.map(function(d) { return d.ent; }),
+          backgroundColor: 'rgba(245,158,11,0.8)',
+          borderColor: 'rgba(245,158,11,1)',
+          borderWidth: 1,
+          borderRadius: 3,
+        },
+        {
+          label: 'Neonate',
+          data: causeData.map(function(d) { return d.neo; }),
+          backgroundColor: 'rgba(167,139,250,0.8)',
+          borderColor: 'rgba(167,139,250,1)',
+          borderWidth: 1,
+          borderRadius: 3,
+        },
+        {
+          label: 'Unknown',
+          data: causeData.map(function(d) { return d.unk; }),
+          backgroundColor: 'rgba(100,116,139,0.75)',
+          borderColor: 'rgba(100,116,139,1)',
+          borderWidth: 1,
+          borderRadius: 3,
+        },
+        {
+          label: 'Other',
+          data: causeData.map(function(d) { return d.oth; }),
+          backgroundColor: 'rgba(45,212,191,0.75)',
+          borderColor: 'rgba(45,212,191,1)',
+          borderWidth: 1,
+          borderRadius: 3,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(7,22,40,0.95)',
+          titleColor: '#00c9a7',
+          bodyColor: '#f0ece3',
+          borderColor: 'rgba(0,201,167,0.3)',
+          borderWidth: 1,
+          padding: 12,
+          callbacks: {
+            title: function(ctx) { return 'Year ' + ctx[0].label; },
+            afterBody: function(items) {
+              var total = items.reduce(function(s,i){ return s + (i.raw||0); }, 0);
+              return ['─────────────', 'Total: ' + total];
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          stacked: true,
+          grid: { color: 'rgba(255,255,255,0.04)' },
+          ticks: { color: '#8ba8c4', font: { family: 'DM Mono', size: 10 } }
+        },
+        y: {
+          stacked: true,
+          grid: { color: 'rgba(255,255,255,0.04)' },
+          ticks: { color: '#8ba8c4', font: { family: 'DM Mono', size: 11 }, stepSize: 1 },
+          title: { display: true, text: 'Number of Whales', color: '#8ba8c4', font: { size: 11 } },
+          min: 0
+        }
+      }
+    }
+  });
+}
+
+// ── TABS ──
+function switchTab(id, btn) {
+  document.querySelectorAll('.mgmt-tab').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.mgmt-panel').forEach(p=>p.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById(`tab-${id}`).classList.add('active');
+}
+
+// ── MODAL ──
+function openModal(key) {
+  const c = modalContent[key];
+  if(!c) return;
+  document.getElementById('modal-inner').innerHTML = `
+    <div class="modal-tag">${c.tag}</div>
+    <div class="modal-title">${c.title}</div>
+    <div class="modal-body">${c.body}</div>`;
+  document.getElementById('modal').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeModal() {
+  document.getElementById('modal').classList.remove('open');
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+
+// ── NAV ──
+function scrollToSection(id) {
+  const el = document.getElementById(id);
+  if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
+}
+window.addEventListener('scroll', () => {
+  const sections = ['hero','population','reproduction','threats','mortalities','sightings','management','publications'];
+  const btns = document.querySelectorAll('.nav-btn');
+  let cur = 0;
+  sections.forEach((s,i)=>{ const el=document.getElementById(s); if(el&&window.scrollY>=el.offsetTop-100) cur=i; });
+  btns.forEach((b,i)=>b.classList.toggle('active',i===cur));
+});
+
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver(entries=>{
+  entries.forEach(e=>{ if(e.isIntersecting) e.target.classList.add('visible'); });
+},{threshold:0.05, rootMargin:'0px 0px -40px 0px'});
+
+// ── INIT ──
+// ── HERO VIDEO SCROLL DISMISS ──
+(function() {
+  var wrap = document.getElementById('hero-video-wrap');
+  var dismissed = false;
+  function dismissVideo() {
+    if (dismissed) return;
+    dismissed = true;
+    wrap.classList.add('hidden');
+    // Remove from DOM after fade completes so it doesn't block interactions
+    setTimeout(function() { wrap.classList.add('gone'); }, 650);
+  }
+  window.addEventListener('scroll', function() {
+    if (window.scrollY > 40) dismissVideo();
+  }, { passive: true });
+  // Also dismiss on any touch/swipe start for mobile
+  window.addEventListener('touchmove', function() {
+    if (window.scrollY > 10) dismissVideo();
+  }, { passive: true });
+})();
+
+initParticles();
+buildPopChart('all');
+buildPopTable(popData);
+buildReproCharts();
+buildReproTable();
+buildMonTable(monData);
+buildRegions();
+buildMortChart();
+buildCauseChart();
+
+// Observe after all dynamic content is built
+document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
+
+// Fallback: force any reveal elements already in viewport visible after short delay
+setTimeout(function(){
+  document.querySelectorAll('.reveal').forEach(function(el){
+    const rect = el.getBoundingClientRect();
+    if(rect.top < window.innerHeight) el.classList.add('visible');
+  });
+}, 300);
+</script>
+</body>
+</html>
