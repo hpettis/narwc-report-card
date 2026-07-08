@@ -313,7 +313,7 @@ section {
   gap: 12px;
 }
 .table-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #fff; }
-.table-sub { font-size: 0.75rem; color: var(--muted); margin-top: 2px; }
+.table-sub { font-size: 0.9rem; color: var(--muted); margin-top: 2px; }
 .search-input {
   background: rgba(255,255,255,0.05);
   border: 1px solid var(--border);
@@ -761,7 +761,7 @@ footer {
   border-radius: 0 10px 10px 0;
   padding: 16px 22px;
   margin-bottom: 36px;
-  font-size: 0.88rem;
+  font-size: 0.9rem;
   line-height: 1.75;
   color: rgba(240,236,227,0.8);
 }
@@ -871,7 +871,7 @@ footer {
     <h2 class="section-title">Population Estimates 1990–2024</h2>
   </div>
   <div class="section-intro">Assessments of the North Atlantic right whale population 1990-2024. Annual assessments are shown by a
-point "estimate" along with error shading which represent 95% of the posterior probability. The estimate for 2024 was 384
+point "estimate" along with error shading which represents 95% of the posterior probability. The estimate for 2024 was 384
 +10/-9. Data from the North Atlantic Right Whale Catalog as of September 8, 2025.
 </div>
 
@@ -889,7 +889,7 @@ point "estimate" along with error shading which represent 95% of the posterior p
     <div class="table-header">
       <div>
         <div class="table-title">Population Estimates Table</div>
-        <div class="table-sub">Pace model estimates with 95% credible intervals — Table 1 from the Report Card</div>
+        <div class="table-sub">Pace model estimates with 95% credible intervals — Table 1 from the Report Card. Columns are sortable. Trend arrows indicate an increase, decrease, or no change in population estimate from the prior year.</div>
       </div>
       <input type="text" class="search-input" placeholder="Filter year..." id="pop-search" oninput="filterPopTable(this.value)">
     </div>
@@ -916,7 +916,8 @@ point "estimate" along with error shading which represent 95% of the posterior p
     <span class="section-tag">02 · Reproduction</span>
     <h2 class="section-title">Calving & Reproductive Success</h2>
   </div>
-  <div class="section-intro">Text</div>
+  <div class="section-intro">Eleven mother/calf pairs were sighted in the 2025 calving season, down from 20 mother/calf pairs in 2024. There were no detected calf mortalities on the southeast calving grounds in 2025 and all eleven mother/calf 
+pairs were seen on the northern feeding grounds. One of the 11 was only detected on the feeding grounds. </div>
   <div class="repro-grid reveal">
     <div class="repro-card">
       <div style="font-family:'Playfair Display',serif;font-size:1rem;color:#fff;margin-bottom:16px;">Annual Calf Counts</div>
@@ -931,7 +932,10 @@ point "estimate" along with error shading which represent 95% of the posterior p
     <div class="table-header">
       <div>
         <div class="table-title">Mother/Calf Summary</div>
-        <div class="table-sub">Reproductive statistics 2009–2025 — Table 3</div>
+        <div class="table-sub">Summary of mother/calf pairs sighted and associated inter-birth interval times for North Atlantic right whales 
+from 2009-2025. The number of available cows, defined as females who have given birth to at least one previous calf, were 
+seen in the last 6 years, have not given birth in previous two years, or gave birth in that year, are followed by the percentage of 
+available cows to successfully calve. Columns are sortable. Color coding of % available females to calve are grouped as <10%, 10-<20%, 20-<40%, >40%</div>
       </div>
     </div>
     <div style="overflow-x:auto;">
@@ -1684,7 +1688,7 @@ function buildReproTable(data) {
   const tbody = document.getElementById('repro-tbody');
   tbody.innerHTML = '';
   data.forEach(d => {
-    const pctColor = d.pctCalved>30 ? '#00c9a7' : d.pctCalved>20 ? '#f0ece3' : '#f59e0b';
+    const pctColor = d.pctCalved>40 ? '#00c9a7' : d.pctCalved>20 ? '#f59e0b' : d.pctCalved>10 ? '#f0ece3' : '#ef4444';
     tbody.innerHTML += `<tr>
       <td class="year">${d.y}</td>
       <td class="num">${d.calves}</td>
