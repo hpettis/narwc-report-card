@@ -191,7 +191,9 @@ nav {
 }
 .hero-stat .num.danger { color: var(--coral); }
 .hero-stat .num.warn { color: var(--amber); }
+.hero-stat .num.coral { color: var(--coral); }
 .hero-stat .label { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 6px; }
+.hero-stat-desc { font-size: 0.72rem; color: rgba(240,236,227,0.55); line-height: 1.5; margin-top: 8px; text-align: left; font-weight: 300; letter-spacing: 0; text-transform: none; max-width: 200px; }
 
 .scroll-hint {
   position: absolute;
@@ -658,6 +660,64 @@ td.pct { font-family: 'DM Mono', monospace; }
   border-radius: 3px;
 }
 
+/* ── PUBLICATIONS ACCORDION ── */
+.pub-accordion { display: flex; flex-direction: column; gap: 6px; }
+.acc-item {
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  overflow: hidden;
+  backdrop-filter: blur(10px);
+  transition: border-color 0.2s;
+}
+.acc-item:hover { border-color: rgba(0,201,167,0.3); }
+.acc-header {
+  width: 100%;
+  background: none;
+  border: none;
+  padding: 14px 18px;
+  display: grid;
+  grid-template-columns: 1fr 20px;
+  gap: 12px;
+  align-items: start;
+  cursor: pointer;
+  text-align: left;
+}
+.acc-header-left { display: flex; flex-direction: column; gap: 4px; }
+.acc-authors {
+  font-family: 'DM Mono', monospace;
+  font-size: 0.68rem;
+  color: var(--teal-bright);
+  letter-spacing: 0.04em;
+}
+.acc-title-preview {
+  font-size: 0.84rem;
+  color: var(--cream);
+  line-height: 1.55;
+  white-space: normal;
+}
+.acc-chevron {
+  color: var(--teal-bright);
+  font-size: 0.65rem;
+  transition: transform 0.25s;
+  flex-shrink: 0;
+  justify-self: end;
+  margin-top: 3px;
+}
+.acc-chevron.open { transform: rotate(180deg); }
+.acc-body {
+  display: none;
+  padding: 12px 18px 16px;
+  border-top: 1px solid rgba(0,201,167,0.1);
+}
+.acc-body.open { display: block; }
+.acc-full-title { display: none; }
+.acc-journal {
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-style: italic;
+}
+
 /* ── FOOTER ── */
 footer {
   background: rgba(5,13,26,0.9);
@@ -807,8 +867,8 @@ footer {
   <button class="nav-btn active" onclick="scrollToSection('hero')">Overview</button>
   <button class="nav-btn" onclick="scrollToSection('population')">Population</button>
   <button class="nav-btn" onclick="scrollToSection('reproduction')">Reproduction</button>
-  <button class="nav-btn" onclick="scrollToSection('threats')">Threats</button>
   <button class="nav-btn" onclick="scrollToSection('mortalities')">Mortalities</button>
+  <button class="nav-btn" onclick="scrollToSection('threats')">Threats</button>
   <button class="nav-btn" onclick="scrollToSection('sightings')">Sightings</button>
   <button class="nav-btn" onclick="scrollToSection('management')">Management</button>
   <button class="nav-btn" onclick="scrollToSection('publications')">Publications & Reports</button>
@@ -846,10 +906,17 @@ footer {
     <div class="hero-stat" onclick="openModal('mortality')">
       <div class="num" style="color:var(--sky)">0</div>
       <div class="label">2025 Detected Mortalities</div>
+      <div class="hero-stat-desc">No detected mortalities in 2025. PBR (0.7) still exceeded due to at least one serious injury. Detected values are known underestimates of true mortality.</div>
     </div>
     <div class="hero-stat" onclick="openModal('entangle')">
       <div class="num danger">5+</div>
       <div class="label">2025 Entanglement Events</div>
+      <div class="hero-stat-desc">1 weir entrapment (resolved), 1 with attached gear, 3 with new scarring. At least one whale (#5217) died Jan 2026. Numbers will rise as data processing continues.</div>
+    </div>
+    <div class="hero-stat" onclick="openModal('vessel-detail')">
+      <div class="num coral">1</div>
+      <div class="label">Suspected Vessel Strike 2025</div>
+      <div class="hero-stat-desc">Whale #3504, a 20-year-old male, sighted 1/12/2025 at Jeffreys Ledge with a wound on the right flank. Additional documentation needed to confirm.</div>
     </div>
     <div class="hero-stat" onclick="openModal('monitoring')">
       <div class="num">91%</div>
@@ -957,36 +1024,72 @@ available cows to successfully calve. Columns are sortable. Color coding of % av
 
 <div class="divider"></div>
 
+<!-- MORTALITIES -->
+<section id="mortalities">
+  <div class="section-header reveal">
+    <span class="section-tag">03 · Mortalities</span>
+    <h2 class="section-title">Detected Mortalities by Year</h2>
+  </div>
+  <div class="section-intro">Text</div>
+
+  <!-- Responsive two-chart grid: side-by-side on wide screens, stacked on narrow -->
+  <div class="mort-grid reveal">
+
+    <!-- Chart 1: By Country -->
+    <div class="mort-card">
+      <div class="mort-card-header">
+        <div>
+          <div class="mort-card-title">By Country of Detection</div>
+          <div class="mort-card-sub">Source: Figure 2, 2025 NARWC Report Card</div>
+        </div>
+        <div class="mort-legend">
+          <span class="mort-legend-item"><span class="mort-swatch" style="background:#00c9a7;"></span>Canada</span>
+          <span class="mort-legend-item"><span class="mort-swatch" style="background:#38bdf8;"></span>US</span>
+        </div>
+      </div>
+      <div class="mort-chart-container">
+        <canvas id="mort-chart"></canvas>
+      </div>
+      <div class="mort-notice">
+        ⚠&nbsp; Values estimated from Figure 2. Update <code>mortData</code> array — each entry: <code>{y, ca, us}</code>
+      </div>
+    </div>
+
+    <!-- Chart 2: By Cause of Death -->
+    <div class="mort-card">
+      <div class="mort-card-header">
+        <div>
+          <div class="mort-card-title">By Cause of Death</div>
+          <div class="mort-card-sub">Source: Figure 3, 2025 NARWC Report Card</div>
+        </div>
+        <div class="mort-legend">
+          <span class="mort-legend-item"><span class="mort-swatch" style="background:#ef4444;"></span>Vessel Strike</span>
+          <span class="mort-legend-item"><span class="mort-swatch" style="background:#f59e0b;"></span>Entanglement</span>
+          <span class="mort-legend-item"><span class="mort-swatch" style="background:#a78bfa;"></span>Neonate</span>
+          <span class="mort-legend-item"><span class="mort-swatch" style="background:#64748b;"></span>Unknown</span>
+          <span class="mort-legend-item"><span class="mort-swatch" style="background:#2dd4bf;"></span>Other</span>
+        </div>
+      </div>
+      <div class="mort-chart-container">
+        <canvas id="cause-chart"></canvas>
+      </div>
+      <div class="mort-notice">
+        ⚠&nbsp; Values estimated from Figure 3. Update <code>causeData</code> array — each entry: <code>{y, vs, ent, neo, unk, oth}</code>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<div class="divider"></div>
+
 <!-- THREATS -->
 <section id="threats">
   <div class="section-header reveal">
-    <span class="section-tag">03 · Threats</span>
+    <span class="section-tag">04 · Threats</span>
     <h2 class="section-title">Anthropogenic Threats</h2>
   </div>
   <div class="section-intro">Text</div>
-  <div class="threat-grid reveal">
-    <div class="threat-card entangle" onclick="openModal('entangle-detail')">
-      <div class="threat-icon">🪢</div>
-      <div class="threat-num amber">5+</div>
-      <div class="threat-label">Entanglement Events 2025</div>
-      <div class="threat-desc">At least 5 new events detected: 1 weir entrapment, 1 with attached gear, 3 with new scarring — numbers will increase as data processing continues.</div>
-      <div class="threat-expand">Read full details →</div>
-    </div>
-    <div class="threat-card vessel" onclick="openModal('vessel-detail')">
-      <div class="threat-icon">🚢</div>
-      <div class="threat-num coral">1</div>
-      <div class="threat-label">Suspected Vessel Strike 2025</div>
-      <div class="threat-desc">Whale #3504, a 20-year-old male, sighted 1/12/2025 at Jeffreys Ledge with a wound on the right flank. Additional documentation needed to confirm.</div>
-      <div class="threat-expand">Read full details →</div>
-    </div>
-    <div class="threat-card mortality" onclick="openModal('mortality-detail')">
-      <div class="threat-icon">📊</div>
-      <div class="threat-num sky">0</div>
-      <div class="threat-label">Detected Mortalities 2025</div>
-      <div class="threat-desc">No detected right whale mortalities in 2025 — a positive sign. However, PBR (0.7) was still exceeded due to at least one serious injury, and detected mortalities are known underestimates.</div>
-      <div class="threat-expand">Read full details →</div>
-    </div>
-  </div>
 
   <div class="case-table-wrap reveal">
     <div class="table-header">
@@ -1078,64 +1181,38 @@ available cows to successfully calve. Columns are sortable. Color coding of % av
       </table>
     </div>
   </div>
-</section>
 
-<div class="divider"></div>
-
-<!-- MORTALITIES -->
-<section id="mortalities">
-  <div class="section-header reveal">
-    <span class="section-tag">03b · Mortalities</span>
-    <h2 class="section-title">Detected Mortalities by Year</h2>
-  </div>
-  <div class="section-intro">Text</div>
-
-  <!-- Responsive two-chart grid: side-by-side on wide screens, stacked on narrow -->
-  <div class="mort-grid reveal">
-
-    <!-- Chart 1: By Country -->
-    <div class="mort-card">
-      <div class="mort-card-header">
-        <div>
-          <div class="mort-card-title">By Country of Detection</div>
-          <div class="mort-card-sub">Source: Figure 2, 2025 NARWC Report Card</div>
-        </div>
-        <div class="mort-legend">
-          <span class="mort-legend-item"><span class="mort-swatch" style="background:#00c9a7;"></span>Canada</span>
-          <span class="mort-legend-item"><span class="mort-swatch" style="background:#38bdf8;"></span>US</span>
-        </div>
-      </div>
-      <div class="mort-chart-container">
-        <canvas id="mort-chart"></canvas>
-      </div>
-      <div class="mort-notice">
-        ⚠&nbsp; Values estimated from Figure 2. Update <code>mortData</code> array — each entry: <code>{y, ca, us}</code>
+  <div class="case-table-wrap reveal" style="margin-top:20px;">
+    <div class="table-header">
+      <div>
+        <div class="table-title">Suspected Vessel Strike Cases 2025</div>
+        <div class="table-sub">Table 8 — Injury events consistent with vessel strike in 2025</div>
       </div>
     </div>
-
-    <!-- Chart 2: By Cause of Death -->
-    <div class="mort-card">
-      <div class="mort-card-header">
-        <div>
-          <div class="mort-card-title">By Cause of Death</div>
-          <div class="mort-card-sub">Source: Figure 3, 2025 NARWC Report Card</div>
-        </div>
-        <div class="mort-legend">
-          <span class="mort-legend-item"><span class="mort-swatch" style="background:#ef4444;"></span>Vessel Strike</span>
-          <span class="mort-legend-item"><span class="mort-swatch" style="background:#f59e0b;"></span>Entanglement</span>
-          <span class="mort-legend-item"><span class="mort-swatch" style="background:#a78bfa;"></span>Neonate</span>
-          <span class="mort-legend-item"><span class="mort-swatch" style="background:#64748b;"></span>Unknown</span>
-          <span class="mort-legend-item"><span class="mort-swatch" style="background:#2dd4bf;"></span>Other</span>
-        </div>
-      </div>
-      <div class="mort-chart-container">
-        <canvas id="cause-chart"></canvas>
-      </div>
-      <div class="mort-notice">
-        ⚠&nbsp; Values estimated from Figure 3. Update <code>causeData</code> array — each entry: <code>{y, vs, ent, neo, unk, oth}</code>
-      </div>
+    <div style="overflow-x:auto;">
+      <table>
+        <thead><tr>
+          <th>Whale #</th>
+          <th>Pre-Injury Date</th>
+          <th>Pre-Injury Location</th>
+          <th>Injury Detection</th>
+          <th>Detection Location</th>
+          <th>Sex</th>
+          <th>Age</th>
+        </tr></thead>
+        <tbody>
+          <tr>
+            <td><strong style="color:var(--coral)">#3504</strong></td>
+            <td class="num">03/16/2024</td>
+            <td>Cape Cod Bay</td>
+            <td class="num">01/12/2025</td>
+            <td>Jeffreys Ledge</td>
+            <td>M</td>
+            <td>20</td>
+          </tr>
+        </tbody>
+      </table>
     </div>
-
   </div>
 </section>
 
@@ -1226,72 +1303,337 @@ available cows to successfully calve. Columns are sortable. Color coding of % av
     <h2 class="section-title">2025 Selected Publications and Reports</h2>
   </div>
   <div class="section-intro">Text</div>
-  <div class="pub-list">
 
-    <div class="pub-item">
-      <div class="pub-authors">Blondin et al., 2025</div>
-      <div class="pub-title"><a class="pub-title-link" href="https://doi.org/10.1038/s41598-024-84886-z" target="_blank" rel="noopener">Vessel strike encounter risk model informs mortality risk for endangered North Atlantic right whales along the United States east coast</a></div>
-      <div class="pub-journal">Scientific Reports, 15, 736 &nbsp;<a class="pub-access-btn" href="https://doi.org/10.1038/s41598-024-84886-z" target="_blank" rel="noopener">ACCESS</a></div>
+  <div class="pub-accordion" id="pub-accordion">
+
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Baumgartner, M., 2025</span>
+        <span class="acc-title-preview">Efficacy of real-time passive acoustic monitoring near wind energy industrial activities for mitigating risks to right whales</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">Endangered Species Research, 57, pp.413-430</div>
+      </div>
     </div>
 
-    <div class="pub-item">
-      <div class="pub-authors">Cole &amp; Brillant, 2025</div>
-      <div class="pub-title"><a class="pub-title-link" href="https://doi.org/10.3354/esr01411" target="_blank" rel="noopener">Quantifying entanglement risk reduction to North Atlantic right whales from time-area closures in the southern Gulf of St. Lawrence snow crab fisheries</a></div>
-      <div class="pub-journal">Endangered Species Research, 57, 143-159 &nbsp;<a class="pub-access-btn" href="https://doi.org/10.3354/esr01411" target="_blank" rel="noopener">ACCESS</a></div>
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Blondin et al., 2025</span>
+        <span class="acc-title-preview">Vessel strike encounter risk model informs mortality risk for endangered North Atlantic right whales along the United States east coast</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">Scientific Reports, 15, 736 &nbsp;<a class="pub-access-btn" href="https://doi.org/10.1038/s41598-024-84886-z" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
     </div>
 
-    <div class="pub-item">
-      <div class="pub-authors">Crum et al., 2025</div>
-      <div class="pub-title"><a class="pub-title-link" href="https://doi.org/10.1111/acv.13016" target="_blank" rel="noopener">Unobserved individual and population level impacts of fishing gear entanglements on North Atlantic right whales</a></div>
-      <div class="pub-journal">Animal Conservation &nbsp;<a class="pub-access-btn" href="https://doi.org/10.1111/acv.13016" target="_blank" rel="noopener">ACCESS</a></div>
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Cole &amp; Brillant, 2025</span>
+        <span class="acc-title-preview">Quantifying entanglement risk reduction to North Atlantic right whales from time-area closures in the southern Gulf of St. Lawrence snow crab fisheries</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">Endangered Species Research, 57, 143-159 &nbsp;<a class="pub-access-btn" href="https://doi.org/10.3354/esr01411" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
     </div>
 
-    <div class="pub-item">
-      <div class="pub-authors">Evans et al., 2025</div>
-      <div class="pub-title"><a class="pub-title-link" href="https://doi.org/10.3354/esr01376" target="_blank" rel="noopener">Beyond Calanus: changes to the copepod community in the northeast USA and implications for North Atlantic right whale foraging energetics</a></div>
-      <div class="pub-journal">Endangered Species Research, 56, 1-17 &nbsp;<a class="pub-access-btn" href="https://doi.org/10.3354/esr01376" target="_blank" rel="noopener">ACCESS</a></div>
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Crum et al., 2025</span>
+        <span class="acc-title-preview">Unobserved individual and population level impacts of fishing gear entanglements on North Atlantic right whales</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">Animal Conservation &nbsp;<a class="pub-access-btn" href="https://doi.org/10.1111/acv.13016" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
     </div>
 
-    <div class="pub-item">
-      <div class="pub-authors">Indeck et al., 2025</div>
-      <div class="pub-title"><a class="pub-title-link" href="https://doi.org/10.5670/oceanog.2025e111" target="_blank" rel="noopener">Glider surveillance for near-real-time detection and spatial management of North Atlantic right whales</a></div>
-      <div class="pub-journal">Oceanography, 38(Supplement 1), 13-21 &nbsp;<a class="pub-access-btn" href="https://doi.org/10.5670/oceanog.2025e111" target="_blank" rel="noopener">ACCESS</a></div>
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Davis, G.E., Tennant, S.C. and Van Parijs, S.M., 2025</span>
+        <span class="acc-title-preview">Upcalling behaviour and patterns in North Atlantic right whales, implications for monitoring protocols during wind energy development</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">ICES Journal of Marine Science, 82(4), p.fsad174 &nbsp;<a class="pub-access-btn" href="https://academic.oup.com/icesjms/article/82/4/fsad174/7341838" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
     </div>
 
-    <div class="pub-item">
-      <div class="pub-authors">Johnson et al., 2025</div>
-      <div class="pub-title"><a class="pub-title-link" href="https://doi.org/10.3354/esr01456" target="_blank" rel="noopener">North Atlantic right whale Eubalaena glacialis summer habitat in the southern Gulf of St. Lawrence, Canada: 2017-2019</a></div>
-      <div class="pub-journal">Endangered Species Research, 58, 359-379 &nbsp;<a class="pub-access-btn" href="https://doi.org/10.3354/esr01456" target="_blank" rel="noopener">ACCESS</a></div>
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">DFO, 2025</span>
+        <span class="acc-title-preview">Recovery Potential Assessment for the North Atlantic Right Whale (Eubalaena glacialis) in Canadian Waters</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">DFO Can. Sci. Advis. Sec. Sci. Advis. Rep. &nbsp;<a class="pub-access-btn" href="https://www.dfo-mpo.gc.ca/fisheries-peches/commercial-commerciale/atl-arc/narw-bnan/narw-science-eng.html" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
     </div>
 
-    <div class="pub-item">
-      <div class="pub-authors">Linden, 2025</div>
-      <div class="pub-title"><a class="pub-title-link" href="https://doi.org/10.1002/ece3.71035" target="_blank" rel="noopener">Using known births to account for delayed marking in population estimation of North Atlantic right whales</a></div>
-      <div class="pub-journal">Ecology and Evolution, 15, e71035 &nbsp;<a class="pub-access-btn" href="https://doi.org/10.1002/ece3.71035" target="_blank" rel="noopener">ACCESS</a></div>
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Evans et al., 2025</span>
+        <span class="acc-title-preview">Beyond Calanus: changes to the copepod community in the northeast USA and implications for North Atlantic right whale foraging energetics</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">Endangered Species Research, 56, 1-17 &nbsp;<a class="pub-access-btn" href="https://doi.org/10.3354/esr01376" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
     </div>
 
-    <div class="pub-item">
-      <div class="pub-authors">Linden et al., 2025</div>
-      <div class="pub-title"><a class="pub-title-link" href="https://doi.org/10.3354/esr01406" target="_blank" rel="noopener">A multistate capture-recapture model to estimate reproduction of North Atlantic right whales</a></div>
-      <div class="pub-journal">Endangered Species Research, 57, 91-102 &nbsp;<a class="pub-access-btn" href="https://doi.org/10.3354/esr01406" target="_blank" rel="noopener">ACCESS</a></div>
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Ganley et al., 2025</span>
+        <span class="acc-title-preview">Perspectives on using Protected Species Observer (PSO) data to fill knowledge gaps about marine species distributions and habitat use</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">ICES Journal of Marine Science, 82(3), p.fsae076 &nbsp;<a class="pub-access-btn" href="https://academic.oup.com/icesjms/article/82/3/fsae076/7687943" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
     </div>
 
-    <div class="pub-item">
-      <div class="pub-authors">Miller et al., 2025</div>
-      <div class="pub-title"><a class="pub-title-link" href="https://doi.org/10.1093/ismejo/wraf231" target="_blank" rel="noopener">Respiratory microbiomes reflect whale health</a></div>
-      <div class="pub-journal">The ISME Journal, 19(1), wraf231 &nbsp;<a class="pub-access-btn" href="https://doi.org/10.1093/ismejo/wraf231" target="_blank" rel="noopener">ACCESS</a></div>
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Indeck et al., 2025</span>
+        <span class="acc-title-preview">Glider surveillance for near-real-time detection and spatial management of North Atlantic right whales</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">Oceanography, 38(Supplement 1), 13-21 &nbsp;<a class="pub-access-btn" href="https://doi.org/10.5670/oceanog.2025e111" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
     </div>
 
-    <div class="pub-item">
-      <div class="pub-authors">Themudo et al., 2025</div>
-      <div class="pub-title"><a class="pub-title-link" href="https://doi.org/10.1101/2025.11.24.690181" target="_blank" rel="noopener">Historic overexploitation, genetic erosion and local extinction: palaeogenomic insights into the decline of Eubalaena glacialis in the Northeast Atlantic</a></div>
-      <div class="pub-journal">bioRxiv (preprint) &nbsp;<a class="pub-access-btn" href="https://doi.org/10.1101/2025.11.24.690181" target="_blank" rel="noopener">ACCESS</a></div>
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Johnson et al., 2025</span>
+        <span class="acc-title-preview">North Atlantic right whale Eubalaena glacialis summer habitat in the southern Gulf of St. Lawrence, Canada: 2017-2019</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">Endangered Species Research, 58, 359-379 &nbsp;<a class="pub-access-btn" href="https://doi.org/10.3354/esr01456" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
     </div>
 
-    <div class="pub-item">
-      <div class="pub-authors">Vanderlaan et al., 2025</div>
-      <div class="pub-title"><a class="pub-title-link" href="https://open-science.canada.ca/server/api/core/bitstreams/e2689b0a-aad2-4fec-a196-2c09abfd1ed8/content" target="_blank" rel="noopener">Threat assessment for the critically endangered North Atlantic Right Whale (Eubalaena glacialis)</a></div>
-      <div class="pub-journal">DFO Can. Sci. Advis. Sec. Res. Doc. 2025/077 &nbsp;<a class="pub-access-btn" href="https://open-science.canada.ca/server/api/core/bitstreams/e2689b0a-aad2-4fec-a196-2c09abfd1ed8/content" target="_blank" rel="noopener">ACCESS</a></div>
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Johnson, O.H. et al., 2025</span>
+        <span class="acc-title-preview">Suitability of foraging habitat for Eubalaena glacialis under future climate scenarios in the Northwest Atlantic</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">Elem Sci Anth, 13(1), p.00044 &nbsp;<a class="pub-access-btn" href="https://online.ucpress.edu/elementa/article/13/1/00044/211848" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Jones et al., 2025</span>
+        <span class="acc-title-preview">Maintenance of the North Atlantic Right Whale Catalog, Scarring and visual health databases, WhaleMap, annual anthropogenic injury case studies and near real time matching</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">Final report to the National Marine Fisheries Service, Woods Hole, MA. 158pp. &nbsp;<a class="pub-access-btn" href="https://www.narwc.org/uploads/1/1/6/6/116623219/catalog_report_2025_final.pdf" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Kenney, R.D., Hamilton, P.K. and Frasier, T.R., 2025</span>
+        <span class="acc-title-preview">North Atlantic Right Whale Eubalaena glacialis (Müller, 1776)</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">In: Handbook of the Mammals of Europe (pp. 1-38). Cham: Springer Nature Switzerland &nbsp;<a class="pub-access-btn" href="https://link.springer.com/rwe/10.1007/978-3-319-65038-8_82-1" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Linden, 2025</span>
+        <span class="acc-title-preview">Using known births to account for delayed marking in population estimation of North Atlantic right whales</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">Ecology and Evolution, 15, e71035 &nbsp;<a class="pub-access-btn" href="https://doi.org/10.1002/ece3.71035" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Linden et al., 2025</span>
+        <span class="acc-title-preview">A multistate capture-recapture model to estimate reproduction of North Atlantic right whales</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">Endangered Species Research, 57, 91-102 &nbsp;<a class="pub-access-btn" href="https://doi.org/10.3354/esr01406" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Linden et al., 2025</span>
+        <span class="acc-title-preview">Update to a management-focused population viability analysis for North Atlantic right whales</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">NOAA Repository &nbsp;<a class="pub-access-btn" href="https://repository.library.noaa.gov/view/noaa/72149/noaa_72149_DS1.pdf" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Lonati et al., 2025</span>
+        <span class="acc-title-preview">Drone-based infrared thermography to measure the intranasal temperature of baleen whales</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">International Journal of Remote Sensing, 46(1), pp.148-176 &nbsp;<a class="pub-access-btn" href="https://www.tandfonline.com/doi/full/10.1080/01431161.2024.2399326" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Miller et al., 2025</span>
+        <span class="acc-title-preview">Respiratory microbiomes reflect whale health</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">The ISME Journal, 19(1), wraf231 &nbsp;<a class="pub-access-btn" href="https://doi.org/10.1093/ismejo/wraf231" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">NOAA Fisheries, 2025</span>
+        <span class="acc-title-preview">North Atlantic Right Whale Road to Recovery — Status and Progress Update</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">NOAA Fisheries Road to Recovery Webpage &nbsp;<a class="pub-access-btn" href="https://www.fisheries.noaa.gov/species/north-atlantic-right-whale/road-to-recovery" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Novak et al., 2025</span>
+        <span class="acc-title-preview">A minimally invasive marine mammal sex determination method using epidermal tissue recovered from suction-cup tags</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">PLoS One, 20(5), p.e0323658 &nbsp;<a class="pub-access-btn" href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0323658" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Pettis, H.M. and Hamilton, P.K., 2026</span>
+        <span class="acc-title-preview">North Atlantic Right Whale Consortium 2025 Annual Report Card</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">Report to the North Atlantic Right Whale Consortium. www.narwc.org &nbsp;<a class="pub-access-btn" href="https://www.narwc.org/uploads/1/1/6/6/116623219/2025reportcardfinal.pdf" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Ratelle et al., 2025</span>
+        <span class="acc-title-preview">Important habitats of the North Atlantic Right Whale (Eubalaena glacialis) in Eastern Canadian Waters</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">Fisheries and Oceans Canada, Canadian Science Advisory Secretariat</div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Reamer &amp; Rivera, 2025</span>
+        <span class="acc-title-preview">Following the issue-attention cycle of North Atlantic right whale science, conservation, and policy in six US newspapers: 2023 and 2024</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">Environmental Research Communications, 7(7), p.071006 &nbsp;<a class="pub-access-btn" href="https://iopscience.iop.org/article/10.1088/2515-7620/adeeec/meta" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Schultz et al., 2025</span>
+        <span class="acc-title-preview">Resolving Protected Species Space-Use Conflicts in Wind Energy Areas</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">National Offshore Wind Research &amp; Development Consortium &nbsp;<a class="pub-access-btn" href="https://nationaloffshorewind.org/wp-content/uploads/Final-Report-Right-Wind-Project-with-Cornell-University.pdf" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Solway et al., 2025</span>
+        <span class="acc-title-preview">Assessing changing baleen whale distributions and reported incidents relative to vessel activity in the Northwest Atlantic</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">PLoS One, 20(1), p.e0315909 &nbsp;<a class="pub-access-btn" href="https://journals.plos.org/plosone/article?id=10.1371/journal.pone.0315909" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Tao et al., 2025</span>
+        <span class="acc-title-preview">Sea Surface Temperature Fronts and North Atlantic Right Whale Sightings in the Western Gulf of St. Lawrence</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">Journal of Marine Science and Engineering, 13(7), p.1280 &nbsp;<a class="pub-access-btn" href="https://www.mdpi.com/2077-1312/13/7/1280" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Themudo et al., 2025</span>
+        <span class="acc-title-preview">Historic overexploitation, genetic erosion and local extinction: palaeogenomic insights into the decline of Eubalaena glacialis in the Northeast Atlantic</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">bioRxiv (preprint) &nbsp;<a class="pub-access-btn" href="https://doi.org/10.1101/2025.11.24.690181" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Trego et al., 2025</span>
+        <span class="acc-title-preview">Report of the NOAA Fisheries Cetacean Species in the Spotlight Health Assessment Workshop: June 25–26, 2024, Seattle, Washington</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">NOAA Repository &nbsp;<a class="pub-access-btn" href="https://repository.library.noaa.gov/view/noaa/70861" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Vanderlaan et al., 2025 (Recovery Potential)</span>
+        <span class="acc-title-preview">Recovery potential assessment for the North Atlantic Right Whale (Eubalaena glacialis)</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">Fisheries and Oceans Canada, Canadian Science Advisory Secretariat &nbsp;<a class="pub-access-btn" href="https://open-science.canada.ca/items/c69f2ac8-3255-4637-9daa-001c575c9d33" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
+    </div>
+
+    <div class="acc-item">
+      <button class="acc-header" onclick="toggleAcc(this)">
+        <div class="acc-header-left"><span class="acc-authors">Vanderlaan et al., 2025 (Threat Assessment)</span>
+        <span class="acc-title-preview">Threat assessment for the critically endangered North Atlantic Right Whale (Eubalaena glacialis)</span></div>
+        <span class="acc-chevron">▼</span>
+      </button>
+      <div class="acc-body">
+        <div class="acc-journal">DFO Can. Sci. Advis. Sec. Res. Doc. 2025/077 &nbsp;<a class="pub-access-btn" href="https://open-science.canada.ca/server/api/core/bitstreams/e2689b0a-aad2-4fec-a196-2c09abfd1ed8/content" target="_blank" rel="noopener">ACCESS</a></div>
+      </div>
     </div>
 
   </div>
@@ -2012,6 +2354,15 @@ function switchTab(id, btn) {
   document.getElementById(`tab-${id}`).classList.add('active');
 }
 
+// ── ACCORDION ──
+function toggleAcc(btn) {
+  var body = btn.nextElementSibling;
+  var chevron = btn.querySelector('.acc-chevron');
+  var isOpen = body.classList.contains('open');
+  body.classList.toggle('open', !isOpen);
+  chevron.classList.toggle('open', !isOpen);
+}
+
 // ── MODAL ──
 function openModal(key) {
   const c = modalContent[key];
@@ -2035,7 +2386,7 @@ function scrollToSection(id) {
   if(el) el.scrollIntoView({behavior:'smooth', block:'start'});
 }
 window.addEventListener('scroll', () => {
-  const sections = ['hero','population','reproduction','threats','mortalities','sightings','management','publications'];
+  const sections = ['hero','population','reproduction','mortalities','threats','sightings','management','publications'];
   const btns = document.querySelectorAll('.nav-btn');
   let cur = 0;
   sections.forEach((s,i)=>{ const el=document.getElementById(s); if(el&&window.scrollY>=el.offsetTop-100) cur=i; });
