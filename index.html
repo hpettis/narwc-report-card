@@ -193,7 +193,7 @@ nav {
 .hero-stat .num.warn { color: var(--amber); }
 .hero-stat .num.coral { color: var(--coral); }
 .hero-stat .label { font-size: 0.72rem; color: var(--muted); letter-spacing: 0.06em; text-transform: uppercase; margin-top: 6px; }
-.hero-stat-desc { font-size: 0.72rem; color: rgba(240,236,227,0.55); line-height: 1.5; margin-top: 8px; text-align: left; font-weight: 300; letter-spacing: 0; text-transform: none; max-width: 200px; }
+.hero-stat-more { font-size: 0.7rem; color: var(--teal-bright); margin-top: 10px; letter-spacing: 0.05em; }
 
 .scroll-hint {
   position: absolute;
@@ -898,29 +898,32 @@ footer {
     <div class="hero-stat" onclick="openModal('population')">
       <div class="num">384</div>
       <div class="label">2024 Population Estimate</div>
+      <div class="hero-stat-more">More Information →</div>
     </div>
     <div class="hero-stat" onclick="openModal('calves')">
       <div class="num warn">11</div>
       <div class="label">2025 Mother/Calf Pairs</div>
+      <div class="hero-stat-more">More Information →</div>
     </div>
     <div class="hero-stat" onclick="openModal('mortality')">
       <div class="num" style="color:var(--sky)">0</div>
       <div class="label">2025 Detected Mortalities</div>
-      <div class="hero-stat-desc"></div>
+      <div class="hero-stat-more">More Information →</div>
     </div>
     <div class="hero-stat" onclick="openModal('entangle')">
       <div class="num danger">5+</div>
       <div class="label">2025 Entanglement Events</div>
-      <div class="hero-stat-desc">1 weir entrapment (resolved), 1 with attached gear, 3 with new scarring. At least one whale (#5217) died Jan 2026. Numbers will rise as data processing continues.</div>
+      <div class="hero-stat-more">More Information →</div>
     </div>
     <div class="hero-stat" onclick="openModal('vessel-detail')">
       <div class="num coral">1</div>
       <div class="label">Suspected Vessel Strike 2025</div>
-      <div class="hero-stat-desc">Whale #3504, a 20-year-old male, sighted 1/12/2025 at Jeffreys Ledge with a wound on the right flank. Additional documentation needed to confirm.</div>
+      <div class="hero-stat-more">More Information →</div>
     </div>
     <div class="hero-stat" onclick="openModal('monitoring')">
       <div class="num">91%</div>
       <div class="label">Population Monitored 2024</div>
+      <div class="hero-stat-more">More Information →</div>
     </div>
   </div>
   <div class="scroll-hint">
@@ -1302,8 +1305,7 @@ available cows to successfully calve. Columns are sortable. Color coding of % av
     <span class="section-tag">06 · Research</span>
     <h2 class="section-title">2025 Selected Publications and Reports</h2>
   </div>
-  <div class="section-intro">Reports and publications that utilized NARWC databases in 2025 and/or those of general interest to the right whale
-community are listed. Access is available by clicking on reference links.</div>
+  <div class="section-intro">Text</div>
 
   <div class="pub-accordion" id="pub-accordion">
 
