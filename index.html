@@ -891,7 +891,7 @@ footer {
       <span class="about-chevron" id="about-chevron">▼</span>
     </div>
     <div class="about-body" id="about-body">
-      <p>Started in 1986 as a collaborative data sharing group, the North Atlantic Right Whale Consortium (NARWC) has grown to include more than 200 organizations and individuals representing research and conservation organizations, shipping and fishing industries, technical experts, U.S. and Canadian government agencies, and state and provincial authorities, all of whom are dedicated to the conservation and recovery of the North Atlantic right whale. North Atlantic Right Whale Consortium members agreed in 2004 that an annual "report card" on the status of right whales would be useful. This report card includes updates on the status of the cataloged population, mortalities and injury events, and a summary of management and research efforts that have occurred over the previous 12 months.</p>
+      <p>Started in 1986 as a collaborative data sharing group, the <a href="https://www.narwc.org" target="_blank" rel="noopener" style="color:var(--teal-bright);text-decoration:none;border-bottom:1px solid rgba(0,201,167,0.4);">North Atlantic Right Whale Consortium</a> (NARWC) (NARWC) has grown to include more than 200 organizations and individuals representing research and conservation organizations, shipping and fishing industries, technical experts, U.S. and Canadian government agencies, and state and provincial authorities, all of whom are dedicated to the conservation and recovery of the North Atlantic right whale. North Atlantic Right Whale Consortium members agreed in 2004 that an annual "report card" on the status of right whales would be useful. This report card includes updates on the status of the cataloged population, mortalities and injury events, and a summary of management and research efforts that have occurred over the previous 12 months. Previous year report cards can be found on the <a href="https://www.narwc.org/report-cards.html" target="_blank" rel="noopener" style="color:var(--teal-bright);text-decoration:none;border-bottom:1px solid rgba(0,201,167,0.4);">NARWC Report Card</a> page.</p></p>
     </div>
   </div>
   <div class="stat-row">
@@ -917,12 +917,12 @@ footer {
     </div>
     <div class="hero-stat" onclick="openModal('vessel-detail')">
       <div class="num coral">1</div>
-      <div class="label">Suspected Vessel Strike 2025</div>
+      <div class="label">2025 Suspected Vessel Strike</div>
       <div class="hero-stat-more">More Information →</div>
     </div>
     <div class="hero-stat" onclick="openModal('monitoring')">
       <div class="num">91%</div>
-      <div class="label">Population Monitored 2024</div>
+      <div class="label">2024 Population Monitored</div>
       <div class="hero-stat-more">More Information →</div>
     </div>
   </div>
@@ -1053,10 +1053,7 @@ available cows to successfully calve. Columns are sortable. Color coding of % av
       <div class="mort-chart-container">
         <canvas id="mort-chart"></canvas>
       </div>
-      <div class="mort-notice">
-        ⚠&nbsp; Values estimated from Figure 2. Update <code>mortData</code> array — each entry: <code>{y, ca, us}</code>
-      </div>
-    </div>
+   </div>
 
     <!-- Chart 2: By Cause of Death -->
     <div class="mort-card">
@@ -1075,9 +1072,6 @@ available cows to successfully calve. Columns are sortable. Color coding of % av
       </div>
       <div class="mort-chart-container">
         <canvas id="cause-chart"></canvas>
-      </div>
-      <div class="mort-notice">
-        ⚠&nbsp; Values estimated from Figure 3. Update <code>causeData</code> array — each entry: <code>{y, vs, ent, neo, unk, oth}</code>
       </div>
     </div>
 
@@ -1305,7 +1299,8 @@ available cows to successfully calve. Columns are sortable. Color coding of % av
     <span class="section-tag">06 · Research</span>
     <h2 class="section-title">2025 Selected Publications and Reports</h2>
   </div>
-  <div class="section-intro">Text</div>
+  <div class="section-intro">Reports and publications that utilized NARWC databases in 2025 and/or those of general interest to the right whale
+community are listed and hyperlinked (when available) below.</div>
 
   <div class="pub-accordion" id="pub-accordion">
 
@@ -1744,9 +1739,9 @@ const modalContent = {
     tag:"Mortalities", title:"Zero Detected Mortalities in 2025",
     body:`<p>There were <strong>zero detected right whale mortalities</strong> in 2025 — the first time in several years, suggesting some management measures may be working.</p>
     <p>A previously unidentified carcass detected on 5/12/2024 SE of Nova Scotia was matched to <strong>right whale #4633</strong>, an 18-year-old female.</p>
-    <p>However, the Consortium Board notes that <strong>detected mortalities represent only a fraction of true mortalities</strong> (Pace et al., 2021) — annual detected values are known underestimates.</p>
+    <p>However, the report notes that <strong>detected mortalities represent only a fraction of true mortalities</strong> (Pace et al., 2021) — annual detected values are known underestimates.</p>
     <p>With at least one serious injury detected in 2025, <strong>PBR (Potential Biological Removal = 0.7)</strong> was once again exceeded. The sublethal impacts of injuries on reproduction and health are becoming increasingly clear but are not yet adequately addressed in management plans.</p>
-    <p>The Board reiterates that <strong>necropsies are significant data collection events</strong> and views consistent necropsy response and support as critical to monitor right whale recovery.</p>`
+    <p>The NARWC Board reiterates that <strong>necropsies are significant data collection events</strong> and views consistent necropsy response and support as critical to monitor right whale recovery.</p>`
   },
   entangle: {
     tag:"Entanglement", title:"5+ Entanglement Events in 2025",
@@ -1756,7 +1751,7 @@ const modalContent = {
       <li>One whale sighted with attached gear (#5217/Division) — died 1/27/2026</li>
       <li>Three whales with new scarring from entanglement (without gear present)</li>
     </ul>
-    <p>The Board emphasizes this number will <strong>likely increase</strong> when all data are processed and full scar analysis is completed.</p>
+    <p>The report emphasizes this number will <strong>likely increase</strong> when all data are processed and full scar analysis is completed.</p>
     <p>Ongoing near real-time monitoring of anthropogenic injuries provides a minimum count — the precise locations cannot always be determined, but pre-injury and injury detection sightings provide regional context.</p>`
   },
   monitoring: {
@@ -1764,7 +1759,7 @@ const modalContent = {
     body:`<p>Surveys and opportunistic sightings in 2024 captured approximately <strong>91% of the living population</strong> — consistent with recent years and reflecting strong monitoring capacity.</p>
     <p>The North Atlantic Right Whale Identification Database contains data from more than <strong>800 contributors</strong> and as of September 8, 2025 consisted of over <strong>two million slides, prints, videos, and digital images</strong> from 102,887 sightings of 833 individual right whales since 1935.</p>
     <p>Each year, approximately 2,000–5,000 sightings consisting of 50–250,000 images are added to the identification database.</p>
-    <p>The Board notes that climate-driven distribution shifts require <strong>nimble and flexible survey strategies</strong> to identify and respond to new important habitats throughout the species range.</p>`
+    <p>The report notes that climate-driven distribution shifts require <strong>nimble and flexible survey strategies</strong> to identify and respond to new important habitats throughout the species range.</p>`
   },
   'entangle-detail': {
     tag:"Entanglement Threat", title:"Entanglement: The Primary Threat",
@@ -1782,11 +1777,11 @@ const modalContent = {
     body:`<p>There was <strong>one suspected vessel strike injury</strong> documented in 2025 — whale #3504, a 20-year-old male, sighted on January 12, 2025, at Jeffreys Ledge with a wound on the right flank.</p>
     <p>This case requires additional photo documentation to confirm the injury origin and severity.</p>
     <p>Vessel strike management measures remain in effect in both U.S. and Canadian waters. Transport Canada's mandatory speed restriction zones cover over <strong>65,000 km²</strong> of the Gulf of St. Lawrence, applying to all vessels longer than 13 m.</p>
-    <p>NOAA's proposed modifications to U.S. vessel speed reductions were retracted in 2025, which the Consortium Board identified as a threat to species health and survival.</p>`
+    <p>NOAA's proposed modifications to U.S. vessel speed reductions were retracted in 2025, which the report identified as a threat to species health and survival.</p>`
   },
   'mortality-detail': {
     tag:"Mortality Context", title:"Mortality: Why Zero Detections Isn't Zero Deaths",
-    body:`<p>While <strong>zero detected mortalities</strong> in 2025 is encouraging, the Consortium Board emphasizes that detected mortalities are known to represent only a fraction of true mortalities.</p>
+    body:`<p>While <strong>zero detected mortalities</strong> in 2025 is encouraging, the report emphasizes that detected mortalities are known to represent only a fraction of true mortalities.</p>
     <p>Research by Pace et al. (2021) on cryptic mortality shows that <strong>many deaths go undetected</strong> — whales that die at sea without their carcasses being found and identified.</p>
     <p>Historically, cause of death categories include: vessel strike, entanglement, neonate mortality, and unknown cause. The unknown category includes cases either not assessed or assessed without definitive findings.</p>
     <p>Even with zero detected mortalities, <strong>PBR (Potential Biological Removal = 0.7) was exceeded</strong> in 2025 due to at least one documented serious injury. PBR represents the maximum number of animals that can be removed annually (by human causes) while allowing a population to reach or maintain its optimum sustainable population level.</p>`
@@ -2132,30 +2127,30 @@ function buildRegions() {
 // Each row: {y: year, ca: Canada count, us: US count}
 const mortData = [
   {y:2000, ca:0, us:1},
-  {y:2001, ca:0, us:2},
-  {y:2002, ca:0, us:3},
-  {y:2003, ca:0, us:1},
-  {y:2004, ca:0, us:2},
-  {y:2005, ca:0, us:1},
-  {y:2006, ca:0, us:2},
+  {y:2001, ca:3, us:4},
+  {y:2002, ca:0, us:5},
+  {y:2003, ca:1, us:1},
+  {y:2004, ca:0, us:6},
+  {y:2005, ca:0, us:5},
+  {y:2006, ca:2, us:4},
   {y:2007, ca:0, us:3},
   {y:2008, ca:0, us:3},
-  {y:2009, ca:0, us:4},
-  {y:2010, ca:0, us:2},
-  {y:2011, ca:0, us:1},
-  {y:2012, ca:0, us:4},
-  {y:2013, ca:0, us:3},
-  {y:2014, ca:0, us:5},
-  {y:2015, ca:1, us:3},
-  {y:2016, ca:0, us:3},
-  {y:2017, ca:7, us:3},
-  {y:2018, ca:5, us:7},
-  {y:2019, ca:1, us:7},
-  {y:2020, ca:2, us:3},
-  {y:2021, ca:3, us:2},
-  {y:2022, ca:3, us:4},
-  {y:2023, ca:2, us:2},
-  {y:2024, ca:2, us:3},
+  {y:2009, ca:0, us:5},
+  {y:2010, ca:0, us:1},
+  {y:2011, ca:0, us:5},
+  {y:2012, ca:1, us:2},
+  {y:2013, ca:0, us:1},
+  {y:2014, ca:1, us:2},
+  {y:2015, ca:3, us:0},
+  {y:2016, ca:1, us:3},
+  {y:2017, ca:12, us:5},
+  {y:2018, ca:0, us:3},
+  {y:2019, ca:9, us:1},
+  {y:2020, ca:0, us:2},
+  {y:2021, ca:0, us:2},
+  {y:2022, ca:0, us:0},
+  {y:2023, ca:0, us:2},
+  {y:2024, ca:1, us:4},
   {y:2025, ca:0, us:0},
 ];
 
@@ -2230,31 +2225,31 @@ function buildMortChart() {
 // *** Replace with exact values from the report card when available. ***
 // Each row: {y:year, vs:vessel_strike, ent:entanglement, neo:neonate, unk:unknown, oth:other}
 const causeData = [
-  {y:2000, vs:0, ent:0, neo:0, unk:1, oth:0},
-  {y:2001, vs:1, ent:0, neo:0, unk:1, oth:0},
-  {y:2002, vs:1, ent:1, neo:0, unk:1, oth:0},
-  {y:2003, vs:0, ent:0, neo:0, unk:1, oth:0},
-  {y:2004, vs:0, ent:0, neo:1, unk:1, oth:0},
-  {y:2005, vs:0, ent:0, neo:0, unk:1, oth:0},
-  {y:2006, vs:1, ent:0, neo:0, unk:1, oth:0},
-  {y:2007, vs:1, ent:0, neo:0, unk:2, oth:0},
-  {y:2008, vs:1, ent:1, neo:0, unk:1, oth:0},
-  {y:2009, vs:1, ent:1, neo:1, unk:1, oth:0},
-  {y:2010, vs:0, ent:1, neo:0, unk:1, oth:0},
-  {y:2011, vs:0, ent:0, neo:0, unk:1, oth:0},
-  {y:2012, vs:1, ent:1, neo:0, unk:2, oth:0},
-  {y:2013, vs:1, ent:1, neo:0, unk:1, oth:0},
-  {y:2014, vs:1, ent:1, neo:1, unk:2, oth:0},
-  {y:2015, vs:1, ent:1, neo:0, unk:2, oth:0},
-  {y:2016, vs:0, ent:1, neo:0, unk:2, oth:0},
-  {y:2017, vs:1, ent:4, neo:1, unk:4, oth:0},
-  {y:2018, vs:3, ent:5, neo:2, unk:2, oth:0},
-  {y:2019, vs:3, ent:3, neo:0, unk:2, oth:0},
-  {y:2020, vs:1, ent:2, neo:0, unk:2, oth:0},
-  {y:2021, vs:1, ent:2, neo:0, unk:2, oth:0},
-  {y:2022, vs:2, ent:2, neo:0, unk:3, oth:0},
-  {y:2023, vs:1, ent:1, neo:0, unk:2, oth:0},
-  {y:2024, vs:3, ent:1, neo:1, unk:0, oth:0},
+  {y:2000, vs:0, ent:1, neo:0, unk:0, oth:0},
+  {y:2001, vs:2, ent:1, neo:2, unk:2, oth:0},
+  {y:2002, vs:1, ent:1, neo:1, unk:2, oth:0},
+  {y:2003, vs:1, ent:0, neo:0, unk:1, oth:0},
+  {y:2004, vs:2, ent:0, neo:1, unk:1, oth:0},
+  {y:2005, vs:2, ent:1, neo:0, unk:2, oth:0},
+  {y:2006, vs:4, ent:1, neo:0, unk:1, oth:0},
+  {y:2007, vs:0, ent:1, neo:1, unk:1, oth:0},
+  {y:2008, vs:0, ent:0, neo:3, unk:0, oth:0},
+  {y:2009, vs:0, ent:1, neo:0, unk:3, oth:1},
+  {y:2010, vs:1, ent:2, neo:0, unk:0, oth:0},
+  {y:2011, vs:1, ent:2, neo:0, unk:1, oth:0},
+  {y:2012, vs:0, ent:2, neo:0, unk:1, oth:0},
+  {y:2013, vs:0, ent:1, neo:0, unk:0, oth:0},
+  {y:2014, vs:0, ent:2, neo:0, unk:1, oth:0},
+  {y:2015, vs:0, ent:0, neo:0, unk:3, oth:0},
+  {y:2016, vs:1, ent:2, neo:0, unk:1, oth:0},
+  {y:2017, vs:5, ent:4, neo:0, unk:8, oth:0},
+  {y:2018, vs:0, ent:3, neo:0, unk:0, oth:0},
+  {y:2019, vs:4, ent:1, neo:0, unk:5, oth:0},
+  {y:2020, vs:1, ent:0, neo:1, unk:0, oth:0},
+  {y:2021, vs:1, ent:1, neo:0, unk:0, oth:0},
+  {y:2022, vs:0, ent:0, neo:0, unk:0, oth:0},
+  {y:2023, vs:1, ent:0, neo:1, unk:0, oth:0},
+  {y:2024, vs:3, ent:1, neo:0, unk:1, oth:0},
   {y:2025, vs:0, ent:0, neo:0, unk:0, oth:0},
 ];
 
