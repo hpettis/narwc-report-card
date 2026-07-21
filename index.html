@@ -777,7 +777,7 @@ footer {
 .about-body {
   display: none;
   padding: 0 24px 20px;
-  font-size: 0.85rem;
+  font-size: 1.0rem;
   line-height: 1.75;
   color: rgba(240,236,227,0.82);
   text-align: left;
@@ -1221,14 +1221,23 @@ available cows to successfully calve. Columns are sortable. Color coding of % av
     <span class="section-tag">04 · Distribution</span>
     <h2 class="section-title">Sighting and Effort Summary</h2>
   </div>
-  <div class="section-intro">Cataloged sighting information for the year 2024 (data as of September 8, 2025) is summarized below by region and includes survey, research, and opportunistic sightings. Months with total number of right whale sightings (not unique individuals) are listed. Total annual counts of sightings, unique individuals, estimated population size, kilometers of effort and the percent of the estimated population photographically captured each year are also summarized.</div>
+  <div class="section-intro">Cataloged sighting information for the year 2024 (data as of September 8, 2025) is summarized below by region and includes survey, research, and opportunistic sightings.</div>
+   <div class="data-table-wrap reveal">
+    <div class="table-header">
+      <div>
+        <div class="table-title">Sightings by Region</div>
+        <div class="table-sub">Months with total number of right whale sightings (not unique individuals) are listed.</div>
+      </div>
+    </div>
+  </div>
+
   <div class="region-grid reveal" id="region-grid"></div>
 
   <div class="data-table-wrap reveal">
     <div class="table-header">
       <div>
         <div class="table-title">Annual Monitoring Summary</div>
-        <div class="table-sub">Annual counts of photo-ID sightings, unique individuals, presumed living whales, survey effort (in Beaufort conditions < 4), and the percentage of the population seen. Survey effort from dedicated surveys only; opportunistic sightings do not have associated effort. Additionally, the NARWC does not currently receive effort data for all dedicated surveys. All reported fields are updated annually with the most available Sighting and Identification/Catalog Databases data using the Right Whale Year (Dec 1 (year-1) – Nov 30 (year)). At the time of reporting, photo-id data for 2024 were still being received, processed, and analyzed. Additionally, there are still several 2023-2024 effort datasets yet to be received. Data as of September 8, 2025.</div>
+        <div class="table-sub">Annual counts of photo-ID sightings, unique individuals, presumed living whales, survey effort (in Beaufort conditions <4), and the percentage of the population seen. Survey effort from dedicated surveys only; opportunistic sightings do not have associated effort. Additionally, the NARWC does not currently receive effort data for all dedicated surveys. All reported fields are updated annually with the most available Sighting and Identification/Catalog Databases data using the Right Whale Year (Dec 1 (year-1) – Nov 30 (year)) as Right Whale Year is what is used to calculate the population estimate. At the time of reporting, photo-id data for 2024 were still being received, processed, and analyzed. Additionally, there are still several 2023-2024 effort datasets yet to be received. Data as of September 8, 2025.</div>
       </div>
       <input type="text" class="search-input" placeholder="Filter year..." id="mon-search" oninput="filterMonTable(this.value)">
     </div>
@@ -1925,7 +1934,7 @@ function buildReproCharts() {
         data:calves,
         backgroundColor: calves.map((v,i) => {
           if(v===0) return 'rgba(239,68,68,0.6)';
-          if(v>=20) return 'rgba(0,201,167,0.8)';
+          if(v>=0) return 'rgba(0,201,167,0.8)';
           return 'rgba(0,201,167,0.4)';
         }),
         borderColor:'rgba(0,201,167,0.3)',
