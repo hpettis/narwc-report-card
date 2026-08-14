@@ -1664,17 +1664,609 @@ community are listed and hyperlinked (when available) below.</div>
 
 // ── DATA ──
 /* AIRTABLE_DATA_START */
-const popData = [{"y":1990,"lo":6,"med":289,"hi":6},{"y":1991,"lo":7,"med":298,"hi":6},{"y":1992,"lo":6,"med":305,"hi":7},{"y":1993,"lo":6,"med":299,"hi":6},{"y":1994,"lo":5,"med":303,"hi":5},{"y":1995,"lo":5,"med":305,"hi":5},{"y":1996,"lo":5,"med":320,"hi":5},{"y":1997,"lo":5,"med":329,"hi":6},{"y":1998,"lo":5,"med":329,"hi":5},{"y":1999,"lo":4,"med":328,"hi":4},{"y":2000,"lo":3,"med":319,"hi":4},{"y":2001,"lo":3,"med":346,"hi":4},{"y":2002,"lo":2,"med":355,"hi":3},{"y":2003,"lo":3,"med":365,"hi":3},{"y":2004,"lo":2,"med":372,"hi":4},{"y":2005,"lo":2,"med":396,"hi":3},{"y":2006,"lo":2,"med":401,"hi":3},{"y":2007,"lo":1,"med":413,"hi":3},{"y":2008,"lo":2,"med":430,"hi":2},{"y":2009,"lo":2,"med":466,"hi":2},{"y":2010,"lo":3,"med":476,"hi":4},{"y":2011,"lo":4,"med":483,"hi":4},{"y":2012,"lo":4,"med":473,"hi":5},{"y":2013,"lo":5,"med":481,"hi":7},{"y":2014,"lo":6,"med":477,"hi":6},{"y":2015,"lo":8,"med":473,"hi":9},{"y":2016,"lo":6,"med":457,"hi":8},{"y":2017,"lo":4,"med":434,"hi":5},{"y":2018,"lo":2,"med":390,"hi":4},{"y":2019,"lo":2,"med":381,"hi":3},{"y":2020,"lo":2,"med":359,"hi":3},{"y":2021,"lo":1,"med":371,"hi":3},{"y":2022,"lo":3,"med":374,"hi":3},{"y":2023,"lo":3,"med":376,"hi":4},{"y":2024,"lo":9,"med":384,"hi":10}];
+const popData = [
+  {y:1990,lo:283,med:289,hi:295},{y:1991,lo:291,med:298,hi:304},{y:1992,lo:299,med:305,hi:312},
+  {y:1993,lo:293,med:299,hi:305},{y:1994,lo:298,med:303,hi:308},{y:1995,lo:300,med:305,hi:310},
+  {y:1996,lo:315,med:320,hi:325},{y:1997,lo:324,med:329,hi:335},{y:1998,lo:324,med:329,hi:334},
+  {y:1999,lo:324,med:328,hi:332},{y:2000,lo:316,med:319,hi:323},{y:2001,lo:343,med:346,hi:350},
+  {y:2002,lo:353,med:355,hi:358},{y:2003,lo:362,med:365,hi:368},{y:2004,lo:370,med:372,hi:376},
+  {y:2005,lo:394,med:396,hi:399},{y:2006,lo:399,med:401,hi:404},{y:2007,lo:412,med:413,hi:416},
+  {y:2008,lo:428,med:430,hi:432},{y:2009,lo:464,med:466,hi:468},{y:2010,lo:473,med:476,hi:480},
+  {y:2011,lo:479,med:483,hi:487},{y:2012,lo:469,med:473,hi:478},{y:2013,lo:476,med:481,hi:488},
+  {y:2014,lo:471,med:477,hi:483},{y:2015,lo:465,med:473,hi:482},{y:2016,lo:451,med:457,hi:465},
+  {y:2017,lo:430,med:434,hi:439},{y:2018,lo:388,med:390,hi:394},{y:2019,lo:379,med:381,hi:384},
+  {y:2020,lo:357,med:359,hi:362},{y:2021,lo:370,med:371,hi:374},{y:2022,lo:371,med:374,hi:377},
+  {y:2023,lo:373,med:376,hi:380},{y:2024,lo:375,med:384,hi:394}
+];
 
-const monData = [{"y":2000,"s":3261,"u":237,"p":319,"e":130,"pct":0.74},{"y":2001,"s":4021,"u":283,"p":346,"e":117,"pct":0.82},{"y":2002,"s":2629,"u":303,"p":355,"e":228,"pct":0.85},{"y":2003,"s":2467,"u":315,"p":365,"e":178,"pct":0.86},{"y":2004,"s":1807,"u":286,"p":372,"e":265,"pct":0.77},{"y":2005,"s":3381,"u":353,"p":396,"e":359,"pct":0.89},{"y":2006,"s":2827,"u":347,"p":401,"e":317,"pct":0.87},{"y":2007,"s":3640,"u":379,"p":413,"e":260,"pct":0.92},{"y":2008,"s":4111,"u":391,"p":430,"e":258,"pct":0.91},{"y":2009,"s":4819,"u":425,"p":466,"e":259,"pct":0.91},{"y":2010,"s":3202,"u":422,"p":476,"e":256,"pct":0.89},{"y":2011,"s":3588,"u":439,"p":483,"e":233,"pct":0.91},{"y":2012,"s":2076,"u":377,"p":473,"e":271,"pct":0.8},{"y":2013,"s":2012,"u":303,"p":481,"e":226,"pct":0.63},{"y":2014,"s":2372,"u":373,"p":477,"e":198,"pct":0.78},{"y":2015,"s":1874,"u":278,"p":473,"e":178,"pct":0.59},{"y":2016,"s":2257,"u":330,"p":457,"e":171,"pct":0.72},{"y":2017,"s":3120,"u":382,"p":434,"e":180,"pct":0.88},{"y":2018,"s":3520,"u":351,"p":390,"e":183,"pct":0.9},{"y":2019,"s":5225,"u":365,"p":381,"e":224,"pct":0.96},{"y":2020,"s":2213,"u":308,"p":359,"e":172,"pct":0.86},{"y":2021,"s":4217,"u":348,"p":371,"e":260,"pct":0.94},{"y":2022,"s":3904,"u":345,"p":374,"e":370,"pct":0.92},{"y":2023,"s":3882,"u":351,"p":376,"e":403,"pct":0.93},{"y":2024,"s":3963,"u":350,"p":384,"e":191,"pct":0.91}];
+const monData = [
+  {y:2000,s:3261,u:237,p:319,e:130,pct:74},{y:2001,s:4021,u:283,p:346,e:117,pct:82},
+  {y:2002,s:2629,u:303,p:355,e:228,pct:85},{y:2003,s:2467,u:315,p:365,e:178,pct:86},
+  {y:2004,s:1807,u:286,p:372,e:265,pct:77},{y:2005,s:3381,u:353,p:396,e:359,pct:89},
+  {y:2006,s:2827,u:347,p:401,e:317,pct:87},{y:2007,s:3640,u:379,p:413,e:260,pct:92},
+  {y:2008,s:4111,u:391,p:430,e:258,pct:91},{y:2009,s:4819,u:425,p:466,e:259,pct:91},
+  {y:2010,s:3202,u:422,p:476,e:256,pct:89},{y:2011,s:3588,u:439,p:483,e:233,pct:91},
+  {y:2012,s:2076,u:377,p:473,e:271,pct:80},{y:2013,s:2012,u:303,p:481,e:226,pct:63},
+  {y:2014,s:2372,u:373,p:477,e:198,pct:78},{y:2015,s:1874,u:278,p:473,e:178,pct:59},
+  {y:2016,s:2257,u:330,p:457,e:171,pct:72},{y:2017,s:3120,u:382,p:434,e:180,pct:88},
+  {y:2018,s:3520,u:351,p:390,e:183,pct:90},{y:2019,s:5225,u:365,p:381,e:224,pct:96},
+  {y:2020,s:2213,u:308,p:359,e:172,pct:86},{y:2021,s:4217,u:348,p:371,e:260,pct:94},
+  {y:2022,s:3904,u:345,p:374,e:370,pct:92},{y:2023,s:3882,u:351,p:376,e:403,pct:93},
+  {y:2024,s:3963,u:350,p:384,e:191,pct:91}
+];
 
-const reproData = [{"y":2009,"calves":39,"cows":59,"pctCalved":66.1,"avgI":4,"medI":4,"minI":2,"maxI":6},{"y":2010,"calves":19,"cows":46,"pctCalved":41.3,"avgI":3.3,"medI":3,"minI":2,"maxI":5},{"y":2011,"calves":22,"cows":49,"pctCalved":44.9,"avgI":3.7,"medI":3,"minI":2,"maxI":6},{"y":2012,"calves":7,"cows":65,"pctCalved":10.8,"avgI":5.4,"medI":4,"minI":4,"maxI":10},{"y":2013,"calves":20,"cows":84,"pctCalved":23.8,"avgI":4.6,"medI":4,"minI":2,"maxI":8},{"y":2014,"calves":11,"cows":86,"pctCalved":12.8,"avgI":4.4,"medI":4.5,"minI":2,"maxI":7},{"y":2015,"calves":17,"cows":82,"pctCalved":20.7,"avgI":5.5,"medI":6,"minI":4,"maxI":7},{"y":2016,"calves":14,"cows":84,"pctCalved":16.7,"avgI":6.6,"medI":7,"minI":4,"maxI":9},{"y":2017,"calves":5,"cows":74,"pctCalved":6.8,"avgI":10.2,"medI":8,"minI":7,"maxI":20},{"y":2018,"calves":0,"cows":78,"pctCalved":0,"avgI":null,"medI":null,"minI":null,"maxI":null},{"y":2019,"calves":7,"cows":89,"pctCalved":7.9,"avgI":7,"medI":7,"minI":3,"maxI":10},{"y":2020,"calves":10,"cows":80,"pctCalved":12.5,"avgI":7.6,"medI":7,"minI":4,"maxI":11},{"y":2021,"calves":18,"cows":72,"pctCalved":25,"avgI":9.2,"medI":10,"minI":5,"maxI":11},{"y":2022,"calves":15,"cows":56,"pctCalved":26.8,"avgI":7.7,"medI":8,"minI":2,"maxI":13},{"y":2023,"calves":12,"cows":46,"pctCalved":26.1,"avgI":7.8,"medI":7.5,"minI":4,"maxI":12},{"y":2024,"calves":20,"cows":55,"pctCalved":36.4,"avgI":7.3,"medI":6.5,"minI":2,"maxI":14},{"y":2025,"calves":11,"cows":47,"pctCalved":23.4,"avgI":6.9,"medI":4,"minI":4,"maxI":12}];
+const reproData = [
+  {y:2009,calves:39,cows:59,pctCalved:66.1,avgI:4.0,medI:4,minI:2,maxI:6,firstMoms:8},
+  {y:2010,calves:19,cows:46,pctCalved:41.3,avgI:3.3,medI:3,minI:2,maxI:5,firstMoms:4},
+  {y:2011,calves:22,cows:49,pctCalved:44.9,avgI:3.7,medI:3,minI:2,maxI:6,firstMoms:3},
+  {y:2012,calves:7,cows:65,pctCalved:10.8,avgI:5.4,medI:4,minI:4,maxI:10,firstMoms:2},
+  {y:2013,calves:20,cows:84,pctCalved:23.8,avgI:4.6,medI:4,minI:2,maxI:8,firstMoms:7},
+  {y:2014,calves:11,cows:86,pctCalved:12.8,avgI:4.4,medI:4.5,minI:2,maxI:7,firstMoms:1},
+  {y:2015,calves:17,cows:82,pctCalved:20.7,avgI:5.5,medI:6,minI:4,maxI:7,firstMoms:4},
+  {y:2016,calves:14,cows:84,pctCalved:16.7,avgI:6.6,medI:7,minI:4,maxI:9,firstMoms:4},
+  {y:2017,calves:5,cows:74,pctCalved:6.8,avgI:10.2,medI:8,minI:7,maxI:20,firstMoms:0},
+  {y:2018,calves:0,cows:78,pctCalved:0,avgI:null,medI:null,minI:null,maxI:null,firstMoms:0},
+  {y:2019,calves:7,cows:89,pctCalved:7.9,avgI:7,medI:7,minI:3,maxI:10,firstMoms:1},
+  {y:2020,calves:10,cows:80,pctCalved:12.5,avgI:7.6,medI:7,minI:4,maxI:11,firstMoms:1},
+  {y:2021,calves:18,cows:72,pctCalved:25.0,avgI:9.2,medI:10,minI:5,maxI:11,firstMoms:6},
+  {y:2022,calves:15,cows:56,pctCalved:26.8,avgI:7.7,medI:8,minI:2,maxI:13,firstMoms:0},
+  {y:2023,calves:12,cows:46,pctCalved:26.1,avgI:7.8,medI:7.5,minI:4,maxI:12,firstMoms:2},
+  {y:2024,calves:20,cows:55,pctCalved:36.4,avgI:7.3,medI:6.5,minI:2,maxI:14,firstMoms:4},
+  {y:2025,calves:11,cows:47,pctCalved:23.4,avgI:6.9,medI:4,minI:4,maxI:12,firstMoms:4}
+];
 
-const regionData = [{"name":"\n  North (North of latitude 46\n  degrees including Newfoundland, Gulf of St. Lawrence, Iceland)\n  ","sightings":1014,"months":"\n  May-Oct\n  "},{"name":"\n  Roseway Basin\n  ","sightings":34,"months":"\n  May, Oct\n  "},{"name":"\n  Southeast United States\n  ","sightings":457,"months":"\n  Jan-Mar, Nov-Dec\n  "},{"name":"Bay of Fundy","sightings":182,"months":"Jul-Nov"},{"name":"East (East of Mainland US (Azores, Nova Scotian Shelf, Spain, Bermuda, Canary Islands)","sightings":1,"months":"Jun"},{"name":"Great South Channel","sightings":205,"months":"Jan-Apr"},{"name":"Gulf of Maine","sightings":89,"months":"Jan-Feb, Apr, Jun-Sep, Dec"},{"name":"Mid-Atlantic (includes south of Cape Cod)","sightings":752,"months":"Jan-Aug, Nov-Dec"},{"name":"New England (Massachusetts Bay/Cape Cod Bay)","sightings":1261,"months":"Jan-May, Dec"}];
+const regionData = [
+  {name:"New England (MA Bay/CCB)",sightings:1261,months:"Jan–May, Dec"},
+  {name:"Gulf of St. Lawrence / North",sightings:1014,months:"May–Oct"},
+  {name:"Mid-Atlantic",sightings:752,months:"Jan–Aug, Nov–Dec"},
+  {name:"Southeast US",sightings:457,months:"Jan–Mar, Nov–Dec"},
+  {name:"Great South Channel",sightings:205,months:"Jan–Apr"},
+  {name:"Bay of Fundy",sightings:182,months:"Jul–Nov"},
+  {name:"Gulf of Maine",sightings:89,months:"Jan–Feb, Apr, Jun–Sep, Dec"},
+  {name:"Roseway Basin",sightings:34,months:"May, Oct"},
+  {name:"East (Azores, Scotian Shelf, etc.)",sightings:1,months:"Jun"}
+];
 
-const mortData = [{"y":2000,"ca":0,"us":1},{"y":2001,"ca":3,"us":4},{"y":2002,"ca":0,"us":5},{"y":2003,"ca":1,"us":1},{"y":2004,"ca":0,"us":6},{"y":2005,"ca":0,"us":5},{"y":2006,"ca":2,"us":4},{"y":2007,"ca":0,"us":3},{"y":2008,"ca":0,"us":3},{"y":2009,"ca":0,"us":5},{"y":2010,"ca":0,"us":2},{"y":2011,"ca":0,"us":5},{"y":2012,"ca":1,"us":2},{"y":2013,"ca":0,"us":1},{"y":2014,"ca":1,"us":2},{"y":2015,"ca":3,"us":0},{"y":2016,"ca":1,"us":3},{"y":2017,"ca":12,"us":5},{"y":2018,"ca":0,"us":3},{"y":2019,"ca":9,"us":1},{"y":2020,"ca":0,"us":2},{"y":2021,"ca":0,"us":2},{"y":2022,"ca":0,"us":0},{"y":2023,"ca":0,"us":2},{"y":2024,"ca":1,"us":4},{"y":2025,"ca":0,"us":0}];
 
-const causeData = [{"y":2000,"vs":2,"ent":1,"neo":2,"unk":2,"oth":0},{"y":2001,"vs":1,"ent":1,"neo":1,"unk":2,"oth":0},{"y":2002,"vs":1,"ent":1,"neo":0,"unk":1,"oth":0},{"y":2003,"vs":3,"ent":0,"neo":1,"unk":1,"oth":0},{"y":2004,"vs":2,"ent":0,"neo":0,"unk":2,"oth":0},{"y":2005,"vs":4,"ent":1,"neo":0,"unk":1,"oth":0},{"y":2006,"vs":0,"ent":1,"neo":1,"unk":1,"oth":0},{"y":2007,"vs":0,"ent":1,"neo":3,"unk":0,"oth":0},{"y":2008,"vs":0,"ent":0,"neo":1,"unk":3,"oth":0},{"y":2009,"vs":1,"ent":1,"neo":0,"unk":0,"oth":1},{"y":2010,"vs":1,"ent":2,"neo":0,"unk":2,"oth":0},{"y":2011,"vs":0,"ent":2,"neo":0,"unk":1,"oth":0},{"y":2012,"vs":0,"ent":2,"neo":0,"unk":0,"oth":0},{"y":2013,"vs":0,"ent":1,"neo":0,"unk":1,"oth":0},{"y":2014,"vs":0,"ent":2,"neo":0,"unk":3,"oth":0},{"y":2015,"vs":1,"ent":0,"neo":0,"unk":1,"oth":0},{"y":2016,"vs":5,"ent":2,"neo":0,"unk":9,"oth":0},{"y":2017,"vs":0,"ent":3,"neo":0,"unk":0,"oth":0},{"y":2018,"vs":3,"ent":3,"neo":0,"unk":6,"oth":0},{"y":2019,"vs":1,"ent":1,"neo":1,"unk":0,"oth":0},{"y":2020,"vs":1,"ent":0,"neo":0,"unk":0,"oth":0},{"y":2021,"vs":1,"ent":1,"neo":1,"unk":0,"oth":0},{"y":2023,"vs":3,"ent":0,"neo":0,"unk":1,"oth":0},{"y":2024,"vs":0,"ent":1,"neo":0,"unk":0,"oth":0}];
+// ── MODAL DATA ──
+const modalContent = {
+  population: {
+    tag:"Population Estimate", title:"2024 Population: 384 Whales",
+    body:`<p>The <strong>Pace model</strong> estimate for 2024 (December 2023–November 2024) is <strong>384 whales</strong> (95% credible interval +10/−9), using data as of September 8, 2025.</p>
+    <p>The 2023 estimate was recalculated with updated data, resulting in a revised estimate of <strong>376 (+4/−3)</strong>.</p>
+    <p>While the sharp population decline from 2015–2020 appears to have slowed, annual mortalities and/or serious injuries continue to exceed population recovery thresholds.</p>
+    <p>The North Atlantic right whale remains <strong>red listed as Critically Endangered</strong> by the IUCN — one of only two large whale species on that list. This designation is made when a species is considered at high risk for global extinction.</p>`
+  },
+  calves: {
+    tag:"Reproduction", title:"2025 Calving Season: 11 Pairs",
+    body:`<p><strong>Eleven mother/calf pairs</strong> were sighted in the 2025 calving season, down from 20 in 2024.</p>
+    <p>There were <strong>no detected calf mortalities</strong> on the southeast calving grounds in 2025, and all 11 pairs were seen on northern feeding grounds (one was only detected on the feeding grounds).</p>
+    <p>There were <strong>four first-time mothers</strong> in 2025, matching 2024. The average age of these four first-time mothers was at least 16 years — underscoring findings that declining and delayed recruitment of reproductive females is contributing to the lack of/slowed recovery.</p>
+    <p>The average inter-birth interval remains elevated, though the <strong>median interval for 2025 calving females was the lowest since 2013</strong> — a potentially positive indicator.</p>`
+  },
+  mortality: {
+    tag:"Mortalities", title:"Zero Detected Mortalities in 2025",
+    body:`<p>There were <strong>zero detected right whale mortalities</strong> in 2025 — the first time in several years, suggesting some management measures may be working.</p>
+    <p>A previously unidentified carcass detected on 5/12/2024 SE of Nova Scotia was matched to <strong>right whale #4633</strong>, an 18-year-old female.</p>
+    <p>However, the report notes that <strong>detected mortalities represent only a fraction of true mortalities</strong> (Pace et al., 2021) — annual detected values are known underestimates.</p>
+    <p>With at least one serious injury detected in 2025, <strong>PBR (Potential Biological Removal = 0.7)</strong> was once again exceeded. The sublethal impacts of injuries on reproduction and health are becoming increasingly clear but are not yet adequately addressed in management plans.</p>
+    <p>The NARWC Board reiterates that <strong>necropsies are significant data collection events</strong> and views consistent necropsy response and support as critical to monitor right whale recovery.</p>`
+  },
+  entangle: {
+    tag:"Entanglement", title:"Entanglements: Ongoing Risk",
+    body:`<p>Initial analyses detected <strong>at least 5 new entanglement/entrapment events</strong> in 2025:</p>
+    <ul>
+      <li>One free-swimming entrapment in a herring weir (#4146) — successfully resolved</li>
+      <li>One whale sighted with attached gear (#5217/Division) — died 1/27/2026</li>
+      <li>Three whales with new scarring from entanglement (without gear present)</li>
+    </ul>
+    <p>The report emphasizes this number will <strong>likely increase</strong> when all data are processed and full scar analysis is completed.</p>
+    <p>Ongoing near real-time monitoring of anthropogenic injuries provides a minimum count — the precise locations cannot always be determined, but pre-injury and injury detection sightings provide regional context.</p>`
+  },
+  monitoring: {
+    tag:"Monitoring Coverage", title:"91% of Population Monitored in 2024",
+    body:`<p>Surveys and opportunistic sightings in 2024 captured approximately <strong>91% of the living population</strong> — consistent with recent years and reflecting strong monitoring capacity.</p>
+    <p>The North Atlantic Right Whale Identification Database contains data from more than <strong>800 contributors</strong> and as of September 8, 2025 consisted of over <strong>two million slides, prints, videos, and digital images</strong> from 102,887 sightings of 833 individual right whales since 1935.</p>
+    <p>Each year, approximately 2,000–5,000 sightings consisting of 50–250,000 images are added to the identification database.</p>
+    <p>The report notes that climate-driven distribution shifts require <strong>nimble and flexible survey strategies</strong> to identify and respond to new important habitats throughout the species range.</p>`
+  },
+  'entangle-detail': {
+    tag:"Entanglement Threat", title:"Entanglement: The Primary Threat",
+    body:`<p>Entanglement in fishing gear remains the <strong>primary anthropogenic threat</strong> to North Atlantic right whale survival and recovery. Research increasingly demonstrates that even non-lethal entanglements cause significant harm:</p>
+    <ul>
+      <li>Sublethal impacts on <strong>reproduction and health</strong> are becoming clearer (Stewart et al., 2021; Knowlton et al., 2022; Moore, 2023; Pirotta et al., 2023, 2024)</li>
+      <li>Entanglement causes <strong>decreased body size</strong> which is associated with reduced calving probability</li>
+      <li>These impacts are not yet adequately addressed in current management and recovery plans</li>
+    </ul>
+    <p>In 2025, active entanglement cases include #5110 (life-threatening, partial disentanglement only), #5132 (complex multi-rope entanglement, gear traced to LFA 38), and #5217/Division (died in January 2026). A weir entrapment (#4146) was successfully resolved.</p>
+    <p>The <strong>delay in broad-scale implementation of lower breaking strength rope in Canada</strong> and the retraction of proposed modifications to U.S. vessel speed reductions are identified as specific management shortcomings that threaten the species.</p>`
+  },
+  'vessel-detail': {
+    tag:"Vessel Strike", title:"Vessel Strikes: Ongoing Risk",
+    body:`<p>There was <strong>one suspected vessel strike injury</strong> documented in 2025 — whale #3504, a 20-year-old male, sighted on January 12, 2025, at Jeffreys Ledge with a wound on the right flank.</p>
+    <p>This case requires additional photo documentation to confirm the injury origin and severity.</p>
+    <p>Vessel strike management measures remain in effect in both U.S. and Canadian waters. Transport Canada's mandatory speed restriction zones cover over <strong>65,000 km²</strong> of the Gulf of St. Lawrence, applying to all vessels longer than 13 m.</p>
+    <p>NOAA's proposed modifications to U.S. vessel speed reductions were retracted in 2025, which the report identified as a threat to species health and survival.</p>`
+  },
+  'mortality-detail': {
+    tag:"Mortality Context", title:"Mortality: Why Zero Detections Isn't Zero Deaths",
+    body:`<p>While <strong>zero detected mortalities</strong> in 2025 is encouraging, the report emphasizes that detected mortalities are known to represent only a fraction of true mortalities.</p>
+    <p>Research by Pace et al. (2021) on cryptic mortality shows that <strong>many deaths go undetected</strong> — whales that die at sea without their carcasses being found and identified.</p>
+    <p>Historically, cause of death categories include: vessel strike, entanglement, neonate mortality, and unknown cause. The unknown category includes cases either not assessed or assessed without definitive findings.</p>
+    <p>Even with zero detected mortalities, <strong>PBR (Potential Biological Removal = 0.7) was exceeded</strong> in 2025 due to at least one documented serious injury. PBR represents the maximum number of animals that can be removed annually (by human causes) while allowing a population to reach or maintain its optimum sustainable population level.</p>`
+  }
+};
+
+// ── ABOUT CALLOUT ──
+function toggleAbout(el) {
+  const body = document.getElementById('about-body');
+  const chevron = document.getElementById('about-chevron');
+  const isOpen = body.style.display === 'block';
+  body.style.display = isOpen ? 'none' : 'block';
+  chevron.classList.toggle('open', !isOpen);
+}
+
+// ── PARTICLES ──
+function initParticles() {
+  const container = document.getElementById('particles');
+  for(let i=0;i<25;i++) {
+    const p = document.createElement('div');
+    p.className = 'particle';
+    const size = Math.random()*3+1;
+    p.style.cssText = `
+      width:${size}px; height:${size}px;
+      left:${Math.random()*100}%;
+      animation-duration:${Math.random()*20+15}s;
+      animation-delay:${Math.random()*20}s;
+    `;
+    container.appendChild(p);
+  }
+}
+
+// ── CHART: POPULATION ──
+let popChart;
+let currentRange = 'all';
+
+function buildPopChart(rangeStart, data) {
+  if(!data) data = popData;
+  const filtered = rangeStart === 'all' ? data : data.filter(d=>d.y>=parseInt(rangeStart));
+  const labels = filtered.map(d=>d.y);
+  const meds = filtered.map(d=>d.med);
+  const los = filtered.map(d=>d.lo);
+  const his = filtered.map(d=>d.hi);
+  
+  const ctx = document.getElementById('pop-chart').getContext('2d');
+  if(popChart) popChart.destroy();
+  
+  popChart = new Chart(ctx, {
+    type:'line',
+    data: {
+      labels,
+      datasets:[
+        {
+          label:'Upper Bound',
+          data:his,
+          borderColor:'rgba(0,201,167,0)',
+          backgroundColor:'rgba(0,201,167,0.25)',
+          fill:'+1',
+          pointRadius:0,
+          tension:0.4,
+        },
+        {
+          label:'Median Population',
+          data:meds,
+          borderColor:'#00c9a7',
+          borderWidth:2.5,
+          backgroundColor:'rgba(0,201,167,0.06)',
+          fill:false,
+          pointRadius:3,
+          pointHoverRadius:6,
+          pointBackgroundColor:'#00c9a7',
+          tension:0.4,
+        },
+        {
+          label:'Lower Bound',
+          data:los,
+          borderColor:'rgba(0,201,167,0)',
+          backgroundColor:'rgba(0,201,167,0.25)',
+          fill:'-1',
+          pointRadius:0,
+          tension:0.4,
+        }
+      ]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      interaction:{ mode:'index', intersect:false },
+      plugins:{
+        legend:{ display:false },
+        tooltip:{
+          backgroundColor:'rgba(7,22,40,0.95)',
+          titleColor:'#00c9a7',
+          bodyColor:'#f0ece3',
+          borderColor:'rgba(0,201,167,0.3)',
+          borderWidth:1,
+          padding:12,
+          callbacks:{
+            title: ctx => `Year ${ctx[0].label}`,
+            label: ctx => {
+              if(ctx.datasetIndex===1) return `  Median: ${ctx.raw}`;
+              if(ctx.datasetIndex===0) return `  Upper: ${ctx.raw}`;
+              if(ctx.datasetIndex===2) return `  Lower: ${ctx.raw}`;
+            }
+          }
+        }
+      },
+      scales:{
+        x:{
+          grid:{ color:'rgba(255,255,255,0.04)' },
+          ticks:{ color:'#8ba8c4', font:{family:'DM Mono',size:11} }
+        },
+        y:{
+          grid:{ color:'rgba(255,255,255,0.04)' },
+          ticks:{ color:'#8ba8c4', font:{family:'DM Mono',size:11}, stepSize:10 },
+          min: rangeStart==='all' ? 250 : undefined
+        }
+      }
+    }
+  });
+}
+
+let popDataCache = popData;
+function setChartRange(range, btn) {
+  currentRange = range;
+  document.querySelectorAll('.chart-btn').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active');
+  buildPopChart(range, popDataCache);
+}
+
+// ── CHART: CALVES ──
+let calfChart, intervalChart;
+function buildReproCharts(data) {
+  if(!data) data = reproData;
+  const years = data.map(d=>d.y);
+  const calves = data.map(d=>d.calves);
+  const intervals = data.map(d=>d.medI);
+  
+  const calfCtx = document.getElementById('calf-chart').getContext('2d');
+  calfChart = new Chart(calfCtx, {
+    type:'bar',
+    data:{
+      labels:years,
+      datasets:[{
+        label:'Calves',
+        data:calves,
+        backgroundColor: calves.map((v,i) => {
+          if(v===0) return 'rgba(239,68,68,0.6)';
+          if(v>=0) return 'rgba(0,201,167,0.8)';
+          return 'rgba(0,201,167,0.4)';
+        }),
+        borderColor:'rgba(0,201,167,0.3)',
+        borderWidth:1,
+        borderRadius:3,
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          backgroundColor:'rgba(7,22,40,0.95)',
+          titleColor:'#00c9a7', bodyColor:'#f0ece3',
+          borderColor:'rgba(0,201,167,0.3)', borderWidth:1, padding:10
+        }
+      },
+      scales:{
+        x:{ grid:{color:'rgba(255,255,255,0.03)'}, ticks:{color:'#8ba8c4',font:{size:9}} },
+        y:{ grid:{color:'rgba(255,255,255,0.03)'}, ticks:{color:'#8ba8c4',font:{size:9}} }
+      }
+    }
+  });
+  
+  const intCtx = document.getElementById('interval-chart').getContext('2d');
+  intervalChart = new Chart(intCtx, {
+    type:'line',
+    data:{
+      labels:years,
+      datasets:[{
+        label:'Median Interval',
+        data:intervals,
+        borderColor:'#f59e0b',
+        backgroundColor:'rgba(245,158,11,0.08)',
+        borderWidth:2,
+        fill:true,
+        tension:0.4,
+        pointRadius:4,
+        pointBackgroundColor:'#f59e0b',
+        pointHoverRadius:7,
+        spanGaps:true,
+      }]
+    },
+    options:{
+      responsive:true, maintainAspectRatio:false,
+      plugins:{
+        legend:{display:false},
+        tooltip:{
+          backgroundColor:'rgba(7,22,40,0.95)',
+          titleColor:'#f59e0b', bodyColor:'#f0ece3',
+          borderColor:'rgba(245,158,11,0.3)', borderWidth:1, padding:10
+        }
+      },
+      scales:{
+        x:{ grid:{color:'rgba(255,255,255,0.03)'}, ticks:{color:'#8ba8c4',font:{size:9}} },
+        y:{
+          grid:{color:'rgba(255,255,255,0.03)'}, ticks:{color:'#8ba8c4',font:{size:9}},
+          title:{display:true, text:'Years', color:'#8ba8c4',font:{size:10}}
+        }
+      }
+    }
+  });
+}
+
+// ── TABLES ──
+function buildPopTable(data, showTrend) {
+  // Show trend only when in chronological year order (default on first load)
+  if (showTrend === undefined) {
+    showTrend = data.length < 2 || data[0].y < data[data.length - 1].y;
+  }
+  const tbody = document.getElementById('pop-tbody');
+  tbody.innerHTML = '';
+  let prevMed = null;
+  data.forEach(d => {
+    let trend = '—';
+    let tColor = '#8ba8c4';
+    if (showTrend && prevMed !== null) {
+      trend = d.med > prevMed ? '▲' : d.med < prevMed ? '▼' : '→';
+      tColor = trend === '▲' ? '#00c9a7' : trend === '▼' ? '#ef4444' : '#8ba8c4';
+    }
+    tbody.innerHTML += `<tr>
+      <td class="year">${d.y}</td>
+      <td class="num" style="color:#8ba8c4">${d.lo}</td>
+      <td class="num" style="color:#f0ece3;font-weight:500">${d.med}</td>
+      <td class="num" style="color:#8ba8c4">${d.hi}</td>
+      <td style="color:${tColor};font-family:'DM Mono',monospace;font-size:0.9rem">${trend}</td>
+    </tr>`;
+    prevMed = d.med;
+  });
+}
+
+function filterPopTable(val) {
+  const filtered = val ? popData.filter(d=>d.y.toString().includes(val)) : popData;
+  buildPopTable(filtered);
+}
+
+function buildReproTable(data) {
+  if(!data) data = reproData;
+  const tbody = document.getElementById('repro-tbody');
+  tbody.innerHTML = '';
+  data.forEach(d => {
+    const pctColor = d.pctCalved>40 ? '#00c9a7' : d.pctCalved>20 ? '#f59e0b' : d.pctCalved>10 ? '#f0ece3' : '#ef4444';
+    tbody.innerHTML += `<tr>
+      <td class="year">${d.y}</td>
+      <td class="num">${d.calves}</td>
+      <td class="num">${d.cows}</td>
+      <td class="pct" style="color:${pctColor}">${d.pctCalved.toFixed(1)}%</td>
+      <td class="num">${d.avgI ?? '—'}</td>
+      <td class="num">${d.medI ?? '—'}</td>
+      <td class="num">${d.firstMoms}</td>
+    </tr>`;
+  });
+}
+
+function buildMonTable(data) {
+  const tbody = document.getElementById('mon-tbody');
+  tbody.innerHTML = '';
+  data.forEach(d => {
+    const pctColor = d.pct>=90 ? '#00c9a7' : d.pct>=80 ? '#f0ece3' : d.pct>=70 ? '#f59e0b' : '#ef4444';
+    tbody.innerHTML += `<tr>
+      <td class="year">${d.y}</td>
+      <td class="num">${d.s.toLocaleString()}</td>
+      <td class="num">${d.u}</td>
+      <td class="num">${d.p}</td>
+      <td class="num">${d.e}</td>
+      <td>
+        <span class="pct" style="color:${pctColor};font-family:'DM Mono',monospace;font-size:0.8rem">${d.pct}%</span>
+        <div class="pct-bar"><div class="pct-fill" style="width:${d.pct}%"></div></div>
+      </td>
+    </tr>`;
+  });
+}
+
+function filterMonTable(val) {
+  const filtered = val ? monData.filter(d=>d.y.toString().includes(val)) : monData;
+  buildMonTable(filtered);
+}
+
+// ── SORT ──
+let sortDir = {};
+function sortTable(table, col) {
+  const key = table + '-' + col;
+  sortDir[key] = !sortDir[key];
+  const asc = sortDir[key];
+
+  // Update header arrows for the clicked table
+  const tableEl = document.getElementById(table === 'repro' ? 'repro-table' : table === 'pop' ? 'pop-table' : 'mon-table');
+  if(tableEl) {
+    tableEl.querySelectorAll('th').forEach(function(th, i) {
+      const base = th.textContent.replace(/ [↑↓↕]$/, '');
+      if(i === col) th.textContent = base + (asc ? ' ↑' : ' ↓');
+      else th.textContent = base + ' ↕';
+    });
+  }
+
+  if(table==='pop') {
+    const cols = ['y','lo','med','hi'];
+    const sorted = [...popData].sort((a,b)=>asc?a[cols[col]]-b[cols[col]]:b[cols[col]]-a[cols[col]]);
+    // Trend arrows only meaningful when sorted chronologically by year ascending
+    const showTrend = (col === 0 && asc);
+    buildPopTable(sorted, showTrend);
+  } else if(table==='mon') {
+    const cols = ['y','s','u','p','e','pct'];
+    const sorted = [...monData].sort((a,b)=>asc?a[cols[col]]-b[cols[col]]:b[cols[col]]-a[cols[col]]);
+    buildMonTable(sorted);
+  } else if(table==='repro') {
+    const cols = ['y','calves','cows','pctCalved','avgI','medI','firstMoms'];
+    const sorted = [...reproData].sort(function(a,b) {
+      const av = a[cols[col]] ?? -Infinity;
+      const bv = b[cols[col]] ?? -Infinity;
+      return asc ? av - bv : bv - av;
+    });
+    buildReproTable(sorted);
+  }
+}
+
+// ── REGIONS ──
+function buildRegions(data) {
+  if(!data) data = regionData;
+  const maxS = Math.max(...data.map(r=>r.sightings));
+  const grid = document.getElementById('region-grid');
+  grid.innerHTML = '';
+  data.forEach(r => {
+    const pct = Math.round(r.sightings/maxS*100);
+    grid.innerHTML += `
+      <div class="region-card">
+        <div class="region-name">${r.name}</div>
+        <div class="region-count">${r.sightings.toLocaleString()}</div>
+        <div class="region-bar"><div class="region-fill" style="width:${pct}%"></div></div>
+        <div class="region-months">${r.months}</div>
+      </div>`;
+  });
+}
+
+
+// ── MORTALITY DATA ──
+// US and Canada detected mortalities per year.
+// Values estimated from Figure 2 of the 2025 NARWC Report Card.
+// *** Replace with exact values from the report card when available. ***
+// Each row: {y: year, ca: Canada count, us: US count}
+const mortData = [
+  {y:2000, ca:0, us:1},
+  {y:2001, ca:3, us:4},
+  {y:2002, ca:0, us:5},
+  {y:2003, ca:1, us:1},
+  {y:2004, ca:0, us:6},
+  {y:2005, ca:0, us:5},
+  {y:2006, ca:2, us:4},
+  {y:2007, ca:0, us:3},
+  {y:2008, ca:0, us:3},
+  {y:2009, ca:0, us:5},
+  {y:2010, ca:0, us:1},
+  {y:2011, ca:0, us:5},
+  {y:2012, ca:1, us:2},
+  {y:2013, ca:0, us:1},
+  {y:2014, ca:1, us:2},
+  {y:2015, ca:3, us:0},
+  {y:2016, ca:1, us:3},
+  {y:2017, ca:12, us:5},
+  {y:2018, ca:0, us:3},
+  {y:2019, ca:9, us:1},
+  {y:2020, ca:0, us:2},
+  {y:2021, ca:0, us:2},
+  {y:2022, ca:0, us:0},
+  {y:2023, ca:0, us:2},
+  {y:2024, ca:1, us:4},
+  {y:2025, ca:0, us:0},
+];
+
+let mortChart;
+function buildMortChart(data) {
+  if(!data) data = mortData;
+  var ctx = document.getElementById('mort-chart').getContext('2d');
+  if (mortChart) mortChart.destroy();
+  mortChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: data.map(function(d) { return d.y; }),
+      datasets: [
+        {
+          label: 'Canada',
+          data: data.map(function(d) { return d.ca; }),
+          backgroundColor: 'rgba(0,201,167,0.75)',
+          borderColor: 'rgba(0,201,167,1)',
+          borderWidth: 1,
+          borderRadius: 3,
+        },
+        {
+          label: 'US',
+          data: data.map(function(d) { return d.us; }),
+          backgroundColor: 'rgba(56,189,248,0.65)',
+          borderColor: 'rgba(56,189,248,1)',
+          borderWidth: 1,
+          borderRadius: 3,
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      interaction: { mode: 'index', intersect: false },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: 'rgba(7,22,40,0.95)',
+          titleColor: '#00c9a7',
+          bodyColor: '#f0ece3',
+          borderColor: 'rgba(0,201,167,0.3)',
+          borderWidth: 1,
+          padding: 12,
+          callbacks: {
+            title: function(ctx) { return 'Year ' + ctx[0].label; },
+            afterBody: function(ctx) {
+              var ca = ctx[0] ? (ctx[0].raw || 0) : 0;
+              var us = ctx[1] ? (ctx[1].raw || 0) : 0;
+              return ['─────────────', 'Total: ' + (ca + us)];
+            }
+          }
+        }
+      },
+      scales: {
+        x: {
+          grid: { color: 'rgba(255,255,255,0.04)' },
+          ticks: { color: '#8ba8c4', font: { family: 'DM Mono', size: 10 } }
+        },
+        y: {
+          grid: { color: 'rgba(255,255,255,0.04)' },
+          ticks: { color: '#8ba8c4', font: { family: 'DM Mono', size: 11 }, stepSize: 1 },
+          title: { display: true, text: 'Number of Whales', color: '#8ba8c4', font: { size: 11 } },
+          min: 0
+        }
+      }
+    }
+  });
+}
+
+// ── CAUSE OF DEATH DATA ──
+// Detected mortalities by cause per year, estimated from Figure 3 of the 2025 NARWC Report Card.
+// *** Replace with exact values from the report card when available. ***
+// Each row: {y:year, vs:vessel_strike, ent:entanglement, neo:neonate, unk:unknown, oth:other}
+const causeData = [
+  {y:2000, vs:0, ent:1, neo:0, unk:0, oth:0},
+  {y:2001, vs:2, ent:1, neo:2, unk:2, oth:0},
+  {y:2002, vs:1, ent:1, neo:1, unk:2, oth:0},
+  {y:2003, vs:1, ent:0, neo:0, unk:1, oth:0},
+  {y:2004, vs:2, ent:0, neo:1, unk:1, oth:0},
+  {y:2005, vs:2, ent:1, neo:0, unk:2, oth:0},
+  {y:2006, vs:4, ent:1, neo:0, unk:1, oth:0},
+  {y:2007, vs:0, ent:1, neo:1, unk:1, oth:0},
+  {y:2008, vs:0, ent:0, neo:3, unk:0, oth:0},
+  {y:2009, vs:0, ent:1, neo:0, unk:3, oth:1},
+  {y:2010, vs:1, ent:2, neo:0, unk:0, oth:0},
+  {y:2011, vs:1, ent:2, neo:0, unk:1, oth:0},
+  {y:2012, vs:0, ent:2, neo:0, unk:1, oth:0},
+  {y:2013, vs:0, ent:1, neo:0, unk:0, oth:0},
+  {y:2014, vs:0, ent:2, neo:0, unk:1, oth:0},
+  {y:2015, vs:0, ent:0, neo:0, unk:3, oth:0},
+  {y:2016, vs:1, ent:2, neo:0, unk:1, oth:0},
+  {y:2017, vs:5, ent:4, neo:0, unk:8, oth:0},
+  {y:2018, vs:0, ent:3, neo:0, unk:0, oth:0},
+  {y:2019, vs:4, ent:1, neo:0, unk:5, oth:0},
+  {y:2020, vs:1, ent:0, neo:1, unk:0, oth:0},
+  {y:2021, vs:1, ent:1, neo:0, unk:0, oth:0},
+  {y:2022, vs:0, ent:0, neo:0, unk:0, oth:0},
+  {y:2023, vs:1, ent:0, neo:1, unk:0, oth:0},
+  {y:2024, vs:3, ent:1, neo:0, unk:1, oth:0},
+  {y:2025, vs:0, ent:0, neo:0, unk:0, oth:0},
+];
 /* AIRTABLE_DATA_END */
 
 let causeChart;
