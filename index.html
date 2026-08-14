@@ -2324,94 +2324,17 @@ initParticles();
 // The script at scripts/fetch-airtable.js regenerates this section automatically.
 
 /* AIRTABLE_DATA_START */
-const popData = [
-  {y:1990,lo:283,med:289,hi:295},{y:1991,lo:291,med:298,hi:304},{y:1992,lo:299,med:305,hi:312},
-  {y:1993,lo:293,med:299,hi:305},{y:1994,lo:298,med:303,hi:308},{y:1995,lo:300,med:305,hi:310},
-  {y:1996,lo:315,med:320,hi:325},{y:1997,lo:324,med:329,hi:335},{y:1998,lo:324,med:329,hi:334},
-  {y:1999,lo:324,med:328,hi:332},{y:2000,lo:316,med:319,hi:323},{y:2001,lo:343,med:346,hi:350},
-  {y:2002,lo:353,med:355,hi:358},{y:2003,lo:362,med:365,hi:368},{y:2004,lo:370,med:372,hi:376},
-  {y:2005,lo:394,med:396,hi:399},{y:2006,lo:399,med:401,hi:404},{y:2007,lo:412,med:413,hi:416},
-  {y:2008,lo:428,med:430,hi:432},{y:2009,lo:464,med:466,hi:468},{y:2010,lo:473,med:476,hi:480},
-  {y:2011,lo:479,med:483,hi:487},{y:2012,lo:469,med:473,hi:478},{y:2013,lo:476,med:481,hi:488},
-  {y:2014,lo:471,med:477,hi:483},{y:2015,lo:465,med:473,hi:482},{y:2016,lo:451,med:457,hi:465},
-  {y:2017,lo:430,med:434,hi:439},{y:2018,lo:388,med:390,hi:394},{y:2019,lo:379,med:381,hi:384},
-  {y:2020,lo:357,med:359,hi:362},{y:2021,lo:370,med:371,hi:374},{y:2022,lo:371,med:374,hi:377},
-  {y:2023,lo:373,med:376,hi:380},{y:2024,lo:375,med:384,hi:394}
-];
+const popData = [{"y":1990,"lo":6,"med":289,"hi":6},{"y":1991,"lo":7,"med":298,"hi":6},{"y":1992,"lo":6,"med":305,"hi":7},{"y":1993,"lo":6,"med":299,"hi":6},{"y":1994,"lo":5,"med":303,"hi":5},{"y":1995,"lo":5,"med":305,"hi":5},{"y":1996,"lo":5,"med":320,"hi":5},{"y":1997,"lo":5,"med":329,"hi":6},{"y":1998,"lo":5,"med":329,"hi":5},{"y":1999,"lo":4,"med":328,"hi":4},{"y":2000,"lo":3,"med":319,"hi":4},{"y":2001,"lo":3,"med":346,"hi":4},{"y":2002,"lo":2,"med":355,"hi":3},{"y":2003,"lo":3,"med":365,"hi":3},{"y":2004,"lo":2,"med":372,"hi":4},{"y":2005,"lo":2,"med":396,"hi":3},{"y":2006,"lo":2,"med":401,"hi":3},{"y":2007,"lo":1,"med":413,"hi":3},{"y":2008,"lo":2,"med":430,"hi":2},{"y":2009,"lo":2,"med":466,"hi":2},{"y":2010,"lo":3,"med":476,"hi":4},{"y":2011,"lo":4,"med":483,"hi":4},{"y":2012,"lo":4,"med":473,"hi":5},{"y":2013,"lo":5,"med":481,"hi":7},{"y":2014,"lo":6,"med":477,"hi":6},{"y":2015,"lo":8,"med":473,"hi":9},{"y":2016,"lo":6,"med":457,"hi":8},{"y":2017,"lo":4,"med":434,"hi":5},{"y":2018,"lo":2,"med":390,"hi":4},{"y":2019,"lo":2,"med":381,"hi":3},{"y":2020,"lo":2,"med":359,"hi":3},{"y":2021,"lo":1,"med":371,"hi":3},{"y":2022,"lo":3,"med":374,"hi":3},{"y":2023,"lo":3,"med":376,"hi":4},{"y":2024,"lo":9,"med":384,"hi":10}];
 
-const monData = [
-  {y:2000,s:3261,u:237,p:319,e:130,pct:74},{y:2001,s:4021,u:283,p:346,e:117,pct:82},
-  {y:2002,s:2629,u:303,p:355,e:228,pct:85},{y:2003,s:2467,u:315,p:365,e:178,pct:86},
-  {y:2004,s:1807,u:286,p:372,e:265,pct:77},{y:2005,s:3381,u:353,p:396,e:359,pct:89},
-  {y:2006,s:2827,u:347,p:401,e:317,pct:87},{y:2007,s:3640,u:379,p:413,e:260,pct:92},
-  {y:2008,s:4111,u:391,p:430,e:258,pct:91},{y:2009,s:4819,u:425,p:466,e:259,pct:91},
-  {y:2010,s:3202,u:422,p:476,e:256,pct:89},{y:2011,s:3588,u:439,p:483,e:233,pct:91},
-  {y:2012,s:2076,u:377,p:473,e:271,pct:80},{y:2013,s:2012,u:303,p:481,e:226,pct:63},
-  {y:2014,s:2372,u:373,p:477,e:198,pct:78},{y:2015,s:1874,u:278,p:473,e:178,pct:59},
-  {y:2016,s:2257,u:330,p:457,e:171,pct:72},{y:2017,s:3120,u:382,p:434,e:180,pct:88},
-  {y:2018,s:3520,u:351,p:390,e:183,pct:90},{y:2019,s:5225,u:365,p:381,e:224,pct:96},
-  {y:2020,s:2213,u:308,p:359,e:172,pct:86},{y:2021,s:4217,u:348,p:371,e:260,pct:94},
-  {y:2022,s:3904,u:345,p:374,e:370,pct:92},{y:2023,s:3882,u:351,p:376,e:403,pct:93},
-  {y:2024,s:3963,u:350,p:384,e:191,pct:91}
-];
+const monData = [{"y":2000,"s":3261,"u":237,"p":319,"e":130,"pct":0.74},{"y":2001,"s":4021,"u":283,"p":346,"e":117,"pct":0.82},{"y":2002,"s":2629,"u":303,"p":355,"e":228,"pct":0.85},{"y":2003,"s":2467,"u":315,"p":365,"e":178,"pct":0.86},{"y":2004,"s":1807,"u":286,"p":372,"e":265,"pct":0.77},{"y":2005,"s":3381,"u":353,"p":396,"e":359,"pct":0.89},{"y":2006,"s":2827,"u":347,"p":401,"e":317,"pct":0.87},{"y":2007,"s":3640,"u":379,"p":413,"e":260,"pct":0.92},{"y":2008,"s":4111,"u":391,"p":430,"e":258,"pct":0.91},{"y":2009,"s":4819,"u":425,"p":466,"e":259,"pct":0.91},{"y":2010,"s":3202,"u":422,"p":476,"e":256,"pct":0.89},{"y":2011,"s":3588,"u":439,"p":483,"e":233,"pct":0.91},{"y":2012,"s":2076,"u":377,"p":473,"e":271,"pct":0.8},{"y":2013,"s":2012,"u":303,"p":481,"e":226,"pct":0.63},{"y":2014,"s":2372,"u":373,"p":477,"e":198,"pct":0.78},{"y":2015,"s":1874,"u":278,"p":473,"e":178,"pct":0.59},{"y":2016,"s":2257,"u":330,"p":457,"e":171,"pct":0.72},{"y":2017,"s":3120,"u":382,"p":434,"e":180,"pct":0.88},{"y":2018,"s":3520,"u":351,"p":390,"e":183,"pct":0.9},{"y":2019,"s":5225,"u":365,"p":381,"e":224,"pct":0.96},{"y":2020,"s":2213,"u":308,"p":359,"e":172,"pct":0.86},{"y":2021,"s":4217,"u":348,"p":371,"e":260,"pct":0.94},{"y":2022,"s":3904,"u":345,"p":374,"e":370,"pct":0.92},{"y":2023,"s":3882,"u":351,"p":376,"e":403,"pct":0.93},{"y":2024,"s":3963,"u":350,"p":384,"e":191,"pct":0.91}];
 
-const reproData = [
-  {y:2009,calves:39,cows:59,pctCalved:66.1,avgI:4.0,medI:4,minI:2,maxI:6,firstMoms:8},
-  {y:2010,calves:19,cows:46,pctCalved:41.3,avgI:3.3,medI:3,minI:2,maxI:5,firstMoms:4},
-  {y:2011,calves:22,cows:49,pctCalved:44.9,avgI:3.7,medI:3,minI:2,maxI:6,firstMoms:3},
-  {y:2012,calves:7,cows:65,pctCalved:10.8,avgI:5.4,medI:4,minI:4,maxI:10,firstMoms:2},
-  {y:2013,calves:20,cows:84,pctCalved:23.8,avgI:4.6,medI:4,minI:2,maxI:8,firstMoms:7},
-  {y:2014,calves:11,cows:86,pctCalved:12.8,avgI:4.4,medI:4.5,minI:2,maxI:7,firstMoms:1},
-  {y:2015,calves:17,cows:82,pctCalved:20.7,avgI:5.5,medI:6,minI:4,maxI:7,firstMoms:4},
-  {y:2016,calves:14,cows:84,pctCalved:16.7,avgI:6.6,medI:7,minI:4,maxI:9,firstMoms:4},
-  {y:2017,calves:5,cows:74,pctCalved:6.8,avgI:10.2,medI:8,minI:7,maxI:20,firstMoms:0},
-  {y:2018,calves:0,cows:78,pctCalved:0,avgI:null,medI:null,minI:null,maxI:null,firstMoms:0},
-  {y:2019,calves:7,cows:89,pctCalved:7.9,avgI:7,medI:7,minI:3,maxI:10,firstMoms:1},
-  {y:2020,calves:10,cows:80,pctCalved:12.5,avgI:7.6,medI:7,minI:4,maxI:11,firstMoms:1},
-  {y:2021,calves:18,cows:72,pctCalved:25.0,avgI:9.2,medI:10,minI:5,maxI:11,firstMoms:6},
-  {y:2022,calves:15,cows:56,pctCalved:26.8,avgI:7.7,medI:8,minI:2,maxI:13,firstMoms:0},
-  {y:2023,calves:12,cows:46,pctCalved:26.1,avgI:7.8,medI:7.5,minI:4,maxI:12,firstMoms:2},
-  {y:2024,calves:20,cows:55,pctCalved:36.4,avgI:7.3,medI:6.5,minI:2,maxI:14,firstMoms:4},
-  {y:2025,calves:11,cows:47,pctCalved:23.4,avgI:6.9,medI:4,minI:4,maxI:12,firstMoms:4}
-];
+const reproData = [{"y":2009,"calves":39,"cows":59,"pctCalved":66.1,"avgI":4,"medI":4,"minI":2,"maxI":6},{"y":2010,"calves":19,"cows":46,"pctCalved":41.3,"avgI":3.3,"medI":3,"minI":2,"maxI":5},{"y":2011,"calves":22,"cows":49,"pctCalved":44.9,"avgI":3.7,"medI":3,"minI":2,"maxI":6},{"y":2012,"calves":7,"cows":65,"pctCalved":10.8,"avgI":5.4,"medI":4,"minI":4,"maxI":10},{"y":2013,"calves":20,"cows":84,"pctCalved":23.8,"avgI":4.6,"medI":4,"minI":2,"maxI":8},{"y":2014,"calves":11,"cows":86,"pctCalved":12.8,"avgI":4.4,"medI":4.5,"minI":2,"maxI":7},{"y":2015,"calves":17,"cows":82,"pctCalved":20.7,"avgI":5.5,"medI":6,"minI":4,"maxI":7},{"y":2016,"calves":14,"cows":84,"pctCalved":16.7,"avgI":6.6,"medI":7,"minI":4,"maxI":9},{"y":2017,"calves":5,"cows":74,"pctCalved":6.8,"avgI":10.2,"medI":8,"minI":7,"maxI":20},{"y":2018,"calves":0,"cows":78,"pctCalved":0,"avgI":null,"medI":null,"minI":null,"maxI":null},{"y":2019,"calves":7,"cows":89,"pctCalved":7.9,"avgI":7,"medI":7,"minI":3,"maxI":10},{"y":2020,"calves":10,"cows":80,"pctCalved":12.5,"avgI":7.6,"medI":7,"minI":4,"maxI":11},{"y":2021,"calves":18,"cows":72,"pctCalved":25,"avgI":9.2,"medI":10,"minI":5,"maxI":11},{"y":2022,"calves":15,"cows":56,"pctCalved":26.8,"avgI":7.7,"medI":8,"minI":2,"maxI":13},{"y":2023,"calves":12,"cows":46,"pctCalved":26.1,"avgI":7.8,"medI":7.5,"minI":4,"maxI":12},{"y":2024,"calves":20,"cows":55,"pctCalved":36.4,"avgI":7.3,"medI":6.5,"minI":2,"maxI":14},{"y":2025,"calves":11,"cows":47,"pctCalved":23.4,"avgI":6.9,"medI":4,"minI":4,"maxI":12}];
 
-const regionData = [
-  {name:"New England (MA Bay/CCB)",sightings:1261,months:"Jan–May, Dec"},
-  {name:"Gulf of St. Lawrence / North",sightings:1014,months:"May–Oct"},
-  {name:"Mid-Atlantic",sightings:752,months:"Jan–Aug, Nov–Dec"},
-  {name:"Southeast US",sightings:457,months:"Jan–Mar, Nov–Dec"},
-  {name:"Great South Channel",sightings:205,months:"Jan–Apr"},
-  {name:"Bay of Fundy",sightings:182,months:"Jul–Nov"},
-  {name:"Gulf of Maine",sightings:89,months:"Jan–Feb, Apr, Jun–Sep, Dec"},
-  {name:"Roseway Basin",sightings:34,months:"May, Oct"},
-  {name:"East (Azores, Scotian Shelf, etc.)",sightings:1,months:"Jun"}
-];
+const regionData = [{"name":"\n  North (North of latitude 46\n  degrees including Newfoundland, Gulf of St. Lawrence, Iceland)\n  ","sightings":1014,"months":"\n  May-Oct\n  "},{"name":"\n  Roseway Basin\n  ","sightings":34,"months":"\n  May, Oct\n  "},{"name":"\n  Southeast United States\n  ","sightings":457,"months":"\n  Jan-Mar, Nov-Dec\n  "},{"name":"Bay of Fundy","sightings":182,"months":"Jul-Nov"},{"name":"East (East of Mainland US (Azores, Nova Scotian Shelf, Spain, Bermuda, Canary Islands)","sightings":1,"months":"Jun"},{"name":"Great South Channel","sightings":205,"months":"Jan-Apr"},{"name":"Gulf of Maine","sightings":89,"months":"Jan-Feb, Apr, Jun-Sep, Dec"},{"name":"Mid-Atlantic (includes south of Cape Cod)","sightings":752,"months":"Jan-Aug, Nov-Dec"},{"name":"New England (Massachusetts Bay/Cape Cod Bay)","sightings":1261,"months":"Jan-May, Dec"}];
 
-const mortData = [
-  {y:2000,ca:0,us:1},{y:2001,ca:3,us:4},{y:2002,ca:0,us:5},{y:2003,ca:1,us:1},
-  {y:2004,ca:0,us:6},{y:2005,ca:0,us:5},{y:2006,ca:2,us:4},{y:2007,ca:0,us:3},
-  {y:2008,ca:0,us:3},{y:2009,ca:0,us:5},{y:2010,ca:0,us:1},{y:2011,ca:0,us:5},
-  {y:2012,ca:1,us:2},{y:2013,ca:0,us:1},{y:2014,ca:1,us:2},{y:2015,ca:3,us:0},
-  {y:2016,ca:1,us:3},{y:2017,ca:12,us:5},{y:2018,ca:0,us:3},{y:2019,ca:9,us:1},
-  {y:2020,ca:0,us:2},{y:2021,ca:0,us:2},{y:2022,ca:0,us:0},{y:2023,ca:0,us:2},
-  {y:2024,ca:1,us:4},{y:2025,ca:0,us:0}
-];
+const mortData = [{"y":2000,"ca":0,"us":1},{"y":2001,"ca":3,"us":4},{"y":2002,"ca":0,"us":5},{"y":2003,"ca":1,"us":1},{"y":2004,"ca":0,"us":6},{"y":2005,"ca":0,"us":5},{"y":2006,"ca":2,"us":4},{"y":2007,"ca":0,"us":3},{"y":2008,"ca":0,"us":3},{"y":2009,"ca":0,"us":5},{"y":2010,"ca":0,"us":2},{"y":2011,"ca":0,"us":5},{"y":2012,"ca":1,"us":2},{"y":2013,"ca":0,"us":1},{"y":2014,"ca":1,"us":2},{"y":2015,"ca":3,"us":0},{"y":2016,"ca":1,"us":3},{"y":2017,"ca":12,"us":5},{"y":2018,"ca":0,"us":3},{"y":2019,"ca":9,"us":1},{"y":2020,"ca":0,"us":2},{"y":2021,"ca":0,"us":2},{"y":2022,"ca":0,"us":0},{"y":2023,"ca":0,"us":2},{"y":2024,"ca":1,"us":4},{"y":2025,"ca":0,"us":0}];
 
-const causeData = [
-  {y:2000,vs:0,ent:1,neo:0,unk:0,oth:0},{y:2001,vs:2,ent:1,neo:2,unk:2,oth:0},
-  {y:2002,vs:1,ent:1,neo:1,unk:2,oth:0},{y:2003,vs:1,ent:0,neo:0,unk:1,oth:0},
-  {y:2004,vs:2,ent:0,neo:1,unk:1,oth:0},{y:2005,vs:2,ent:1,neo:0,unk:2,oth:0},
-  {y:2006,vs:4,ent:1,neo:0,unk:1,oth:0},{y:2007,vs:0,ent:1,neo:1,unk:1,oth:0},
-  {y:2008,vs:0,ent:0,neo:3,unk:0,oth:0},{y:2009,vs:0,ent:1,neo:0,unk:3,oth:1},
-  {y:2010,vs:1,ent:2,neo:0,unk:0,oth:0},{y:2011,vs:1,ent:2,neo:0,unk:1,oth:0},
-  {y:2012,vs:0,ent:2,neo:0,unk:1,oth:0},{y:2013,vs:0,ent:1,neo:0,unk:0,oth:0},
-  {y:2014,vs:0,ent:2,neo:0,unk:1,oth:0},{y:2015,vs:0,ent:0,neo:0,unk:3,oth:0},
-  {y:2016,vs:1,ent:2,neo:0,unk:1,oth:0},{y:2017,vs:5,ent:4,neo:0,unk:8,oth:0},
-  {y:2018,vs:0,ent:3,neo:0,unk:0,oth:0},{y:2019,vs:4,ent:1,neo:0,unk:5,oth:0},
-  {y:2020,vs:1,ent:0,neo:1,unk:0,oth:0},{y:2021,vs:1,ent:1,neo:0,unk:0,oth:0},
-  {y:2022,vs:0,ent:0,neo:0,unk:0,oth:0},{y:2023,vs:1,ent:0,neo:1,unk:0,oth:0},
-  {y:2024,vs:3,ent:1,neo:0,unk:1,oth:0},{y:2025,vs:0,ent:0,neo:0,unk:0,oth:0}
-];
+const causeData = [{"y":2000,"vs":2,"ent":1,"neo":2,"unk":2,"oth":0},{"y":2001,"vs":1,"ent":1,"neo":1,"unk":2,"oth":0},{"y":2002,"vs":1,"ent":1,"neo":0,"unk":1,"oth":0},{"y":2003,"vs":3,"ent":0,"neo":1,"unk":1,"oth":0},{"y":2004,"vs":2,"ent":0,"neo":0,"unk":2,"oth":0},{"y":2005,"vs":4,"ent":1,"neo":0,"unk":1,"oth":0},{"y":2006,"vs":0,"ent":1,"neo":1,"unk":1,"oth":0},{"y":2007,"vs":0,"ent":1,"neo":3,"unk":0,"oth":0},{"y":2008,"vs":0,"ent":0,"neo":1,"unk":3,"oth":0},{"y":2009,"vs":1,"ent":1,"neo":0,"unk":0,"oth":1},{"y":2010,"vs":1,"ent":2,"neo":0,"unk":2,"oth":0},{"y":2011,"vs":0,"ent":2,"neo":0,"unk":1,"oth":0},{"y":2012,"vs":0,"ent":2,"neo":0,"unk":0,"oth":0},{"y":2013,"vs":0,"ent":1,"neo":0,"unk":1,"oth":0},{"y":2014,"vs":0,"ent":2,"neo":0,"unk":3,"oth":0},{"y":2015,"vs":1,"ent":0,"neo":0,"unk":1,"oth":0},{"y":2016,"vs":5,"ent":2,"neo":0,"unk":9,"oth":0},{"y":2017,"vs":0,"ent":3,"neo":0,"unk":0,"oth":0},{"y":2018,"vs":3,"ent":3,"neo":0,"unk":6,"oth":0},{"y":2019,"vs":1,"ent":1,"neo":1,"unk":0,"oth":0},{"y":2020,"vs":1,"ent":0,"neo":0,"unk":0,"oth":0},{"y":2021,"vs":1,"ent":1,"neo":1,"unk":0,"oth":0},{"y":2023,"vs":3,"ent":0,"neo":0,"unk":1,"oth":0},{"y":2024,"vs":0,"ent":1,"neo":0,"unk":0,"oth":0}];
 /* AIRTABLE_DATA_END */
 
 buildPopChart('all', popData);
