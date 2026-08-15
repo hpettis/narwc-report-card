@@ -1,6 +1,6 @@
 // scripts/fetch-airtable.js
-// Fetches all 9 Airtable tables and updates index.html
-// Run automatically by GitHub Actions — do not run manually with your token exposed.
+// Fetches all 9 Airtable tables and writes data.js alongside index.html
+// Run by GitHub Actions on schedule — token is stored as a GitHub Secret, never in HTML.
 
 const fs   = require('fs');
 const path = require('path');
@@ -13,147 +13,136 @@ if (!AT_TOKEN || !AT_BASE) {
   process.exit(1);
 }
 
-// ── FETCH HELPER ──
-
+// ── FETCH ──
 async function fetchTable(table, sortField) {
   let url = `https://api.airtable.com/v0/${AT_BASE}/${encodeURIComponent(table)}`
     + `?sort[0][field]=${encodeURIComponent(sortField)}&sort[0][direction]=asc&pageSize=100`;
   let records = [];
   while (url) {
     const res = await fetch(url, { headers: { Authorization: `Bearer ${AT_TOKEN}` } });
-    if (!res.ok) throw new Error(`Airtable error on table "${table}": ${res.status} ${res.statusText}`);
-    const data = await res.json();
-    records = records.concat(data.records.map(r => r.fields));
-    url = data.offset
+    if (!res.ok) throw new Error(`Airtable error on "${table}": ${res.status} ${res.statusText}`);
+    const json = await res.json();
+    records = records.concat(json.records.map(r => r.fields));
+    url = json.offset
       ? `https://api.airtable.com/v0/${AT_BASE}/${encodeURIComponent(table)}`
-        + `?sort[0][field]=${encodeURIComponent(sortField)}&sort[0][direction]=asc&pageSize=100&offset=${data.offset}`
+        + `?sort[0][field]=${encodeURIComponent(sortField)}&sort[0][direction]=asc&pageSize=100&offset=${json.offset}`
       : null;
   }
   return records;
 }
 
 // ── DATE FORMATTER ──
-
 function fmtDate(val) {
   if (!val) return '—';
-  const parts = val.split('-');
-  if (parts.length === 3) return `${parts[1]}/${parts[2]}/${parts[0]}`;
-  return val;
+  const p = val.split('-');
+  return p.length === 3 ? `${p[1]}/${p[2]}/${p[0]}` : val;
 }
 
-// ── DATA MAPPERS (for JS data arrays) ──
+// ── MAPPERS ──
+const mapPop    = r => ({ y:r['Year'], lo:r['Lower Bound'], med:r['Median'], hi:r['Upper Bound'] });
+const mapMon    = r => ({ y:r['Year'], s:r['Sightings'], u:r['Unique IDs'], p:r['Population Estimate'], e:r['Effort (1k km)'], pct:r['Percent Population Seen'] });
+const mapRepro  = r => ({ y:r['Year'], calves:r['Calf Count'], cows:r['Available Cows'], pctCalved:r['Percent Calved'], avgI:r['Avg Inter-Birth Interval']??null, medI:r['Median Inter-Birth Interval']??null, minI:r['Min Interval']??null, maxI:r['Max Interval']??null, firstMoms:r['First-time Moms'] });
+const mapRegion = r => ({ name:r['Region Name'], sightings:r['Sightings'], months:r['Active Months'] });
+const mapMort   = r => ({ y:r['Year'], ca:r['Canada']||0, us:r['US']||0 });
+const mapCause  = r => ({ y:r['Year'], vs:r['Vessel Strike']||0, ent:r['Entanglement']||0, neo:r['Neonate']||0, unk:r['Unknown']||0, oth:r['Other']||0 });
 
-function mapPop(r)    { return { y:r['Year'], lo:r['Lower Bound'], med:r['Median'], hi:r['Upper Bound'] }; }
-function mapMon(r)    { return { y:r['Year'], s:r['Sightings'], u:r['Unique IDs'], p:r['Population Estimate'], e:r['Effort (1k km)'], pct:r['Percent Population Seen'] }; }
-function mapRepro(r)  { return { y:r['Year'], calves:r['Calf Count'], cows:r['Available Cows'], pctCalved:r['Percent Calved'], avgI:r['Avg Inter-Birth Interval']??null, medI:r['Median Inter-Birth Interval']??null, minI:r['Min Interval']??null, maxI:r['Max Interval']??null, firstMoms:r['First-time Moms'] }; }
-function mapRegion(r) { return { name:r['Region Name'], sightings:r['Sightings'], months:r['Active Months'] }; }
-function mapMort(r)   { return { y:r['Year'], ca:r['Canada']||0, us:r['US']||0 }; }
-function mapCause(r)  { return { y:r['Year'], vs:r['Vessel Strike']||0, ent:r['Entanglement']||0, neo:r['Neonate']||0, unk:r['Unknown']||0, oth:r['Other']||0 }; }
+// ── HTML ROW BUILDERS ──
+const rowStyle = 'font-size:0.78rem;color:rgba(240,236,227,0.75)';
 
-// ── HTML ROW BUILDERS (for static threat tables) ──
-
-function buildEntangleRows(records) {
+function entangleRows(records) {
   return records.map(r =>
-    `<tr>` +
-    `<td><strong style="color:var(--amber)">${r['Whale ID']||'—'}</strong></td>` +
+    `<tr><td><strong style="color:var(--amber)">${r['Whale ID']||'—'}</strong></td>` +
     `<td class="num">${fmtDate(r['Pre-Entanglement Sighting'])}</td>` +
     `<td>${r['Pre-Entanglement Location']||'—'}</td>` +
     `<td class="num">${fmtDate(r['First Sighting'])}</td>` +
     `<td>${r['Location']||'—'}</td>` +
     `<td>${r['Sex']||'—'}</td>` +
     `<td>${r['Age']||'—'}</td>` +
-    `<td><span style="font-size:0.78rem;color:rgba(240,236,227,0.75)">${r['Status/Details']||'—'}</span></td>` +
-    `</tr>`
+    `<td><span style="${rowStyle}">${r['Status/Details']||'—'}</span></td></tr>`
   ).join('\n');
 }
 
-function buildScarsRows(records) {
+function scarsRows(records) {
   return records.map(r =>
-    `<tr>` +
-    `<td><strong style="color:var(--amber)">${r['Whale ID']||'—'}</strong></td>` +
+    `<tr><td><strong style="color:var(--amber)">${r['Whale ID']||'—'}</strong></td>` +
     `<td class="num">${fmtDate(r['Pre-Injury Date'])}</td>` +
     `<td>${r['Pre-Injury Location']||'—'}</td>` +
     `<td class="num">${fmtDate(r['Injury Detection Date'])}</td>` +
     `<td>${r['Detection Location']||'—'}</td>` +
     `<td>${r['Sex']||'—'}</td>` +
     `<td>${r['Age']||'—'}</td>` +
-    `<td><span style="font-size:0.78rem;color:rgba(240,236,227,0.75)">${r['Status/Details']||'—'}</span></td>` +
-    `</tr>`
+    `<td><span style="${rowStyle}">${r['Status/Details']||'—'}</span></td></tr>`
   ).join('\n');
 }
 
-function buildVesselRows(records) {
+function vesselRows(records) {
   return records.map(r =>
-    `<tr>` +
-    `<td><strong style="color:var(--coral)">${r['Whale ID']||'—'}</strong></td>` +
+    `<tr><td><strong style="color:var(--coral)">${r['Whale ID']||'—'}</strong></td>` +
     `<td class="num">${fmtDate(r['Pre-Injury Date'])}</td>` +
     `<td>${r['Pre-Injury Location']||'—'}</td>` +
     `<td class="num">${fmtDate(r['Injury Detection Date'])}</td>` +
     `<td>${r['Detection Location']||'—'}</td>` +
     `<td>${r['Sex']||'—'}</td>` +
     `<td>${r['Age']||'—'}</td>` +
-    `<td><span style="font-size:0.78rem;color:rgba(240,236,227,0.75)">${r['Status/Details']||'—'}</span></td>` +
-    `</tr>`
+    `<td><span style="${rowStyle}">${r['Status/Details']||'—'}</span></td></tr>`
   ).join('\n');
-}
-
-// ── INJECT HELPER ──
-
-function injectBetweenMarkers(html, startMarker, endMarker, content) {
-  const startIdx = html.indexOf(startMarker);
-  const endIdx   = html.indexOf(endMarker);
-  if (startIdx === -1 || endIdx === -1) throw new Error(`Markers not found: ${startMarker}`);
-  return html.slice(0, startIdx + startMarker.length) + '\n' + content + '\n' + html.slice(endIdx);
 }
 
 // ── MAIN ──
-
 async function main() {
   console.log('Fetching all 9 tables from Airtable...');
 
   const [popRaw, monRaw, reproRaw, regionRaw, mortRaw, causeRaw,
          entangleRaw, scarsRaw, vesselRaw] = await Promise.all([
-    fetchTable('Population Estimates',        'Year'),
-    fetchTable('Annual Monitoring',           'Year'),
-    fetchTable('Reproduction',                'Year'),
-    fetchTable('Sightings by Region',         'Region Name'),
-    fetchTable('Mortalities by Country',      'Year'),
-    fetchTable('Mortalities by Cause',        'Year'),
-    fetchTable('Active Entanglement Cases',   'First Sighting'),
-    fetchTable('Entanglement Scars Only',     'Injury Detection Date'),
-    fetchTable('Vessel Strike Cases',         'Injury Detection Date'),
+    fetchTable('Population Estimates',       'Year'),
+    fetchTable('Annual Monitoring',          'Year'),
+    fetchTable('Reproduction',               'Year'),
+    fetchTable('Sightings by Region',        'Region Name'),
+    fetchTable('Mortalities by Country',     'Year'),
+    fetchTable('Mortalities by Cause',       'Year'),
+    fetchTable('Active Entanglement Cases',  'First Sighting'),
+    fetchTable('Entanglement Scars Only',    'Injury Detection Date'),
+    fetchTable('Vessel Strike Cases',        'Injury Detection Date'),
   ]);
 
   console.log(`Fetched: ${popRaw.length} pop, ${monRaw.length} mon, ${reproRaw.length} repro, `
     + `${regionRaw.length} regions, ${mortRaw.length} mort, ${causeRaw.length} cause, `
-    + `${entangleRaw.length} entangle, ${scarsRaw.length} scars, ${vesselRaw.length} vessel records`);
+    + `${entangleRaw.length} entangle, ${scarsRaw.length} scars, ${vesselRaw.length} vessel`);
 
-  // ── Read HTML ──
+  // Write data.js — loaded by index.html via <script src="data.js">
+  const dataJs = `// data.js — auto-generated by GitHub Actions. Do not edit manually.
+// Last updated: ${new Date().toISOString()}
+
+var popData    = ${JSON.stringify(popRaw.map(mapPop))};
+var monData    = ${JSON.stringify(monRaw.map(mapMon))};
+var reproData  = ${JSON.stringify(reproRaw.map(mapRepro))};
+var regionData = ${JSON.stringify(regionRaw.map(mapRegion))};
+var mortData   = ${JSON.stringify(mortRaw.map(mapMort))};
+var causeData  = ${JSON.stringify(causeRaw.map(mapCause))};
+`;
+
+  const dataPath = path.join(__dirname, '..', 'data.js');
+  fs.writeFileSync(dataPath, dataJs, 'utf8');
+  console.log('data.js written successfully.');
+
+  // Inject threat table rows directly into index.html tbodies
   const htmlPath = path.join(__dirname, '..', 'index.html');
   let html = fs.readFileSync(htmlPath, 'utf8');
 
-  // ── 1. Inject JS data arrays ──
-  const dataBlock = `/* AIRTABLE_DATA_START */
-var popData = ${JSON.stringify(popRaw.map(mapPop))};
-var monData = ${JSON.stringify(monRaw.map(mapMon))};
-var reproData = ${JSON.stringify(reproRaw.map(mapRepro))};
-var regionData = ${JSON.stringify(regionRaw.map(mapRegion))};
-var mortData = ${JSON.stringify(mortRaw.map(mapMort))};
-var causeData = ${JSON.stringify(causeRaw.map(mapCause))};
-/* AIRTABLE_DATA_END */`;
+  function inject(h, start, end, content) {
+    const si = h.indexOf(start);
+    const ei = h.indexOf(end);
+    if (si === -1 || ei === -1) { console.warn(`Warning: markers not found: ${start}`); return h; }
+    return h.slice(0, si + start.length) + '\n' + content + '\n' + h.slice(ei);
+  }
 
-  const ds = html.indexOf('/* AIRTABLE_DATA_START */');
-  const de = html.indexOf('/* AIRTABLE_DATA_END */') + '/* AIRTABLE_DATA_END */'.length;
-  if (ds === -1 || de === -1) throw new Error('AIRTABLE_DATA markers not found in index.html');
-  html = html.slice(0, ds) + dataBlock + html.slice(de);
-
-  // ── 2. Inject threat table rows ──
-  html = injectBetweenMarkers(html, '<!-- ENTANGLE_ROWS_START -->', '<!-- ENTANGLE_ROWS_END -->', buildEntangleRows(entangleRaw));
-  html = injectBetweenMarkers(html, '<!-- SCARS_ROWS_START -->',    '<!-- SCARS_ROWS_END -->',    buildScarsRows(scarsRaw));
-  html = injectBetweenMarkers(html, '<!-- VESSEL_ROWS_START -->',   '<!-- VESSEL_ROWS_END -->',   buildVesselRows(vesselRaw));
+  html = inject(html, '<!-- ENTANGLE_ROWS_START -->', '<!-- ENTANGLE_ROWS_END -->', entangleRows(entangleRaw));
+  html = inject(html, '<!-- SCARS_ROWS_START -->',    '<!-- SCARS_ROWS_END -->',    scarsRows(scarsRaw));
+  html = inject(html, '<!-- VESSEL_ROWS_START -->',   '<!-- VESSEL_ROWS_END -->',   vesselRows(vesselRaw));
 
   fs.writeFileSync(htmlPath, html, 'utf8');
-  console.log('index.html updated successfully.');
+  console.log('index.html threat table rows updated.');
+  console.log('Done.');
 }
 
 main().catch(err => {
