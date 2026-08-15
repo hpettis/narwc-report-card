@@ -20,7 +20,7 @@ jobs:
         with:
           node-version: '20'
 
-- name: Fetch Airtable data and write data.js
+      - name: Fetch Airtable data and write data.js
         env:
           AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
           AIRTABLE_BASE: ${{ secrets.AIRTABLE_BASE }}
