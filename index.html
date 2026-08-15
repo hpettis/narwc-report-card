@@ -2447,8 +2447,7 @@ setTimeout(function(){
 }, 300);
 </script>
 
-<!-- data.js loaded AFTER main script — overrides inline data with fresh Airtable data -->
-<script src="data.js?v=20260815" onload="applyDataJs()" onerror="console.log('data.js not found, using inline fallback data')"></script>
+<!-- applyDataJs defined here so it exists when data.js onload fires -->
 <script>
 function applyDataJs() {
   // Rebuild all charts and tables with fresh data from data.js
@@ -2470,5 +2469,8 @@ function applyDataJs() {
   if(vt && typeof vesselHTML   !== 'undefined' && vesselHTML)   vt.innerHTML = vesselHTML;
 }
 </script>
+
+<!-- data.js loaded AFTER main script — overrides inline data with fresh Airtable data -->
+<script src="data.js?v=20260815" onload="applyDataJs()" onerror="console.log('data.js not found, using inline fallback data')"></script>
 </body>
 </html>
