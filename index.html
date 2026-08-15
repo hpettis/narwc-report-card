@@ -1097,13 +1097,15 @@ available cows to successfully calve. Columns are sortable. Color coding of % av
       <table>
         <thead><tr>
           <th>Whale #</th>
+          <th>Pre-Entanglement Sighting</th>
+          <th>Pre-Entanglement Location</th>
           <th>First Sighting</th>
           <th>Location</th>
           <th>Sex</th>
           <th>Age</th>
           <th>Status / Details</th>
         </tr></thead>
-        <tbody>
+        <tbody id="entangle-tbody">
           <tr>
             <td><strong style="color:var(--amber)">#5110</strong></td>
             <td class="num">12/09/2024</td>
@@ -1158,20 +1160,18 @@ available cows to successfully calve. Columns are sortable. Color coding of % av
           <th>Detection Location</th>
           <th>Sex</th>
           <th>Age</th>
+          <th>Status / Details</th>
         </tr></thead>
-        <tbody>
+        <tbody id="scars-tbody">
           <tr>
             <td><strong style="color:var(--amber)">#3391</strong></td>
-            <td class="num">05/25/2024</td><td>VA</td><td class="num">03/11/2025</td><td>Cape Cod Bay</td><td>M</td><td>>22</td>
-          </tr>
+            <td class="num">05/25/2024</td><td>VA</td><td class="num">03/11/2025</td><td>Cape Cod Bay</td><td>M</td><td>&gt;22</td><td></td></tr>
           <tr>
             <td><strong style="color:var(--amber)">#3714</strong></td>
-            <td class="num">05/01/2025</td><td>CCB</td><td class="num">11/18/2025</td><td>NC</td><td>M</td><td>18</td>
-          </tr>
+            <td class="num">05/01/2025</td><td>CCB</td><td class="num">11/18/2025</td><td>NC</td><td>M</td><td>18</td><td></td></tr>
           <tr>
             <td><strong style="color:var(--amber)">2025 Calf of #3540</strong></td>
-            <td class="num">05/01/2025</td><td>CCB</td><td class="num">12/24/2025</td><td>FL</td><td>—</td><td>Calf</td>
-          </tr>
+            <td class="num">05/01/2025</td><td>CCB</td><td class="num">12/24/2025</td><td>FL</td><td>—</td><td>Calf</td><td></td></tr>
         </tbody>
       </table>
     </div>
@@ -1196,7 +1196,7 @@ available cows to successfully calve. Columns are sortable. Color coding of % av
           <th>Age</th>
           <th>Status / Details</th>
         </tr></thead>
-        <tbody>
+        <tbody id="vessel-tbody">
           <tr>
             <td><strong style="color:var(--amber)">#3504</strong></td>
             <td class="num">03/16/2024</td>
@@ -1914,7 +1914,7 @@ function setChartRange(range, btn) {
   currentRange = range;
   document.querySelectorAll('.chart-btn').forEach(b=>b.classList.remove('active'));
   btn.classList.add('active');
-  buildPopChart(range);
+  buildPopChart(range, popDataCache);
 }
 
 // ── CHART: CALVES ──
@@ -2426,14 +2426,15 @@ const observer = new IntersectionObserver(entries=>{
 })();
 
 initParticles();
-buildPopChart('all');
+var popDataCache = popData;
+buildPopChart('all', popData);
 buildPopTable(popData);
-buildReproCharts();
-buildReproTable();
+buildReproCharts(reproData);
+buildReproTable(reproData);
 buildMonTable(monData);
-buildRegions();
-buildMortChart();
-buildCauseChart();
+buildRegions(regionData);
+buildMortChart(mortData);
+buildCauseChart(causeData);
 
 // Observe after all dynamic content is built
 document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
@@ -2446,31 +2447,6 @@ setTimeout(function(){
   });
 }, 300);
 </script>
-
-<!-- applyDataJs defined here so it exists when data.js onload fires -->
-<script>
-function applyDataJs() {
-  // Rebuild all charts and tables with fresh data from data.js
-  popDataCache = popData;
-  buildPopChart('all', popData);
-  buildPopTable(popData);
-  buildReproCharts(reproData);
-  buildReproTable(reproData);
-  buildMonTable(monData);
-  buildRegions(regionData);
-  buildMortChart(mortData);
-  buildCauseChart(causeData);
-  // Inject threat table rows
-  var et = document.getElementById('entangle-tbody');
-  var st = document.getElementById('scars-tbody');
-  var vt = document.getElementById('vessel-tbody');
-  if(et && typeof entangleHTML !== 'undefined' && entangleHTML) et.innerHTML = entangleHTML;
-  if(st && typeof scarsHTML    !== 'undefined' && scarsHTML)    st.innerHTML = scarsHTML;
-  if(vt && typeof vesselHTML   !== 'undefined' && vesselHTML)   vt.innerHTML = vesselHTML;
-}
-</script>
-
-<!-- data.js loaded AFTER main script — overrides inline data with fresh Airtable data -->
-<script src="data.js?v=20260815" onload="applyDataJs()" onerror="console.log('data.js not found, using inline fallback data')"></script>
+<script src="data.js" onload="(function(){var et=document.getElementById('entangle-tbody');var st=document.getElementById('scars-tbody');var vt=document.getElementById('vessel-tbody');if(et&&typeof entangleHTML!=='undefined'&&entangleHTML)et.innerHTML=entangleHTML;if(st&&typeof scarsHTML!=='undefined'&&scarsHTML)st.innerHTML=scarsHTML;if(vt&&typeof vesselHTML!=='undefined'&&vesselHTML)vt.innerHTML=vesselHTML;})()" onerror="console.log('No data.js found')"></script>
 </body>
 </html>
