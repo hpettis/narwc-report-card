@@ -24,9 +24,7 @@ jobs:
         env:
           AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
           AIRTABLE_BASE: ${{ secrets.AIRTABLE_BASE }}
-        run: |
-          echo "Base ID is: $AIRTABLE_BASE"
-          node scripts/fetch-airtable.js
+        run: node scripts/fetch-airtable.js
 
       - name: Commit data.js only
         run: |
@@ -34,7 +32,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data.js
           if git diff --staged --quiet; then
-            echo "No data changes — skipping commit."
+            echo "No changes."
           else
             git commit -m "data: refresh from Airtable $(date -u '+%Y-%m-%d')"
             git push
