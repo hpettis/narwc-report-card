@@ -134,12 +134,12 @@ async function main() {
 
   // ── 1. Inject JS data arrays ──
   const dataBlock = `/* AIRTABLE_DATA_START */
-const popData    = ${JSON.stringify(popRaw.map(mapPop))};
-const monData    = ${JSON.stringify(monRaw.map(mapMon))};
-const reproData  = ${JSON.stringify(reproRaw.map(mapRepro))};
-const regionData = ${JSON.stringify(regionRaw.map(mapRegion))};
-const mortData   = ${JSON.stringify(mortRaw.map(mapMort))};
-const causeData  = ${JSON.stringify(causeRaw.map(mapCause))};
+var popData = ${JSON.stringify(popRaw.map(mapPop))};
+var monData = ${JSON.stringify(monRaw.map(mapMon))};
+var reproData = ${JSON.stringify(reproRaw.map(mapRepro))};
+var regionData = ${JSON.stringify(regionRaw.map(mapRegion))};
+var mortData = ${JSON.stringify(mortRaw.map(mapMort))};
+var causeData = ${JSON.stringify(causeRaw.map(mapCause))};
 /* AIRTABLE_DATA_END */`;
 
   const ds = html.indexOf('/* AIRTABLE_DATA_START */');
