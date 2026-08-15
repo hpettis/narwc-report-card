@@ -20,11 +20,13 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Fetch Airtable data and write data.js
+- name: Fetch Airtable data and write data.js
         env:
           AIRTABLE_TOKEN: ${{ secrets.AIRTABLE_TOKEN }}
           AIRTABLE_BASE: ${{ secrets.AIRTABLE_BASE }}
-        run: node scripts/fetch-airtable.js
+        run: |
+          echo "Base ID is: $AIRTABLE_BASE"
+          node scripts/fetch-airtable.js
 
       - name: Commit data.js only
         run: |
