@@ -1097,43 +1097,45 @@ available cows to successfully calve. Columns are sortable. Color coding of % av
       <table>
         <thead><tr>
           <th>Whale #</th>
+          <th>Pre-Entanglement Sighting</th>
+          <th>Pre-Entanglement Location</th>
           <th>First Sighting</th>
           <th>Location</th>
           <th>Sex</th>
           <th>Age</th>
           <th>Status / Details</th>
         </tr></thead>
-        <tbody>
+        <tbody id="entangle-tbody">
           <tr>
             <td><strong style="color:var(--amber)">#5110</strong></td>
+            <td class="num"></td><td></td>
             <td class="num">12/09/2024</td>
             <td>S. New England</td>
-            <td>M</td>
-            <td>4</td>
+            <td>M</td><td>4</td>
             <td><span style="font-size:0.78rem;color:rgba(240,236,227,0.75)">Green rope around rostrum & body. Life-threatening. Partial disentanglement 4/10/25 — lethal portion remains. Last seen entangled 4/24/2025, Cape Cod Bay.</span></td>
           </tr>
           <tr>
             <td><strong style="color:var(--amber)">#5132</strong></td>
+            <td class="num"></td><td></td>
             <td class="num">12/16/2024</td>
             <td>North Carolina</td>
-            <td>M</td>
-            <td>4</td>
+            <td>M</td><td>4</td>
             <td><span style="font-size:0.78rem;color:rgba(240,236,227,0.75)">Complex entanglement with numerous passes over head. Gear from LFA 38 (Bay of Fundy). Last sighted 6/17/2025 off PEI, still entangled.</span></td>
           </tr>
           <tr>
             <td><strong style="color:var(--amber)">#4146</strong></td>
-            <td class="num">8/13/2025</td>
+            <td class="num"></td><td></td>
+            <td class="num">08/13/2025</td>
             <td>Grand Manan, NB</td>
-            <td>F</td>
-            <td>14</td>
+            <td>F</td><td>14</td>
             <td><span style="font-size:0.78rem;color:rgba(240,236,227,0.75)">Free-swimming entrapment in herring weir. Campobello Whale Rescue Team successfully freed the whale. Not re-sighted in area.</span></td>
           </tr>
           <tr>
             <td><strong style="color:var(--amber)">#5217 "Division"</strong></td>
+            <td class="num"></td><td></td>
             <td class="num">12/03/2025</td>
             <td>North Carolina</td>
-            <td>M</td>
-            <td>4</td>
+            <td>M</td><td>4</td>
             <td><span style="font-size:0.78rem;color:rgba(240,236,227,0.75)">Line embedded in rostrum & blowhole. Partial disentanglement; telemetry buoy attached. Found dead 1/27/2026 off NC — mortality to appear in 2026 Report Card.</span></td>
           </tr>
         </tbody>
@@ -1158,19 +1160,20 @@ available cows to successfully calve. Columns are sortable. Color coding of % av
           <th>Detection Location</th>
           <th>Sex</th>
           <th>Age</th>
+          <th>Status / Details</th>
         </tr></thead>
-        <tbody>
+        <tbody id="scars-tbody">
           <tr>
             <td><strong style="color:var(--amber)">#3391</strong></td>
-            <td class="num">05/25/2024</td><td>VA</td><td class="num">03/11/2025</td><td>Cape Cod Bay</td><td>M</td><td>>22</td>
+            <td class="num">05/25/2024</td><td>VA</td><td class="num">03/11/2025</td><td>Cape Cod Bay</td><td>M</td><td>&gt;22</td><td></td>
           </tr>
           <tr>
             <td><strong style="color:var(--amber)">#3714</strong></td>
-            <td class="num">05/01/2025</td><td>CCB</td><td class="num">11/18/2025</td><td>NC</td><td>M</td><td>18</td>
+            <td class="num">05/01/2025</td><td>CCB</td><td class="num">11/18/2025</td><td>NC</td><td>M</td><td>18</td><td></td>
           </tr>
           <tr>
             <td><strong style="color:var(--amber)">2025 Calf of #3540</strong></td>
-            <td class="num">05/01/2025</td><td>CCB</td><td class="num">12/24/2025</td><td>FL</td><td>—</td><td>Calf</td>
+            <td class="num">05/01/2025</td><td>CCB</td><td class="num">12/24/2025</td><td>FL</td><td>—</td><td>Calf</td><td></td>
           </tr>
         </tbody>
       </table>
@@ -1196,7 +1199,7 @@ available cows to successfully calve. Columns are sortable. Color coding of % av
           <th>Age</th>
           <th>Status / Details</th>
         </tr></thead>
-        <tbody>
+        <tbody id="vessel-tbody">
           <tr>
             <td><strong style="color:var(--amber)">#3504</strong></td>
             <td class="num">03/16/2024</td>
@@ -2443,6 +2446,16 @@ buildMonTable(monData);
 buildRegions(regionData);
 buildMortChart(mortData);
 buildCauseChart(causeData);
+
+// Inject threat table rows from data.js (populated by GitHub Actions)
+(function() {
+  var et = document.getElementById('entangle-tbody');
+  var st = document.getElementById('scars-tbody');
+  var vt = document.getElementById('vessel-tbody');
+  if(et && typeof entangleHTML !== 'undefined') et.innerHTML = entangleHTML;
+  if(st && typeof scarsHTML    !== 'undefined') st.innerHTML = scarsHTML;
+  if(vt && typeof vesselHTML   !== 'undefined') vt.innerHTML = vesselHTML;
+})();
 
 // Observe after all dynamic content is built
 document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
