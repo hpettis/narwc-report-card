@@ -47,7 +47,7 @@ const scarsRows = recs => recs.map(r =>
   `<td><span style="${rs}">${r['Status/Details']||''}</span></td></tr>`).join('');
 
 const vesselRows = recs => recs.map(r =>
-  `<tr><td><strong style="color:var(--coral)">${r['Whale ID']||''}</strong></td>` +
+  `<tr><td><strong style="color:var(--amber)">${r['Whale ID']||''}</strong></td>` +
   `<td class="num">${fmtDate(r['Pre-Injury Date'])}</td><td>${r['Pre-Injury Location']||''}</td>` +
   `<td class="num">${fmtDate(r['Injury Detection Date'])}</td><td>${r['Detection Location']||''}</td>` +
   `<td>${r['Sex']||''}</td><td>${r['Age']||''}</td>` +
