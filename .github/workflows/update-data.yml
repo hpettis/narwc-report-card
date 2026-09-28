@@ -2,7 +2,8 @@ name: Update Report Card Data from Airtable
 
 on:
   schedule:
-    - cron: '0 6 * * *'
+    - cron: '0 6 1 * *'   # 1st of every month at 6 AM UTC
+    - cron: '0 6 15 * *'  # 15th of every month at 6 AM UTC
   workflow_dispatch:
 
 jobs:
@@ -14,10 +15,10 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4
+        uses: actions/checkout@v4.2.2
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4
+        uses: actions/setup-node@v4.4.0
         with:
           node-version: '22'
 
