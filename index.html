@@ -743,8 +743,23 @@ footer {
 }
 .footer-logo { font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--teal-bright); margin-bottom:8px; }
 .footer-cite { font-size:0.78rem; color:var(--muted); line-height:1.6; max-width:700px; margin:0 auto 16px; }
-.footer-link { color:var(--teal-bright); text-decoration:none; }
-.footer-link:hover { text-decoration:underline; }
+.footer-link { color:var(--teal-bright); }
+/* ── ACCESSIBILITY ── */
+.sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
+.skip-link { position:absolute; left:-9999px; top:8px; z-index:10000; background:#fff; color:#000; padding:10px 16px; border-radius:6px; font-weight:600; }
+.skip-link:focus { left:8px; }
+:focus-visible { outline:3px solid var(--teal-bright, #00c9a7); outline-offset:2px; }
+.tbl-toggle { background:none; border:0; padding:0; margin:0; font:inherit; color:inherit; cursor:pointer; text-align:left; }
+th[onclick] { cursor:pointer; }
+.footer-link { text-decoration:underline; }
+#hero-video-toggle { position:fixed; bottom:16px; right:16px; z-index:9999; background:rgba(0,0,0,0.7); color:#fff; border:1px solid rgba(255,255,255,0.6); border-radius:6px; padding:8px 14px; font-size:0.85rem; cursor:pointer; }
+#hero-video-toggle[hidden] { display:none; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior:auto !important; }
+  *, *::before, *::after { animation-duration:0.01ms !important; animation-iteration-count:1 !important; transition-duration:0.01ms !important; }
+  #hero-video-wrap, .particles { display:none !important; }
+}
+
 
 /* Responsive */
 @media(max-width:768px) {
@@ -852,10 +867,11 @@ footer {
 <div class="ocean-bg"></div>
 <div class="wave-layer"></div>
 <div class="wave-layer"></div>
-<div class="particles" id="particles"></div>
+<a class="skip-link" href="#main" onclick="var m=document.getElementById('main');m.setAttribute('tabindex','-1');m.focus();">Skip to main content</a>
+<div class="particles" id="particles" aria-hidden="true"></div>
 
 <!-- HERO VIDEO OVERLAY — ensure Calvin_roll_GSL_July2025_-_Trim.mp4 is in the same folder as this HTML file on your web server -->
-<div id="hero-video-wrap">
+<div id="hero-video-wrap" aria-hidden="true">
   <video id="hero-video"
     src="Calvin_roll_GSL_July2025_-_Trim.mp4"
     autoplay
@@ -866,11 +882,12 @@ footer {
   </video>
   <div id="hero-video-vignette"></div>
 </div>
+<button type="button" id="hero-video-toggle" onclick="toggleHeroVideo()">Pause background video</button>
 
 <!-- MODAL -->
 <div class="modal-overlay" id="modal" onclick="if(event.target===this)closeModal()">
-  <div class="modal" id="modal-content">
-    <button class="modal-close" onclick="closeModal()">✕</button>
+  <div class="modal" id="modal-content" role="dialog" aria-modal="true" aria-labelledby="modal-title-el" tabindex="-1">
+    <button class="modal-close" onclick="closeModal()" aria-label="Close dialog">✕</button>
     <div id="modal-inner"></div>
   </div>
 </div>
@@ -878,7 +895,7 @@ footer {
 <div id="app">
 
 <!-- NAV -->
-<nav>
+<nav aria-label="Report sections">
   <div class="nav-logo">NARWC <span>Report Card 2025</span></div>
   <button class="nav-btn active" onclick="scrollToSection('hero')">Overview</button>
   <button class="nav-btn" onclick="scrollToSection('population')">Population</button>
@@ -888,10 +905,11 @@ footer {
   <button class="nav-btn" onclick="scrollToSection('sightings')">Sightings</button>
   <button class="nav-btn" onclick="scrollToSection('management')">Management</button>
   <button class="nav-btn" onclick="scrollToSection('publications')">Publications & Reports</button>
-  <button class="nav-btn a11y-btn" onclick="cycleFontSize()" title="Increase text size" aria-label="Increase text size">A+</button>
+  <button class="nav-btn a11y-btn" onclick="cycleFontSize()" title="Increase text size" aria-label="A+ — increase text size">A+</button>
 </nav>
 
 <!-- HERO -->
+<main id="main">
 <section id="hero">
   <div class="hero-eyebrow">North Atlantic Right Whale Consortium · <a href="https://www.narwc.org/uploads/1/1/6/6/116623219/2025reportcardfinal.pdf" target="_blank" rel="noopener" style="color:var(--teal-bright);text-decoration:none;border-bottom:1px solid rgba(0,201,167,0.4);padding-bottom:1px;transition:border-color 0.2s;" onmouseover="this.style.borderColor='var(--teal-bright)'" onmouseout="this.style.borderColor='rgba(0,201,167,0.4)'">2025 NARWC Annual Report Card</a></div>
   <h1 class="hero-title">
@@ -971,9 +989,9 @@ footer {
   </div>
 
   <div class="data-table-wrap reveal collapsible collapsed">
-    <div class="table-header" onclick="toggleTable(this)" role="button" tabindex="0" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleTable(this);}" aria-expanded="false">
+    <div class="table-header" onclick="if(!event.target.closest('input,button'))toggleTable(this)">
       <div>
-        <div class="table-title"><span class="tbl-chevron">▼</span>Population Estimates Table</div>
+        <div class="table-title"><button type="button" class="tbl-toggle" aria-expanded="false" onclick="event.stopPropagation();toggleTable(this.closest('.table-header'))"><span class="tbl-chevron" aria-hidden="true">▼</span>Population Estimates Table</button></div>
         <div class="table-sub">Pace model estimates with 95% credible intervals. Columns are sortable. Trend arrows indicate an increase, decrease, or no change in population estimate from the prior year.</div>
       </div>
       <input type="text" class="search-input" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()" placeholder="Filter year..." id="pop-search" oninput="filterPopTable(this.value)">
@@ -1014,9 +1032,9 @@ pairs were seen on the northern feeding grounds. One of the 11 was only detected
     </div>
   </div>
   <div class="data-table-wrap reveal collapsible collapsed">
-    <div class="table-header" onclick="toggleTable(this)" role="button" tabindex="0" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleTable(this);}" aria-expanded="false">
+    <div class="table-header" onclick="if(!event.target.closest('input,button'))toggleTable(this)">
       <div>
-        <div class="table-title"><span class="tbl-chevron">▼</span>Mother/Calf Summary</div>
+        <div class="table-title"><button type="button" class="tbl-toggle" aria-expanded="false" onclick="event.stopPropagation();toggleTable(this.closest('.table-header'))"><span class="tbl-chevron" aria-hidden="true">▼</span>Mother/Calf Summary</button></div>
         <div class="table-sub">Summary of mother/calf pairs sighted and associated inter-birth interval times for North Atlantic right whales 
 from 2009-2025. The number of available cows, defined as females who have given birth to at least one previous calf, were 
 seen in the last 6 years, have not given birth in previous two years, or gave birth in that year, are followed by the percentage of 
@@ -1251,9 +1269,9 @@ available cows to successfully calve. Columns are sortable. Color coding of % av
   <div class="region-grid reveal" id="region-grid"></div>
 
   <div class="data-table-wrap reveal collapsible collapsed">
-    <div class="table-header" onclick="toggleTable(this)" role="button" tabindex="0" onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();toggleTable(this);}" aria-expanded="false">
+    <div class="table-header" onclick="if(!event.target.closest('input,button'))toggleTable(this)">
       <div>
-        <div class="table-title"><span class="tbl-chevron">▼</span>Annual Monitoring Summary</div>
+        <div class="table-title"><button type="button" class="tbl-toggle" aria-expanded="false" onclick="event.stopPropagation();toggleTable(this.closest('.table-header'))"><span class="tbl-chevron" aria-hidden="true">▼</span>Annual Monitoring Summary</button></div>
         <div class="table-sub">Annual counts of photo-ID sightings, unique individuals, presumed living whales, survey effort (in Beaufort conditions <4), and the percentage of the population seen. Survey effort from dedicated surveys only; opportunistic sightings do not have associated effort. Additionally, the NARWC does not currently receive effort data for all dedicated surveys. All reported fields are updated annually with the most available Sighting and Identification/Catalog Databases data using the Right Whale Year (Dec 1 – Nov 30) as Right Whale Year is what is used to calculate the population estimate. At the time of reporting, photo-id data for 2024 were still being received, processed, and analyzed. Additionally, there are still several 2023-2024 effort datasets yet to be received. Data as of September 8, 2025.</div>
       </div>
       <input type="text" class="search-input" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()" placeholder="Filter year..." id="mon-search" oninput="filterMonTable(this.value)">
@@ -1663,6 +1681,7 @@ community are listed and hyperlinked (when available) below.</div>
   </div>
 </section>
 
+</main>
 <footer>
   <div class="footer-logo">North Atlantic Right Whale Consortium</div>
   <div class="footer-cite">
@@ -2381,7 +2400,7 @@ function switchTab(id, btn) {
 function toggleTable(hdr) {
   var wrap = hdr.parentNode;
   var collapsed = wrap.classList.toggle('collapsed');
-  hdr.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+  var b = hdr.querySelector('.tbl-toggle'); if(b) b.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
 }
 function toggleAcc(btn) {
   var body = btn.nextElementSibling;
@@ -2392,21 +2411,35 @@ function toggleAcc(btn) {
 }
 
 // ── MODAL ──
+var lastFocus = null;
 function openModal(key) {
   const c = modalContent[key];
   if(!c) return;
   document.getElementById('modal-inner').innerHTML = `
     <div class="modal-tag">${c.tag}</div>
-    <div class="modal-title">${c.title}</div>
+    <div class="modal-title" id="modal-title-el">${c.title}</div>
     <div class="modal-body">${c.body}</div>`;
+  lastFocus = document.activeElement;
   document.getElementById('modal').classList.add('open');
   document.body.style.overflow = 'hidden';
+  var mc = document.getElementById('modal-content'); if (mc) mc.focus();
 }
 function closeModal() {
   document.getElementById('modal').classList.remove('open');
   document.body.style.overflow = '';
+  if (lastFocus && lastFocus.focus) { lastFocus.focus(); lastFocus = null; }
 }
-document.addEventListener('keydown', e=>{ if(e.key==='Escape') closeModal(); });
+document.addEventListener('keydown', e=>{
+  if(e.key==='Escape') closeModal();
+  var m = document.getElementById('modal');
+  if(e.key==='Tab' && m && m.classList.contains('open')){
+    var f = m.querySelectorAll('button,a[href],input,[tabindex]:not([tabindex="-1"])');
+    if(!f.length){ e.preventDefault(); return; }
+    var first=f[0], last=f[f.length-1];
+    if(e.shiftKey && (document.activeElement===first || document.activeElement===document.getElementById('modal-content'))){ e.preventDefault(); last.focus(); }
+    else if(!e.shiftKey && document.activeElement===last){ e.preventDefault(); first.focus(); }
+  }
+});
 
 // ── NAV ──
 function scrollToSection(id) {
@@ -2435,10 +2468,63 @@ function cycleFontSize() {
   fontSizeStep = (fontSizeStep + 1) % 3;
   document.documentElement.style.fontSize = fontSizes[fontSizeStep];
   var btn = document.querySelector('.a11y-btn');
-  if(btn) btn.textContent = fontLabels[fontSizeStep];
+  if(btn){ btn.textContent = fontLabels[fontSizeStep]; btn.setAttribute('aria-label', fontLabels[fontSizeStep] + ' — change text size'); }
 }
 
+// ── ACCESSIBILITY HELPERS ──
+(function(){
+  var live = document.createElement('div');
+  live.className = 'sr-only'; live.setAttribute('role','status'); live.setAttribute('aria-live','polite');
+  document.body.appendChild(live);
+  function say(t){ live.textContent=''; setTimeout(function(){ live.textContent=t; },50); }
+
+  var tableIds = {pop:'pop-table', repro:'repro-table', mon:'mon-table'};
+  document.querySelectorAll('th[onclick]').forEach(function(th){
+    th.setAttribute('tabindex','0');
+    th.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); th.click(); } });
+  });
+  var origSort = window.sortTable;
+  window.sortTable = function(t, c){
+    origSort(t, c);
+    var tbl = document.getElementById(tableIds[t]); if(!tbl) return;
+    var ths = tbl.querySelectorAll('th'); var asc = sortDir[t+'-'+c];
+    ths.forEach(function(h,i){ if(i===c) h.setAttribute('aria-sort', asc?'ascending':'descending'); else h.removeAttribute('aria-sort'); });
+    say('Sorted by ' + ths[c].textContent.replace('↕','').trim() + ', ' + (asc?'ascending':'descending'));
+  };
+  function wrapFilter(name, id){
+    var o = window[name]; if(!o) return;
+    window[name] = function(v){ o(v); var tbl=document.getElementById(id); if(!tbl) return;
+      var n=0; tbl.querySelectorAll('tbody tr').forEach(function(r){ if(r.style.display!=='none') n++; });
+      say(n + ' rows shown'); };
+  }
+  wrapFilter('filterPopTable','pop-table'); wrapFilter('filterMonTable','mon-table');
+  document.querySelectorAll('.search-input').forEach(function(i){ if(!i.getAttribute('aria-label')) i.setAttribute('aria-label','Filter table by year'); });
+
+  function lab(id, txt){ var c=document.getElementById(id); if(c){ c.setAttribute('role','img'); c.setAttribute('aria-label',txt); } }
+  try {
+    var a=popData[0], b=popData[popData.length-1];
+    lab('pop-chart','Line chart of the right whale population estimate with 95% credible interval, from '+a.y+' (median '+a.med+') to '+b.y+' (median '+b.med+'). The same figures are in the Population Estimates Table below.');
+    lab('calf-chart','Chart of calf counts and percent of available cows that calved, '+reproData[0].y+' to '+reproData[reproData.length-1].y+'. See the Mother/Calf Summary table below.');
+    lab('interval-chart','Chart of inter-birth intervals, '+reproData[0].y+' to '+reproData[reproData.length-1].y+'. See the Mother/Calf Summary table below.');
+    var tc=0,tu=0; mortData.forEach(function(m){ tc+=m.ca; tu+=m.us; });
+    lab('mort-chart','Stacked bar chart of detected mortalities by country, '+mortData[0].y+' to '+mortData[mortData.length-1].y+'. Totals: '+tc+' in Canada and '+tu+' in the US.');
+    lab('cause-chart','Stacked bar chart of detected mortalities by cause (vessel strike, entanglement, neonate, unknown, other), '+causeData[0].y+' to '+causeData[causeData.length-1].y+'.');
+  } catch(e) {}
+
+  var v = document.getElementById('hero-video'), btn = document.getElementById('hero-video-toggle');
+  window.toggleHeroVideo = function(){
+    if(!v) return;
+    if(v.paused){ v.play(); btn.textContent='Pause background video'; } else { v.pause(); btn.textContent='Play background video'; }
+  };
+  var rm = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(rm && v){ v.pause(); v.removeAttribute('autoplay'); }
+  if(btn){ if(rm) btn.hidden = true;
+    var w = document.getElementById('hero-video-wrap');
+    new MutationObserver(function(){ if(w.classList.contains('hidden')) btn.hidden = true; }).observe(w,{attributes:true,attributeFilter:['class']}); }
+})();
+
 // ── HERO VIDEO SCROLL DISMISS ──
+
 (function() {
   var wrap = document.getElementById('hero-video-wrap');
   var dismissed = false;
