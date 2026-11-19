@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NARWC 2025 Annual Report Card | North Atlantic Right Whale</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script>(function(){try{var t=localStorage.getItem('narwcTheme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
+<script>(function(){var t='dark';try{var s=localStorage.getItem('narwcTheme');if(s==='light'||s==='dark'||s==='soft')t=s;}catch(e){}document.documentElement.setAttribute('data-theme',t);})();</script>
 <style>
 :root {
   /* Default: softer dark theme (lower glare, higher text contrast) */
@@ -775,6 +775,16 @@ footer {
 .footer-logo { font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--teal-bright); margin-bottom:8px; }
 .footer-cite { font-size:0.78rem; color:var(--muted); line-height:1.6; max-width:700px; margin:0 auto 16px; }
 .footer-link { color:var(--teal-bright); }
+
+/* ── TABLE / DATA EXPORT ── */
+.tbl-export-row { display:flex; justify-content:flex-end; margin:0 0 10px; }
+.mort-data { margin-top:14px; border-top:1px solid var(--border); padding-top:10px; }
+.mort-data summary { cursor:pointer; font-family:'DM Mono',monospace; font-size:0.75rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--teal-bright); padding:6px 0; }
+.mort-data-scroll { overflow-x:auto; margin-top:8px; }
+.mort-data table { width:100%; border-collapse:collapse; font-size:0.82rem; }
+.mort-data th, .mort-data td { padding:6px 10px; border-bottom:1px solid var(--border); text-align:right; white-space:nowrap; }
+.mort-data th:first-child, .mort-data td:first-child { text-align:left; }
+.mort-data th { font-family:'DM Mono',monospace; font-size:0.7rem; text-transform:uppercase; letter-spacing:0.05em; color:var(--muted); font-weight:500; }
 /* ── CHART EXPORT ── */
 .chart-dl-row { display:flex; gap:8px; flex-wrap:wrap; }
 .chart-dl { display:inline-block; margin:8px 0 0; background:rgba(var(--hl-rgb),0.04); border:1px solid var(--border); color:var(--muted); font-family:'DM Mono',monospace; font-size:0.72rem; letter-spacing:0.06em; text-transform:uppercase; padding:6px 14px; border-radius:4px; cursor:pointer; }
@@ -940,7 +950,7 @@ th[onclick] { cursor:pointer; }
   <button class="nav-btn" onclick="scrollToSection('sightings')">Sightings</button>
   <button class="nav-btn" onclick="scrollToSection('management')">Management</button>
   <button class="nav-btn" onclick="scrollToSection('publications')">Publications & Reports</button>
-  <button class="nav-btn theme-btn" id="theme-btn" onclick="cycleTheme()" title="Change colour theme" aria-label="Colour theme: Soft dark. Change theme">◐ Soft</button>
+  <button class="nav-btn theme-btn" id="theme-btn" onclick="cycleTheme()" title="Change colour theme" aria-label="Colour theme: Dark. Change theme">● Dark</button>
   <button class="nav-btn a11y-btn" onclick="cycleFontSize()" title="Increase text size" aria-label="A+ — increase text size">A+</button>
 </nav>
 
@@ -2702,8 +2712,8 @@ function cycleFontSize() {
 })();
 
 // ── COLOUR THEME (soft dark default / light / original dark) ──
-var THEMES = [['soft','◐ Soft','Soft dark'],['light','☀ Light','Light'],['dark','● Dark','Original dark']];
-function currentTheme(){ var t=document.documentElement.getAttribute('data-theme'); return (t==='light'||t==='dark') ? t : 'soft'; }
+var THEMES = [['dark','● Dark','Dark'],['soft','◐ Soft','Soft dark'],['light','☀ Light','Light']];
+function currentTheme(){ var t=document.documentElement.getAttribute('data-theme'); return (t==='light'||t==='dark'||t==='soft') ? t : 'dark'; }
 function themeColors(){
   var t = currentTheme();
   return { light: t==='light', text: t==='light' ? '#33475b' : (t==='dark' ? '#8ba8c4' : '#b6cadc'),
@@ -2738,8 +2748,8 @@ function chartTheme(){
   });
 }
 function setTheme(t, save){
-  if(t==='soft') document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme', t);
-  if(save){ try{ localStorage.setItem('narwcTheme', t==='soft' ? 'soft' : t); }catch(e){} }
+  document.documentElement.setAttribute('data-theme', t);
+  if(save){ try{ localStorage.setItem('narwcTheme', t); }catch(e){} }
   var info = THEMES.filter(function(x){ return x[0]===t; })[0] || THEMES[0];
   var b = document.getElementById('theme-btn');
   if(b){ b.textContent = info[1]; b.setAttribute('aria-label', 'Colour theme: ' + info[2] + '. Change theme'); }
@@ -2751,6 +2761,79 @@ function cycleTheme(){
 }
 // re-apply theme whenever the population chart is rebuilt
 window.addEventListener('load', function(){ setTheme(currentTheme(), false); });
+
+// ── TABLE & DATA EXPORT (CSV) ──
+(function(){
+  function stamp(){ return 'NARWC-2025-'; }
+  function citation(){
+    var d = new Date(), m = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    return 'Data and visualizations from the 2025 North Atlantic Right Whale Consortium Annual Report Card. Accessed ' + m[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear() + '.';
+  }
+  function esc(v){ v=String(v==null?'':v).replace(/\s+/g,' ').trim(); return /[",\n]/.test(v) ? '"'+v.replace(/"/g,'""')+'"' : v; }
+  function download(name, rows){
+    var lines = rows.map(function(r){ return r.map(esc).join(','); });
+    lines.push('', esc(citation()));
+    var csv = '\uFEFF' + lines.join('\r\n');
+    var a = document.createElement('a');
+    a.download = stamp() + name + '.csv';
+    a.href = URL.createObjectURL(new Blob([csv], {type:'text/csv;charset=utf-8'}));
+    document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(function(){ URL.revokeObjectURL(a.href); }, 1000);
+  }
+  // Export the rows currently visible on screen (respects filter and sort), with headers
+  function exportTable(tableId, name){
+    var t = document.getElementById(tableId); if(!t) return;
+    var head = [].map.call(t.querySelectorAll('thead th'), function(th){ return th.textContent.replace(/[↕▲▼]/g,'').trim(); });
+    var body = [].filter.call(t.querySelectorAll('tbody tr'), function(tr){ return tr.style.display !== 'none'; })
+      .map(function(tr){ return [].map.call(tr.cells, function(td){ return td.textContent.trim(); }); });
+    download(name, [head].concat(body));
+  }
+  function addTableButtons(){
+    [['pop-table','population-estimates-table'],['repro-table','mother-calf-summary'],['mon-table','annual-monitoring-summary']].forEach(function(it){
+      var t = document.getElementById(it[0]); if(!t) return;
+      var row = document.createElement('div'); row.className = 'tbl-export-row';
+      var b = document.createElement('button'); b.type='button'; b.className='chart-dl';
+      b.textContent = 'Export CSV';
+      b.setAttribute('aria-label','Export ' + it[1].replace(/-/g,' ') + ' as CSV (visible rows)');
+      b.addEventListener('click', function(){ exportTable(it[0], it[1]); });
+      row.appendChild(b);
+      var wrap = t.closest('.table-body') || t.parentNode;
+      wrap.parentNode.insertBefore(row, wrap);
+    });
+  }
+  // Data tables under the two mortality charts, each with CSV export
+  function mortDataTable(card, headers, rows, name){
+    var d = document.createElement('details'); d.className = 'mort-data';
+    var sm = document.createElement('summary'); sm.textContent = 'View data table';
+    d.appendChild(sm);
+    var inner = document.createElement('div'); inner.className = 'mort-data-scroll';
+    var tb = '<table><thead><tr>' + headers.map(function(h){ return '<th scope="col">'+h+'</th>'; }).join('') +
+      '</tr></thead><tbody>' + rows.map(function(r){ return '<tr>' + r.map(function(c,i){ return i===0 ? '<th scope="row">'+c+'</th>' : '<td>'+c+'</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table>';
+    inner.innerHTML = tb; d.appendChild(inner);
+    var row = document.createElement('div'); row.className = 'tbl-export-row'; row.style.marginTop = '8px';
+    var b = document.createElement('button'); b.type='button'; b.className='chart-dl'; b.textContent='Export CSV';
+    b.setAttribute('aria-label','Export ' + name.replace(/-/g,' ') + ' as CSV');
+    b.addEventListener('click', function(){ download(name, [headers].concat(rows)); });
+    row.appendChild(b); d.appendChild(row);
+    card.appendChild(d);
+  }
+  window.addEventListener('load', function(){
+    addTableButtons();
+    try {
+      var c1 = document.getElementById('mort-chart'), c2 = document.getElementById('cause-chart');
+      if(c1 && typeof mortData !== 'undefined'){
+        var card1 = c1.closest('.mort-card');
+        var rows1 = mortData.map(function(d){ return [d.y, d.ca, d.us, d.ca + d.us]; });
+        mortDataTable(card1, ['Year','Canada','US','Total'], rows1, 'mortalities-by-country-data');
+      }
+      if(c2 && typeof causeData !== 'undefined'){
+        var card2 = c2.closest('.mort-card');
+        var rows2 = causeData.map(function(d){ return [d.y, d.vs, d.ent, d.neo, d.unk, d.oth, d.vs+d.ent+d.neo+d.unk+d.oth]; });
+        mortDataTable(card2, ['Year','Vessel Strike','Entanglement','Neonate','Unknown','Other','Total'], rows2, 'mortalities-by-cause-data');
+      }
+    } catch(e) {}
+  });
+})();
 
 // ── HERO VIDEO SCROLL DISMISS ──
 
