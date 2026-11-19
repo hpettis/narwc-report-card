@@ -5,22 +5,52 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NARWC 2025 Annual Report Card | North Atlantic Right Whale</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script>(function(){try{var t=localStorage.getItem('narwcTheme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t);}catch(e){}})();</script>
 <style>
 :root {
-  --ocean-deep: #050d1a;
-  --ocean-mid: #071628;
-  --ocean-surface: #0a2240;
-  --teal-bright: #00c9a7;
-  --teal-dim: #00897b;
-  --amber: #f59e0b;
-  --coral: #ef4444;
-  --sky: #38bdf8;
-  --cream: #f0ece3;
-  --muted: #8ba8c4;
-  --border: rgba(0,201,167,0.15);
-  --card-bg: rgba(7,22,40,0.85);
-  --glass: rgba(10,34,64,0.6);
+  /* Default: softer dark theme (lower glare, higher text contrast) */
+  --ocean-deep: #14283f;
+  --ocean-mid: #1a3350;
+  --ocean-surface: #234265;
+  --teal-bright: #6fcfbd;
+  --teal-dim: #4aa597;
+  --amber: #e3b562;
+  --coral: #ee9090;
+  --sky: #86c3e6;
+  --cream: #e6e3da;
+  --muted: #a9bccd;
+  --white: #eef2f6;
+  --border: rgba(111,207,189,0.22);
+  --card-bg: rgba(26,51,80,0.92);
+  --glass: rgba(35,66,101,0.7);
+  --nav-bg: rgba(20,40,63,0.92);
+  --nav-bg-strong: rgba(20,40,63,0.96);
+  --hl-rgb: 255,255,255;
+  --cream-rgb: 230,227,218;
+  --bg-glow: rgba(60,100,140,0.22);
 }
+/* Original (darkest) theme */
+:root[data-theme="dark"] {
+  --ocean-deep: #050d1a; --ocean-mid: #071628; --ocean-surface: #0a2240;
+  --teal-bright: #00c9a7; --teal-dim: #00897b; --amber: #f59e0b; --coral: #ef4444; --sky: #38bdf8;
+  --cream: #f0ece3; --muted: #8ba8c4; --white: #ffffff;
+  --border: rgba(0,201,167,0.15); --card-bg: rgba(7,22,40,0.85); --glass: rgba(10,34,64,0.6);
+  --nav-bg: rgba(5,13,26,0.85); --nav-bg-strong: rgba(5,13,26,0.9);
+  --hl-rgb: 255,255,255; --cream-rgb: 240,236,227; --bg-glow: rgba(0,80,120,0.25);
+}
+/* Light theme */
+:root[data-theme="light"] {
+  --ocean-deep: #f4f2ec; --ocean-mid: #ffffff; --ocean-surface: #e6edf3;
+  --teal-bright: #00766a; --teal-dim: #00695c; --amber: #9a5800; --coral: #b42318; --sky: #0369a1;
+  --cream: #1c2a39; --muted: #435a6f; --white: #0d1b2a;
+  --border: rgba(0,100,90,0.28); --card-bg: rgba(255,255,255,0.96); --glass: rgba(255,255,255,0.85);
+  --nav-bg: rgba(244,242,236,0.95); --nav-bg-strong: rgba(244,242,236,0.98);
+  --hl-rgb: 0,0,0; --cream-rgb: 28,42,57; --bg-glow: rgba(0,120,160,0.10);
+  color-scheme: light;
+}
+:root[data-theme="light"] .ocean-bg { background: radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0,120,160,0.08) 0%, transparent 60%), var(--ocean-deep); }
+:root[data-theme="light"] .wave-layer, :root[data-theme="light"] .particles, :root[data-theme="light"] #hero-video-wrap, :root[data-theme="light"] #hero-video-toggle { display:none !important; }
+.theme-btn { white-space:nowrap; }
 
 * { margin:0; padding:0; box-sizing:border-box; }
 
@@ -41,9 +71,9 @@ body {
   inset: 0;
   z-index: 0;
   background: 
-    radial-gradient(ellipse 80% 60% at 20% 10%, rgba(0,80,120,0.25) 0%, transparent 60%),
+    radial-gradient(ellipse 80% 60% at 20% 10%, var(--bg-glow) 0%, transparent 60%),
     radial-gradient(ellipse 60% 40% at 80% 80%, rgba(0,201,167,0.08) 0%, transparent 50%),
-    radial-gradient(ellipse 100% 80% at 50% 50%, rgba(5,20,50,1) 0%, var(--ocean-deep) 100%);
+    radial-gradient(ellipse 100% 80% at 50% 50%, var(--ocean-mid) 0%, var(--ocean-deep) 100%);
   pointer-events: none;
 }
 
@@ -89,7 +119,7 @@ nav {
   top: 0; left: 0; right: 0;
   z-index: 100;
   backdrop-filter: blur(20px);
-  background: rgba(5,13,26,0.85);
+  background: var(--nav-bg);
   border-bottom: 1px solid var(--border);
   padding: 0 40px;
   display: flex;
@@ -119,7 +149,7 @@ nav {
   transition: all 0.2s;
 }
 .nav-btn:hover, .nav-btn.active { color: var(--teal-bright); background: rgba(0,201,167,0.08); }
-.a11y-btn {
+.a11y-btn, .theme-btn {
   margin-left: 8px;
   border: 1px solid rgba(0,201,167,0.3) !important;
   color: var(--teal-bright) !important;
@@ -154,7 +184,7 @@ nav {
   font-size: clamp(2.5rem, 6vw, 5.5rem);
   line-height: 1.1;
   font-weight: 900;
-  color: #fff;
+  color:var(--white);
   margin-bottom: 20px;
   opacity: 0;
   animation: fadeUp 0.8s ease forwards 0.4s;
@@ -260,7 +290,7 @@ section {
   font-family: 'Playfair Display', serif;
   font-size: clamp(1.8rem, 3vw, 2.8rem);
   font-weight: 700;
-  color: #fff;
+  color:var(--white);
   line-height: 1.2;
 }
 
@@ -288,7 +318,7 @@ section {
   flex-wrap: wrap;
 }
 .chart-btn {
-  background: rgba(255,255,255,0.04);
+  background: rgba(var(--hl-rgb),0.04);
   border: 1px solid var(--border);
   color: var(--muted);
   font-family: 'DM Mono', monospace;
@@ -325,15 +355,15 @@ section {
 
 /* ── COLLAPSIBLE TABLES ── */
 .collapsible .table-header { cursor:pointer; user-select:none; }
-.collapsible .table-header:hover { background:rgba(255,255,255,0.03); }
+.collapsible .table-header:hover { background:rgba(var(--hl-rgb),0.03); }
 .collapsible .tbl-chevron { display:inline-block; margin-right:10px; font-size:0.8rem; color:var(--teal-bright); transition:transform 0.2s; }
 .collapsible.collapsed .tbl-chevron { transform:rotate(-90deg); }
 .collapsible.collapsed .table-body { display:none; }
 .collapsible.collapsed .table-header { border-bottom:none; }
-.table-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #fff; }
+.table-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; color:var(--white); }
 .table-sub { font-size: 0.9rem; color: var(--muted); margin-top: 2px; }
 .search-input {
-  background: rgba(255,255,255,0.05);
+  background: rgba(var(--hl-rgb),0.05);
   border: 1px solid var(--border);
   border-radius: 6px;
   color: var(--cream);
@@ -362,9 +392,9 @@ th {
   user-select: none;
   white-space: nowrap;
 }
-th:hover { color: #fff; }
+th:hover { color:var(--white); }
 tbody tr {
-  border-bottom: 1px solid rgba(255,255,255,0.04);
+  border-bottom: 1px solid rgba(var(--hl-rgb),0.04);
   transition: background 0.15s;
 }
 tbody tr:hover { background: rgba(0,201,167,0.05); }
@@ -474,7 +504,7 @@ td.pct { font-family: 'DM Mono', monospace; }
 }
 .region-card:hover { border-color: rgba(0,201,167,0.3); transform: translateY(-2px); }
 .region-name { font-size: 0.78rem; color: var(--teal-bright); font-weight:500; margin-bottom: 8px; text-transform:uppercase; letter-spacing:0.06em; }
-.region-count { font-family:'Playfair Display',serif; font-size:2rem; font-weight:700; color:#fff; }
+.region-count { font-family:'Playfair Display',serif; font-size:2rem; font-weight:700; color:var(--white); }
 .region-bar { height:3px; background:rgba(0,201,167,0.12); border-radius:2px; margin-top:10px; overflow:hidden; }
 .region-fill { height:100%; background:linear-gradient(90deg,var(--teal-dim),var(--teal-bright)); border-radius:2px; transition:width 0.8s ease; }
 .region-months { font-size:0.7rem; color:var(--muted); margin-top:6px; }
@@ -490,7 +520,7 @@ td.pct { font-family: 'DM Mono', monospace; }
 }
 .mgmt-tab {
   flex: 1;
-  background: rgba(255,255,255,0.03);
+  background: rgba(var(--hl-rgb),0.03);
   border: none;
   color: var(--muted);
   padding: 13px 20px;
@@ -511,7 +541,7 @@ td.pct { font-family: 'DM Mono', monospace; }
   display: flex;
   gap: 16px;
   padding: 18px 0;
-  border-bottom: 1px solid rgba(255,255,255,0.05);
+  border-bottom: 1px solid rgba(var(--hl-rgb),0.05);
   align-items: flex-start;
 }
 .mgmt-item:last-child { border-bottom: none; }
@@ -522,7 +552,7 @@ td.pct { font-family: 'DM Mono', monospace; }
   flex-shrink: 0;
   margin-top: 7px;
 }
-.mgmt-text { font-size:0.86rem; line-height:1.65; color: rgba(240,236,227,0.8); }
+.mgmt-text { font-size:0.86rem; line-height:1.65; color: rgba(var(--cream-rgb),0.8); }
 
 /* ── MODAL ── */
 .modal-overlay {
@@ -561,7 +591,7 @@ td.pct { font-family: 'DM Mono', monospace; }
 .modal-close {
   position: absolute;
   top: 20px; right: 20px;
-  background: rgba(255,255,255,0.08);
+  background: rgba(var(--hl-rgb),0.08);
   border: none;
   color: var(--cream);
   width: 32px; height: 32px;
@@ -571,10 +601,10 @@ td.pct { font-family: 'DM Mono', monospace; }
   display: flex; align-items:center; justify-content:center;
   transition: background 0.2s;
 }
-.modal-close:hover { background: rgba(255,255,255,0.15); }
+.modal-close:hover { background: rgba(var(--hl-rgb),0.15); }
 .modal-tag { font-family:'DM Mono',monospace; font-size:0.65rem; letter-spacing:0.15em; text-transform:uppercase; color:var(--teal-bright); margin-bottom:12px; }
-.modal-title { font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:700; color:#fff; margin-bottom:16px; line-height:1.3; }
-.modal-body { font-size:0.88rem; line-height:1.75; color:rgba(240,236,227,0.85); }
+.modal-title { font-family:'Playfair Display',serif; font-size:1.6rem; font-weight:700; color:var(--white); margin-bottom:16px; line-height:1.3; }
+.modal-body { font-size:0.88rem; line-height:1.75; color:rgba(var(--cream-rgb),0.85); }
 .modal-body p { margin-bottom:14px; }
 .modal-body strong { color:var(--teal-bright); font-weight:500; }
 .modal-body ul { padding-left:20px; margin-bottom:14px; }
@@ -593,7 +623,7 @@ td.pct { font-family: 'DM Mono', monospace; }
 .pub-item:hover { border-color:rgba(0,201,167,0.3); }
 .pub-authors { font-family:'DM Mono',monospace; font-size:0.7rem; color:var(--teal-bright); margin-bottom:5px; }
 .pub-title { font-size:0.85rem; color:var(--cream); line-height:1.5; }
-.pub-title-link { color:var(--cream); text-decoration:none; border-bottom:1px solid rgba(240,236,227,0.25); transition:color 0.2s, border-color 0.2s; }
+.pub-title-link { color:var(--cream); text-decoration:none; border-bottom:1px solid rgba(var(--cream-rgb),0.25); transition:color 0.2s, border-color 0.2s; }
 .pub-title-link:hover { color:var(--teal-bright); border-color:var(--teal-bright); }
 .pub-journal { font-size:0.75rem; color:var(--muted); margin-top:4px; font-style:italic; }
 .pub-access-btn { font-style:normal; font-family:'DM Mono',monospace; font-size:0.65rem; letter-spacing:0.06em; color:var(--teal-bright); text-decoration:none; background:rgba(0,201,167,0.08); border:1px solid rgba(0,201,167,0.25); border-radius:3px; padding:2px 7px; white-space:nowrap; transition:background 0.2s; margin-left:8px; vertical-align:middle; }
@@ -626,7 +656,7 @@ td.pct { font-family: 'DM Mono', monospace; }
 .mort-card-title {
   font-family: 'Playfair Display', serif;
   font-size: 0.95rem;
-  color: #fff;
+  color:var(--white);
 }
 .mort-card-sub {
   font-size: 0.9rem;
@@ -736,7 +766,7 @@ td.pct { font-family: 'DM Mono', monospace; }
 
 /* ── FOOTER ── */
 footer {
-  background: rgba(5,13,26,0.9);
+  background: var(--nav-bg-strong);
   border-top: 1px solid var(--border);
   padding: 40px;
   text-align: center;
@@ -744,6 +774,10 @@ footer {
 .footer-logo { font-family:'Playfair Display',serif; font-size:1.1rem; color:var(--teal-bright); margin-bottom:8px; }
 .footer-cite { font-size:0.78rem; color:var(--muted); line-height:1.6; max-width:700px; margin:0 auto 16px; }
 .footer-link { color:var(--teal-bright); }
+/* ── CHART EXPORT ── */
+.chart-dl-row { display:flex; gap:8px; flex-wrap:wrap; }
+.chart-dl { display:inline-block; margin:8px 0 0; background:rgba(var(--hl-rgb),0.04); border:1px solid var(--border); color:var(--muted); font-family:'DM Mono',monospace; font-size:0.72rem; letter-spacing:0.06em; text-transform:uppercase; padding:6px 14px; border-radius:4px; cursor:pointer; }
+.chart-dl:hover { border-color:var(--teal-bright); color:var(--teal-bright); }
 /* ── ACCESSIBILITY ── */
 .sr-only { position:absolute; width:1px; height:1px; padding:0; margin:-1px; overflow:hidden; clip:rect(0,0,0,0); white-space:nowrap; border:0; }
 .skip-link { position:absolute; left:-9999px; top:8px; z-index:10000; background:#fff; color:#000; padding:10px 16px; border-radius:6px; font-weight:600; }
@@ -810,7 +844,7 @@ th[onclick] { cursor:pointer; }
   padding: 0 24px 20px;
   font-size: 1.0rem;
   line-height: 1.75;
-  color: rgba(240,236,227,0.82);
+  color: rgba(var(--cream-rgb),0.82);
   text-align: left;
   border-top: 1px solid rgba(0,201,167,0.15);
   padding-top: 16px;
@@ -840,7 +874,7 @@ th[onclick] { cursor:pointer; }
 #hero-video-vignette {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 30%, rgba(5,13,26,0.85) 100%);
+  background: radial-gradient(ellipse 80% 80% at 50% 50%, transparent 30%, var(--nav-bg) 100%);
   pointer-events: none;
 }
 
@@ -854,7 +888,7 @@ th[onclick] { cursor:pointer; }
   margin-bottom: 36px;
   font-size: 1.0rem;
   line-height: 1.75;
-  color: rgba(240,236,227,0.8);
+  color: rgba(var(--cream-rgb),0.8);
 }
 
 /* Scroll reveal */
@@ -905,6 +939,7 @@ th[onclick] { cursor:pointer; }
   <button class="nav-btn" onclick="scrollToSection('sightings')">Sightings</button>
   <button class="nav-btn" onclick="scrollToSection('management')">Management</button>
   <button class="nav-btn" onclick="scrollToSection('publications')">Publications & Reports</button>
+  <button class="nav-btn theme-btn" id="theme-btn" onclick="cycleTheme()" title="Change colour theme" aria-label="Colour theme: Soft dark. Change theme">◐ Soft</button>
   <button class="nav-btn a11y-btn" onclick="cycleFontSize()" title="Increase text size" aria-label="A+ — increase text size">A+</button>
 </nav>
 
@@ -1023,11 +1058,11 @@ th[onclick] { cursor:pointer; }
 pairs were seen on the northern feeding grounds. One of the 11 was only detected on the feeding grounds. </div>
   <div class="repro-grid reveal">
     <div class="repro-card">
-      <div style="font-family:'Playfair Display',serif;font-size:1rem;color:#fff;margin-bottom:16px;">Annual Calf Counts</div>
+      <div style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--white);margin-bottom:16px;">Annual Calf Counts</div>
       <div class="repro-chart-wrap"><canvas id="calf-chart"></canvas></div>
     </div>
     <div class="repro-card">
-      <div style="font-family:'Playfair Display',serif;font-size:1rem;color:#fff;margin-bottom:16px;">Inter-Birth Interval (median, yrs)</div>
+      <div style="font-family:'Playfair Display',serif;font-size:1rem;color:var(--white);margin-bottom:16px;">Inter-Birth Interval (median, yrs)</div>
       <div class="repro-chart-wrap"><canvas id="interval-chart"></canvas></div>
     </div>
   </div>
@@ -1143,35 +1178,43 @@ available cows to successfully calve. Columns are sortable. Color coding of % av
         <tbody id="entangle-tbody">
           <tr>
             <td><strong style="color:var(--amber)">#5110</strong></td>
+            <td class="num">—</td>
+            <td>—</td>
             <td class="num">12/09/2024</td>
             <td>S. New England</td>
             <td>M</td>
             <td>4</td>
-            <td><span style="font-size:0.78rem;color:rgba(240,236,227,0.75)">Green rope around rostrum & body. Life-threatening. Partial disentanglement 4/10/25 — lethal portion remains. Last seen entangled 4/24/2025, Cape Cod Bay.</span></td>
+            <td><span style="font-size:0.78rem;color:rgba(var(--cream-rgb),0.75)">Green rope around rostrum & body. Life-threatening. Partial disentanglement 4/10/25 — lethal portion remains. Last seen entangled 4/24/2025, Cape Cod Bay.</span></td>
           </tr>
           <tr>
             <td><strong style="color:var(--amber)">#5132</strong></td>
+            <td class="num">—</td>
+            <td>—</td>
             <td class="num">12/16/2024</td>
             <td>North Carolina</td>
             <td>M</td>
             <td>4</td>
-            <td><span style="font-size:0.78rem;color:rgba(240,236,227,0.75)">Complex entanglement with numerous passes over head. Gear from LFA 38 (Bay of Fundy). Last sighted 6/17/2025 off PEI, still entangled.</span></td>
+            <td><span style="font-size:0.78rem;color:rgba(var(--cream-rgb),0.75)">Complex entanglement with numerous passes over head. Gear from LFA 38 (Bay of Fundy). Last sighted 6/17/2025 off PEI, still entangled.</span></td>
           </tr>
           <tr>
             <td><strong style="color:var(--amber)">#4146</strong></td>
+            <td class="num">—</td>
+            <td>—</td>
             <td class="num">8/13/2025</td>
             <td>Grand Manan, NB</td>
             <td>F</td>
             <td>14</td>
-            <td><span style="font-size:0.78rem;color:rgba(240,236,227,0.75)">Free-swimming entrapment in herring weir. Campobello Whale Rescue Team successfully freed the whale. Not re-sighted in area.</span></td>
+            <td><span style="font-size:0.78rem;color:rgba(var(--cream-rgb),0.75)">Free-swimming entrapment in herring weir. Campobello Whale Rescue Team successfully freed the whale. Not re-sighted in area.</span></td>
           </tr>
           <tr>
             <td><strong style="color:var(--amber)">#5217 "Division"</strong></td>
+            <td class="num">—</td>
+            <td>—</td>
             <td class="num">12/03/2025</td>
             <td>North Carolina</td>
             <td>M</td>
             <td>4</td>
-            <td><span style="font-size:0.78rem;color:rgba(240,236,227,0.75)">Line embedded in rostrum & blowhole. Partial disentanglement; telemetry buoy attached. Found dead 1/27/2026 off NC — mortality to appear in 2026 Report Card.</span></td>
+            <td><span style="font-size:0.78rem;color:rgba(var(--cream-rgb),0.75)">Line embedded in rostrum & blowhole. Partial disentanglement; telemetry buoy attached. Found dead 1/27/2026 off NC — mortality to appear in 2026 Report Card.</span></td>
           </tr>
         </tbody>
       </table>
@@ -1240,7 +1283,7 @@ available cows to successfully calve. Columns are sortable. Color coding of % av
             <td>Jeffreys Ledge</td>
             <td>M</td>
             <td>20</td>
-             <td><span style="font-size:0.78rem;color:rgba(240,236,227,0.75)">Wound on right flank. Suspect vessel strike. This case requires additional photo documentation to confirm the injury origin and severity.</span></td>
+             <td><span style="font-size:0.78rem;color:rgba(var(--cream-rgb),0.75)">Wound on right flank. Suspect vessel strike. This case requires additional photo documentation to confirm the injury origin and severity.</span></td>
           </tr>
         </tbody>
       </table>
@@ -1933,12 +1976,14 @@ function buildPopChart(rangeStart) {
       },
       scales:{
         x:{
-          grid:{ color:'rgba(255,255,255,0.04)' },
-          ticks:{ color:'#8ba8c4', font:{family:'DM Mono',size:11} }
+          grid:{ display:false },
+          title:{display:true, text:'Year', color:'#8ba8c4', font:{size:11}},
+          ticks:{ maxRotation:45, minRotation:45, autoSkip:false, color:'#8ba8c4', font:{family:'DM Mono',size:11} }
         },
         y:{
           grid:{ color:'rgba(255,255,255,0.04)' },
           ticks:{ color:'#8ba8c4', font:{family:'DM Mono',size:11}, stepSize:10 },
+          title:{display:true, text:'No. Individuals', color:'#8ba8c4', font:{size:11}},
           min: rangeStart==='all' ? 250 : undefined
         }
       }
@@ -1989,8 +2034,8 @@ function buildReproCharts() {
         }
       },
       scales:{
-        x:{ grid:{color:'rgba(255,255,255,0.03)'}, ticks:{color:'#8ba8c4',font:{size:9}} },
-        y:{ grid:{color:'rgba(255,255,255,0.03)'}, ticks:{color:'#8ba8c4',font:{size:9}} }
+        x:{ grid:{display:false}, title:{display:true, text:'Year', color:'#8ba8c4', font:{size:11}}, ticks:{maxRotation:45, minRotation:45, autoSkip:false, color:'#8ba8c4',font:{size:9}} },
+        y:{ grid:{color:'rgba(255,255,255,0.03)'}, ticks:{color:'#8ba8c4',font:{size:9}}, title:{display:true, text:'Number of calves', color:'#8ba8c4', font:{size:10}} }
       }
     }
   });
@@ -2025,10 +2070,10 @@ function buildReproCharts() {
         }
       },
       scales:{
-        x:{ grid:{color:'rgba(255,255,255,0.03)'}, ticks:{color:'#8ba8c4',font:{size:9}} },
+        x:{ grid:{display:false}, title:{display:true, text:'Year', color:'#8ba8c4', font:{size:11}}, ticks:{maxRotation:45, minRotation:45, autoSkip:false, color:'#8ba8c4',font:{size:9}} },
         y:{
           grid:{color:'rgba(255,255,255,0.03)'}, ticks:{color:'#8ba8c4',font:{size:9}},
-          title:{display:true, text:'Years', color:'#8ba8c4',font:{size:10}}
+          title:{display:true, text:'Median interval (years)', color:'#8ba8c4',font:{size:10}}
         }
       }
     }
@@ -2250,8 +2295,9 @@ function buildMortChart() {
       },
       scales: {
         x: {
-          grid: { color: 'rgba(255,255,255,0.04)' },
-          ticks: { color: '#8ba8c4', font: { family: 'DM Mono', size: 10 } }
+          grid: { display: false },
+          title: { display: true, text: 'Year', color: '#8ba8c4', font: { size: 11 } },
+          ticks: { maxRotation: 45, minRotation: 45, autoSkip: false, color: '#8ba8c4', font: { family: 'DM Mono', size: 10 } }
         },
         y: {
           grid: { color: 'rgba(255,255,255,0.04)' },
@@ -2373,8 +2419,9 @@ function buildCauseChart() {
       scales: {
         x: {
           stacked: true,
-          grid: { color: 'rgba(255,255,255,0.04)' },
-          ticks: { color: '#8ba8c4', font: { family: 'DM Mono', size: 10 } }
+          grid: { display: false },
+          title: { display: true, text: 'Year', color: '#8ba8c4', font: { size: 11 } },
+          ticks: { maxRotation: 45, minRotation: 45, autoSkip: false, color: '#8ba8c4', font: { family: 'DM Mono', size: 10 } }
         },
         y: {
           stacked: true,
@@ -2523,6 +2570,187 @@ function cycleFontSize() {
     new MutationObserver(function(){ if(w.classList.contains('hidden')) btn.hidden = true; }).observe(w,{attributes:true,attributeFilter:['class']}); }
 })();
 
+// ── CHART EXPORT (high-resolution light PNG with title, axis labels and citation) ──
+(function(){
+  function txt(sel, root){ var e=(root||document).querySelector(sel); return e ? e.textContent.replace(/\s+/g,' ').trim() : ''; }
+  var items = [
+    {id:'pop-chart', file:'population-estimate', x:'Year', y:'No. Individuals',
+     title:function(){ return txt('#population .section-title') || 'Population Estimates'; }},
+    {id:'calf-chart', file:'calf-counts', x:'Year', y:'Number of calves',
+     title:function(){ var c=document.getElementById('calf-chart'); return txt('div', c.closest('.repro-card')) || 'Annual Calf Counts'; }},
+    {id:'interval-chart', file:'inter-birth-intervals', x:'Year', y:'Median interval (years)',
+     title:function(){ var c=document.getElementById('interval-chart'); return txt('div', c.closest('.repro-card')) || 'Inter-Birth Interval'; }},
+    {id:'mort-chart', file:'mortalities-by-country', x:'Year', y:'Number of Whales',
+     title:function(){ return txt('.mort-card-title', document.getElementById('mort-chart').closest('.mort-card')) || 'Detected Mortalities By Country of Detection'; }},
+    {id:'cause-chart', file:'mortalities-by-cause', x:'Year', y:'Number of Whales',
+     title:function(){ return txt('.mort-card-title', document.getElementById('cause-chart').closest('.mort-card')) || 'Detected Mortalities By Cause of Death'; }}
+  ];
+  var map = [['0,201,167','0,122,102'],['0, 201, 167','0,122,102'],['#00c9a7','#007a66'],['245,158,11','180,95,0'],['#f59e0b','#b45f00'],['56,189,248','2,120,190'],['167,139,250','109,40,217'],['239,68,68','185,28,28'],['100,116,139','71,85,105'],['#38bdf8','#0284c7'],['#ef4444','#b91c1c'],['#a78bfa','#6d28d9'],['#2dd4bf','#0f766e'],['45,212,191','15,118,110']];
+  function lighten(c){
+    if(Array.isArray(c)) return c.map(lighten);
+    if(typeof c !== 'string') return c;
+    map.forEach(function(m){ c = c.split(m[0]).join(m[1]); });
+    return c;
+  }
+  window.narwcLighten = lighten;
+  var softMap = [['0,201,167','86,184,166'],['#00c9a7','#56b8a6'],['245,158,11','222,170,80'],['#f59e0b','#deaa50'],['56,189,248','110,176,218'],['#38bdf8','#6eb0da'],['167,139,250','164,146,214'],['#a78bfa','#a492d6'],['239,68,68','220,110,110'],['#ef4444','#dc6e6e'],['100,116,139','112,128,148'],['#2dd4bf','#6cc4b6'],['45,212,191','108,196,182']];
+  window.narwcSoften = function soften(c){
+    if(Array.isArray(c)) return c.map(soften);
+    if(typeof c !== 'string') return c;
+    softMap.forEach(function(m){ c = c.split(m[0]).join(m[1]); });
+    return c;
+  };
+  var dsKeys = ['backgroundColor','borderColor','pointBackgroundColor','pointBorderColor'];
+  function rgbToHex(c){ var m=c.match(/\d+/g); if(!m) return c; return '#'+m.slice(0,3).map(function(v){return ('0'+(+v).toString(16)).slice(-2);}).join(''); }
+  function citationDate(){
+    var d = new Date(), months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    return months[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+  }
+
+  // Chart.js rebuilds ch.config.options on every update, so changes are saved by path and re-resolved at restore time.
+  function applyLight(ch, cfg){
+    var dsUndo = [];
+    ch.data.datasets.forEach(function(d){ dsKeys.forEach(function(k){ if(d[k]!==undefined){ dsUndo.push([d,k,d[k]]); d[k]=lighten(d['__orig_'+k]!==undefined ? d['__orig_'+k] : d[k]); } }); });
+    var o0 = ch.config.options || {}, sc0 = o0.scales || {};
+    var targets = [], titles = [];
+    function sc(k){ var o=ch.config.options||{}; return o.scales && o.scales[k]; }
+    Object.keys(sc0).forEach(function(k){
+      ['ticks','grid'].forEach(function(sub){ if(sc0[k][sub]) targets.push({k:k, sub:sub, val: sub==='grid' ? 'rgba(0,0,0,0.12)' : '#222'}); });
+      var label = k==='x' ? cfg.x : (k==='y' ? cfg.y : null);
+      if(label){
+        var old = sc0[k].title;
+        // keep an existing axis title's text unless we have a more descriptive one
+        titles.push({k:k, old:old});
+        sc0[k].title = {display:true, text:label, color:'#222', font:{size:12, weight:'bold'}};
+      }
+    });
+    function res(t){ var s=sc(t.k); return s && s[t.sub]; }
+    var lg = o0.plugins && o0.plugins.legend && o0.plugins.legend.labels;
+    if(lg) targets.push({legend:true, val:'#222'});
+    function resT(t){ if(t.legend){ var o=ch.config.options||{}; return o.plugins&&o.plugins.legend&&o.plugins.legend.labels; } return res(t); }
+    targets.forEach(function(t){ var o=resT(t); if(o){ t.old=o.color; o.color=t.val; } });
+    return function(){
+      dsUndo.forEach(function(u){ u[0][u[1]]=u[2]; });
+      targets.forEach(function(t){ var o=resT(t); if(o) o.color=t.old; });
+      titles.forEach(function(t){ var s=sc(t.k); if(s){ if(t.old===undefined) delete s.title; else s.title=t.old; } });
+    };
+  }
+
+  function exportImage(cfg, btn){
+    var ch = window.Chart && Chart.getChart(cfg.id); if(!ch) return;
+    var scale = Math.max(4, Math.ceil(3200 / Math.max(ch.width, 1))), old = ch.options.devicePixelRatio;
+    var label = btn.textContent; btn.textContent = 'Preparing…';
+    ch.__exporting = true;
+    var restore = applyLight(ch, cfg);
+    try {
+      ch.options.devicePixelRatio = scale; ch.update('none'); ch.resize();
+      var src = ch.canvas, u = src.width / 1100, pad = 24*u, out = document.createElement('canvas');
+      var title = cfg.title();
+      var host = document.getElementById(cfg.id).closest('.mort-card'), legend = [];
+      if(host){
+        host.querySelectorAll('.mort-legend-item').forEach(function(it){
+          var sw = it.querySelector('.mort-swatch'), col = sw ? (sw.dataset.orig || sw.style.backgroundColor) : '#888';
+          legend.push({text: it.textContent.trim(), color: lighten(rgbToHex(col))});
+        });
+      }
+      var citation = 'Data and visualizations from the 2025 North Atlantic Right Whale Consortium Annual Report Card. Accessed ' + citationDate() + '.';
+      var titleH = 44*u, legH = legend.length ? 36*u : 0, citeH = 40*u;
+      out.width = src.width + pad*2; out.height = src.height + pad*2 + titleH + legH + citeH;
+      var c = out.getContext('2d');
+      c.fillStyle = '#ffffff'; c.fillRect(0,0,out.width,out.height);
+      c.fillStyle = '#222'; c.textBaseline = 'middle';
+      var fs = 18*u; c.font = 'bold ' + fs + 'px Georgia, serif';
+      while(c.measureText(title).width > out.width - pad*2 && fs > 8*u){ fs -= u; c.font = 'bold ' + fs + 'px Georgia, serif'; }
+      c.textAlign = 'center'; c.fillText(title, out.width/2, pad + titleH/2 - 6*u); c.textAlign = 'left';
+      c.drawImage(src, pad, pad + titleH);
+      var y = pad + titleH + src.height;
+      if(legend.length){
+        c.font = (12*u) + 'px Helvetica, Arial, sans-serif';
+        var x = pad; y += legH/2;
+        legend.forEach(function(l){
+          c.fillStyle = l.color; c.fillRect(x, y - 6*u, 12*u, 12*u); x += 18*u;
+          c.fillStyle = '#222'; c.fillText(l.text, x, y); x += c.measureText(l.text).width + 24*u;
+        });
+        y += legH/2;
+      }
+      var cs = 11*u; c.font = 'italic ' + cs + 'px Helvetica, Arial, sans-serif';
+      while(c.measureText(citation).width > out.width - pad*2 && cs > 6*u){ cs -= u; c.font = 'italic ' + cs + 'px Helvetica, Arial, sans-serif'; }
+      c.fillStyle = '#444'; c.fillText(citation, pad, y + citeH/2 + 4*u);
+      var a = document.createElement('a');
+      a.download = 'NARWC-2025-' + cfg.file + '.png';
+      a.href = out.toDataURL('image/png');
+      document.body.appendChild(a); a.click(); a.remove();
+    } finally {
+      restore();
+      ch.__exporting = false;
+      ch.options.devicePixelRatio = old; ch.update('none'); ch.resize();
+      btn.textContent = label;
+    }
+  }
+  items.forEach(function(it){
+    var cv = document.getElementById(it.id); if(!cv) return;
+    var host = cv.parentNode;
+    var row = document.createElement('div'); row.className = 'chart-dl-row';
+    var b = document.createElement('button');
+    b.type = 'button'; b.className = 'chart-dl'; b.textContent = 'Export Image';
+    b.setAttribute('aria-label','Export ' + it.file.replace(/-/g,' ') + ' chart as a high-resolution image');
+    b.addEventListener('click', function(){ exportImage(it, b); });
+    row.appendChild(b);
+    host.parentNode.insertBefore(row, host.nextSibling);
+  });
+})();
+
+// ── COLOUR THEME (soft dark default / light / original dark) ──
+var THEMES = [['soft','◐ Soft','Soft dark'],['light','☀ Light','Light'],['dark','● Dark','Original dark']];
+function currentTheme(){ var t=document.documentElement.getAttribute('data-theme'); return (t==='light'||t==='dark') ? t : 'soft'; }
+function themeColors(){
+  var t = currentTheme();
+  return { light: t==='light', text: t==='light' ? '#33475b' : (t==='dark' ? '#8ba8c4' : '#b6cadc'),
+           grid: t==='light' ? 'rgba(0,0,0,0.12)' : 'rgba(255,255,255,0.10)' };
+}
+// Applies the current theme to a chart's colours just before Chart.js (re)draws it
+function applyThemeToChart(ch){
+  if(ch.__exporting) return;
+  var c = themeColors(), keys = ['backgroundColor','borderColor','pointBackgroundColor','pointBorderColor'];
+  var o = (ch.config && ch.config.options) || {}, sc = o.scales || {};
+  Object.keys(sc).forEach(function(a){
+    if(sc[a].ticks) sc[a].ticks.color = c.text;
+    if(sc[a].title) sc[a].title.color = c.text;
+    if(sc[a].grid && sc[a].grid.display !== false) sc[a].grid.color = c.grid;
+  });
+  var lg = o.plugins && o.plugins.legend && o.plugins.legend.labels; if(lg) lg.color = c.text;
+  ch.data.datasets.forEach(function(d){
+    keys.forEach(function(key){
+      if(d[key]===undefined) return;
+      if(d['__orig_'+key]===undefined) d['__orig_'+key] = d[key];
+      d[key] = c.light ? (window.narwcLighten ? window.narwcLighten(d['__orig_'+key]) : d['__orig_'+key]) : (currentTheme()==='soft' && window.narwcSoften ? window.narwcSoften(d['__orig_'+key]) : d['__orig_'+key]);
+    });
+  });
+}
+if(window.Chart && Chart.register) Chart.register({ id:'narwcTheme', beforeUpdate:function(ch){ applyThemeToChart(ch); } });
+function chartTheme(){
+  if(!window.Chart) return;
+  Object.keys(Chart.instances).forEach(function(k){ Chart.instances[k].update('none'); });
+  document.querySelectorAll('.mort-swatch').forEach(function(sw){
+    if(!sw.dataset.orig) sw.dataset.orig = sw.style.background.replace(/\s+/g,'');
+    var th = currentTheme(); sw.style.background = (th==='light' && window.narwcLighten) ? window.narwcLighten(sw.dataset.orig) : (th==='soft' && window.narwcSoften ? window.narwcSoften(sw.dataset.orig) : sw.dataset.orig);
+  });
+}
+function setTheme(t, save){
+  if(t==='soft') document.documentElement.removeAttribute('data-theme'); else document.documentElement.setAttribute('data-theme', t);
+  if(save){ try{ localStorage.setItem('narwcTheme', t==='soft' ? 'soft' : t); }catch(e){} }
+  var info = THEMES.filter(function(x){ return x[0]===t; })[0] || THEMES[0];
+  var b = document.getElementById('theme-btn');
+  if(b){ b.textContent = info[1]; b.setAttribute('aria-label', 'Colour theme: ' + info[2] + '. Change theme'); }
+  chartTheme();
+}
+function cycleTheme(){
+  var i = THEMES.findIndex(function(x){ return x[0]===currentTheme(); });
+  setTheme(THEMES[(i+1)%THEMES.length][0], true);
+}
+// re-apply theme whenever the population chart is rebuilt
+window.addEventListener('load', function(){ setTheme(currentTheme(), false); });
+
 // ── HERO VIDEO SCROLL DISMISS ──
 
 (function() {
@@ -2566,6 +2794,6 @@ setTimeout(function(){
   });
 }, 300);
 </script>
-<script src="data.js" onload="(function(){var et=document.getElementById('entangle-tbody');var st=document.getElementById('scars-tbody');var vt=document.getElementById('vessel-tbody');if(et&&typeof entangleHTML!=='undefined'&&entangleHTML)et.innerHTML=entangleHTML;if(st&&typeof scarsHTML!=='undefined'&&scarsHTML)st.innerHTML=scarsHTML;if(vt&&typeof vesselHTML!=='undefined'&&vesselHTML)vt.innerHTML=vesselHTML;})()" onerror="console.log('No data.js found')"></script>
+<script src="data.js" onload="(function(){var et=document.getElementById('entangle-tbody');var st=document.getElementById('scars-tbody');var vt=document.getElementById('vessel-tbody');if(et&&typeof entangleHTML!=='undefined')et.innerHTML=entangleHTML;if(st&&typeof scarsHTML!=='undefined')st.innerHTML=scarsHTML;if(vt&&typeof vesselHTML!=='undefined')vt.innerHTML=vesselHTML;})()" onerror="console.log('No data.js found')"></script>
 </body>
 </html>
