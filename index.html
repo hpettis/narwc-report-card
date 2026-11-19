@@ -778,7 +778,9 @@ footer {
 
 /* ── TABLE / DATA EXPORT ── */
 .tbl-export-row { display:flex; justify-content:flex-end; margin:0 0 10px; }
-.mort-data { margin-top:14px; border-top:1px solid var(--border); padding-top:10px; }
+.mort-data-bar { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-top:14px; border-top:1px solid var(--border); padding-top:10px; }
+.mort-data { flex:1; min-width:0; }
+.mort-data-bar .chart-dl { margin-top:2px; flex-shrink:0; }
 .mort-data summary { cursor:pointer; font-family:'DM Mono',monospace; font-size:0.75rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--teal-bright); padding:6px 0; }
 .mort-data-scroll { overflow-x:auto; margin-top:8px; }
 .mort-data table { width:100%; border-collapse:collapse; font-size:0.82rem; }
@@ -2803,6 +2805,7 @@ window.addEventListener('load', function(){ setTheme(currentTheme(), false); });
   }
   // Data tables under the two mortality charts, each with CSV export
   function mortDataTable(card, headers, rows, name){
+    var bar = document.createElement('div'); bar.className = 'mort-data-bar';
     var d = document.createElement('details'); d.className = 'mort-data';
     var sm = document.createElement('summary'); sm.textContent = 'View data table';
     d.appendChild(sm);
@@ -2810,12 +2813,11 @@ window.addEventListener('load', function(){ setTheme(currentTheme(), false); });
     var tb = '<table><thead><tr>' + headers.map(function(h){ return '<th scope="col">'+h+'</th>'; }).join('') +
       '</tr></thead><tbody>' + rows.map(function(r){ return '<tr>' + r.map(function(c,i){ return i===0 ? '<th scope="row">'+c+'</th>' : '<td>'+c+'</td>'; }).join('') + '</tr>'; }).join('') + '</tbody></table>';
     inner.innerHTML = tb; d.appendChild(inner);
-    var row = document.createElement('div'); row.className = 'tbl-export-row'; row.style.marginTop = '8px';
     var b = document.createElement('button'); b.type='button'; b.className='chart-dl'; b.textContent='Export CSV';
     b.setAttribute('aria-label','Export ' + name.replace(/-/g,' ') + ' as CSV');
     b.addEventListener('click', function(){ download(name, [headers].concat(rows)); });
-    row.appendChild(b); d.appendChild(row);
-    card.appendChild(d);
+    bar.appendChild(d); bar.appendChild(b);
+    card.appendChild(bar);
   }
   window.addEventListener('load', function(){
     addTableButtons();
