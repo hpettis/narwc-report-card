@@ -776,6 +776,12 @@ footer {
 .footer-cite { font-size:0.78rem; color:var(--muted); line-height:1.6; max-width:700px; margin:0 auto 16px; }
 .footer-link { color:var(--teal-bright); }
 
+
+.tbl-bar { display:flex; justify-content:space-between; align-items:center; gap:12px; padding:10px 16px; border-top:1px solid var(--border); }
+.tbl-view-btn { background:none; border:0; padding:6px 0; margin:0; font-family:'DM Mono',monospace; font-size:0.75rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--teal-bright); cursor:pointer; }
+.tbl-view-btn .tbl-chevron { display:inline-block; margin-right:8px; transition:transform 0.2s; }
+.data-table-wrap.collapsible.collapsed .tbl-view-btn .tbl-chevron { transform:rotate(-90deg); }
+.data-table-wrap.collapsible .table-body { border-top:1px solid var(--border); }
 /* ── TABLE / DATA EXPORT ── */
 .tbl-export-row { display:flex; justify-content:flex-end; margin:0 0 10px; }
 .mort-data-bar { display:flex; justify-content:space-between; align-items:flex-start; gap:12px; margin-top:14px; border-top:1px solid var(--border); padding-top:10px; }
@@ -1037,9 +1043,9 @@ th[onclick] { cursor:pointer; }
   </div>
 
   <div class="data-table-wrap reveal collapsible collapsed">
-    <div class="table-header" onclick="if(!event.target.closest('input,button'))toggleTable(this)">
+    <div class="table-header">
       <div>
-        <div class="table-title"><button type="button" class="tbl-toggle" aria-expanded="false" onclick="event.stopPropagation();toggleTable(this.closest('.table-header'))"><span class="tbl-chevron" aria-hidden="true">▼</span>Population Estimates Table</button></div>
+        <div class="table-title">Population Estimates Table</div>
         <div class="table-sub">Pace model estimates with 95% credible intervals. Columns are sortable. Trend arrows indicate an increase, decrease, or no change in population estimate from the prior year.</div>
       </div>
       <input type="text" class="search-input" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()" placeholder="Filter year..." id="pop-search" oninput="filterPopTable(this.value)">
@@ -1080,9 +1086,9 @@ pairs were seen on the northern feeding grounds. One of the 11 was only detected
     </div>
   </div>
   <div class="data-table-wrap reveal collapsible collapsed">
-    <div class="table-header" onclick="if(!event.target.closest('input,button'))toggleTable(this)">
+    <div class="table-header">
       <div>
-        <div class="table-title"><button type="button" class="tbl-toggle" aria-expanded="false" onclick="event.stopPropagation();toggleTable(this.closest('.table-header'))"><span class="tbl-chevron" aria-hidden="true">▼</span>Mother/Calf Summary</button></div>
+        <div class="table-title">Mother/Calf Summary</div>
         <div class="table-sub">Summary of mother/calf pairs sighted and associated inter-birth interval times for North Atlantic right whales 
 from 2009-2025. The number of available cows, defined as females who have given birth to at least one previous calf, were 
 seen in the last 6 years, have not given birth in previous two years, or gave birth in that year, are followed by the percentage of 
@@ -1325,9 +1331,9 @@ available cows to successfully calve. Columns are sortable. Color coding of % av
   <div class="region-grid reveal" id="region-grid"></div>
 
   <div class="data-table-wrap reveal collapsible collapsed">
-    <div class="table-header" onclick="if(!event.target.closest('input,button'))toggleTable(this)">
+    <div class="table-header">
       <div>
-        <div class="table-title"><button type="button" class="tbl-toggle" aria-expanded="false" onclick="event.stopPropagation();toggleTable(this.closest('.table-header'))"><span class="tbl-chevron" aria-hidden="true">▼</span>Annual Monitoring Summary</button></div>
+        <div class="table-title">Annual Monitoring Summary</div>
         <div class="table-sub">Annual counts of photo-ID sightings, unique individuals, presumed living whales, survey effort (in Beaufort conditions <4), and the percentage of the population seen. Survey effort from dedicated surveys only; opportunistic sightings do not have associated effort. Additionally, the NARWC does not currently receive effort data for all dedicated surveys. All reported fields are updated annually with the most available Sighting and Identification/Catalog Databases data using the Right Whale Year (Dec 1 – Nov 30) as Right Whale Year is what is used to calculate the population estimate. At the time of reporting, photo-id data for 2024 were still being received, processed, and analyzed. Additionally, there are still several 2023-2024 effort datasets yet to be received. Data as of September 8, 2025.</div>
       </div>
       <input type="text" class="search-input" onclick="event.stopPropagation()" onkeydown="event.stopPropagation()" placeholder="Filter year..." id="mon-search" oninput="filterMonTable(this.value)">
@@ -2834,6 +2840,29 @@ window.addEventListener('load', function(){ setTheme(currentTheme(), false); });
         mortDataTable(card2, ['Year','Vessel Strike','Entanglement','Neonate','Unknown','Other','Total'], rows2, 'mortalities-by-cause-data');
       }
     } catch(e) {}
+  });
+})();
+
+// ── VIEW DATA TABLE TOGGLES (tables) ──
+(function(){
+  window.addEventListener('load', function(){
+    document.querySelectorAll('.data-table-wrap.collapsible').forEach(function(wrap){
+      var body = wrap.querySelector('.table-body'); if(!body) return;
+      var oldRow = wrap.querySelector('.tbl-export-row');
+      var exportBtn = oldRow ? oldRow.querySelector('button') : null;
+      if(oldRow) oldRow.remove();
+      var bar = document.createElement('div'); bar.className = 'tbl-bar';
+      var t = document.createElement('button'); t.type = 'button'; t.className = 'tbl-view-btn';
+      t.innerHTML = '<span class="tbl-chevron" aria-hidden="true">▼</span>View data table';
+      t.setAttribute('aria-expanded', wrap.classList.contains('collapsed') ? 'false' : 'true');
+      t.addEventListener('click', function(){
+        var collapsed = wrap.classList.toggle('collapsed');
+        t.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+      });
+      bar.appendChild(t);
+      if(exportBtn){ bar.appendChild(exportBtn); }
+      wrap.insertBefore(bar, body);
+    });
   });
 })();
 
