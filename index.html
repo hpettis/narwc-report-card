@@ -5,29 +5,16 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>NARWC 2025 Annual Report Card | North Atlantic Right Whale</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<script>(function(){var t='dark';try{var s=localStorage.getItem('narwcTheme');if(s==='light'||s==='dark'||s==='soft')t=s;}catch(e){}document.documentElement.setAttribute('data-theme',t);})();</script>
+<script>(function(){var t='dark';try{var s=localStorage.getItem('narwcTheme');if(s==='light'||s==='dark')t=s;}catch(e){}document.documentElement.setAttribute('data-theme',t);})();</script>
 <style>
 :root {
-  /* Default: softer dark theme (lower glare, higher text contrast) */
-  --ocean-deep: #14283f;
-  --ocean-mid: #1a3350;
-  --ocean-surface: #234265;
-  --teal-bright: #6fcfbd;
-  --teal-dim: #4aa597;
-  --amber: #e3b562;
-  --coral: #ee9090;
-  --sky: #86c3e6;
-  --cream: #e6e3da;
-  --muted: #a9bccd;
-  --white: #eef2f6;
-  --border: rgba(111,207,189,0.22);
-  --card-bg: rgba(26,51,80,0.92);
-  --glass: rgba(35,66,101,0.7);
-  --nav-bg: rgba(20,40,63,0.92);
-  --nav-bg-strong: rgba(20,40,63,0.96);
-  --hl-rgb: 255,255,255;
-  --cream-rgb: 230,227,218;
-  --bg-glow: rgba(60,100,140,0.22);
+  /* Dark theme (default) */
+  --ocean-deep: #050d1a; --ocean-mid: #071628; --ocean-surface: #0a2240;
+  --teal-bright: #00c9a7; --teal-dim: #00897b; --amber: #f59e0b; --coral: #ef4444; --sky: #38bdf8;
+  --cream: #f0ece3; --muted: #8ba8c4; --white: #ffffff;
+  --border: rgba(0,201,167,0.15); --card-bg: rgba(7,22,40,0.85); --glass: rgba(10,34,64,0.6);
+  --nav-bg: rgba(5,13,26,0.85); --nav-bg-strong: rgba(5,13,26,0.9);
+  --hl-rgb: 255,255,255; --cream-rgb: 240,236,227; --bg-glow: rgba(0,80,120,0.25);
 }
 /* Original (darkest) theme */
 :root[data-theme="dark"] {
@@ -2612,13 +2599,6 @@ function cycleFontSize() {
     return c;
   }
   window.narwcLighten = lighten;
-  var softMap = [['0,201,167','86,184,166'],['#00c9a7','#56b8a6'],['245,158,11','222,170,80'],['#f59e0b','#deaa50'],['56,189,248','110,176,218'],['#38bdf8','#6eb0da'],['167,139,250','164,146,214'],['#a78bfa','#a492d6'],['239,68,68','220,110,110'],['#ef4444','#dc6e6e'],['100,116,139','112,128,148'],['#2dd4bf','#6cc4b6'],['45,212,191','108,196,182']];
-  window.narwcSoften = function soften(c){
-    if(Array.isArray(c)) return c.map(soften);
-    if(typeof c !== 'string') return c;
-    softMap.forEach(function(m){ c = c.split(m[0]).join(m[1]); });
-    return c;
-  };
   var dsKeys = ['backgroundColor','borderColor','pointBackgroundColor','pointBorderColor'];
   function rgbToHex(c){ var m=c.match(/\d+/g); if(!m) return c; return '#'+m.slice(0,3).map(function(v){return ('0'+(+v).toString(16)).slice(-2);}).join(''); }
   function citationDate(){
@@ -2719,9 +2699,9 @@ function cycleFontSize() {
   });
 })();
 
-// ── COLOUR THEME (soft dark default / light / original dark) ──
-var THEMES = [['dark','● Dark','Dark'],['soft','◐ Soft','Soft dark'],['light','☀ Light','Light']];
-function currentTheme(){ var t=document.documentElement.getAttribute('data-theme'); return (t==='light'||t==='dark'||t==='soft') ? t : 'dark'; }
+// ── COLOUR THEME (dark default / light) ──
+var THEMES = [['dark','● Dark','Dark'],['light','☀ Light','Light']];
+function currentTheme(){ var t=document.documentElement.getAttribute('data-theme'); return t==='light' ? 'light' : 'dark'; }
 function themeColors(){
   var t = currentTheme();
   return { light: t==='light', text: t==='light' ? '#33475b' : (t==='dark' ? '#8ba8c4' : '#b6cadc'),
@@ -2742,7 +2722,7 @@ function applyThemeToChart(ch){
     keys.forEach(function(key){
       if(d[key]===undefined) return;
       if(d['__orig_'+key]===undefined) d['__orig_'+key] = d[key];
-      d[key] = c.light ? (window.narwcLighten ? window.narwcLighten(d['__orig_'+key]) : d['__orig_'+key]) : (currentTheme()==='soft' && window.narwcSoften ? window.narwcSoften(d['__orig_'+key]) : d['__orig_'+key]);
+      d[key] = c.light ? (window.narwcLighten ? window.narwcLighten(d['__orig_'+key]) : d['__orig_'+key]) : d['__orig_'+key];
     });
   });
 }
@@ -2752,7 +2732,7 @@ function chartTheme(){
   Object.keys(Chart.instances).forEach(function(k){ Chart.instances[k].update('none'); });
   document.querySelectorAll('.mort-swatch').forEach(function(sw){
     if(!sw.dataset.orig) sw.dataset.orig = sw.style.background.replace(/\s+/g,'');
-    var th = currentTheme(); sw.style.background = (th==='light' && window.narwcLighten) ? window.narwcLighten(sw.dataset.orig) : (th==='soft' && window.narwcSoften ? window.narwcSoften(sw.dataset.orig) : sw.dataset.orig);
+    sw.style.background = (currentTheme()==='light' && window.narwcLighten) ? window.narwcLighten(sw.dataset.orig) : sw.dataset.orig;
   });
 }
 function setTheme(t, save){
